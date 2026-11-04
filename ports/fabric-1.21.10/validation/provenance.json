@@ -1,11 +1,15 @@
 {
-  "repository": "https://github.com/TheApple05/Curryfarts",
-  "sourceCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
   "upstreamMinecraft": "1.21.11",
   "targetMinecraft": "1.21.10",
   "loader": "Fabric",
-  "artifact": "curryfarts-5.0-port.1+1.21.10-fabric.jar",
-  "sha256": "5ca6173e86e7b843e253a9c6f3a063d77fbd769dd4074fe135285ca72bf0e34b",
+  "artifact": "curryfarts-5.0-port.2+1.21.10-fabric.jar",
+  "sha256": "da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500",
   "sourceAuthor": "Melonik",
-  "portScope": "Uploaded account manager and palette; inactive full-client modules not enabled"
+  "portScope": "Uploaded account manager and palette; inactive full-client modules not enabled",
+  "theme": "Exact user-supplied nine-role indigo palette",
+  "runtimeChecks": 17,
+  "inputRepository": "https://github.com/TheApple05/Curryfarts",
+  "inputSourceCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
+  "repository": "https://github.com/TheApple05/CurryAccountManger-Appa",
+  "baseCommit": "001f1abcc72613b84561e51e10e4ebe877827c27"
 }

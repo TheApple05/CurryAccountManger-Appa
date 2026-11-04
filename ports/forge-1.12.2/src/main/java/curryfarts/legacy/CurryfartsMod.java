@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid="curryfarts",name="Curryfarts Account Manager",version="5.0-port.1+1.12.2",clientSideOnly=true,acceptableRemoteVersions="*")
+@Mod(modid="curryfarts",name="Curryfarts Account Manager",version="5.0-port.2+1.12.2",clientSideOnly=true,acceptableRemoteVersions="*")
 public final class CurryfartsMod {
     public static final AccountStore STORE=new AccountStore();
     private static boolean loaded;
@@ -19,7 +19,7 @@ public final class CurryfartsMod {
     }
     @SubscribeEvent public void initGui(GuiScreenEvent.InitGuiEvent.Post event) {
         if(event.getGui() instanceof GuiMultiplayer)
-            event.getButtonList().add(new PaletteButton(781122,event.getGui().width-64,4,60,20,"Accounts",Palette.BLUE,Palette.BORDER));
+            event.getButtonList().add(new PaletteButton(781122,event.getGui().width-64,4,60,20,"Accounts",Palette.PANEL,Palette.BORDER));
     }
     @SubscribeEvent public void action(GuiScreenEvent.ActionPerformedEvent.Post event) {
         if(event.getGui() instanceof GuiMultiplayer&&event.getButton().id==781122)

@@ -28,7 +28,7 @@ public final class Scrollbar {
          boolean var5 = var2 || var3;
          int var6 = var5 ? var4.width() : Math.max(2, var4.width() - 2);
          int var7 = var4.x() + (var4.width() - var6) / 2;
-         UiRenderer.rect(var0.graphics(), UiBounds.of(var7, var4.y(), var6, var4.height()), var5 ? AccountPalette.GOLDEN_YELLOW : AccountPalette.SPOON_BROWN);
+         UiRenderer.rect(var0.graphics(), UiBounds.of(var7, var4.y(), var6, var4.height()), var5 ? AccountPalette.FOCUS : AccountPalette.BORDER);
       }
    }
 

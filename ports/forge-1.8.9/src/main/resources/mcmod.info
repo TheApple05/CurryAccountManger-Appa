@@ -2,7 +2,7 @@
   {
     "modid": "curryfarts",
     "name": "Curryfarts Account Manager",
-    "version": "5.0-port.1+1.8.9",
+    "version": "5.0-port.2+1.8.9",
     "mcversion": "1.8.9",
     "description": "Unofficial Java 8 / Forge 1.8.9 port of Melonik's account manager.",
     "authorList": [

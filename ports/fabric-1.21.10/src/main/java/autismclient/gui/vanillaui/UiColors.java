@@ -36,8 +36,8 @@ public final class UiColors {
       this.screenScrim = AccountPalette.MODAL_SCRIM;
       this.window = AccountPalette.SURFACE;
       this.windowStrong = AccountPalette.SURFACE_RAISED;
-      this.header = AccountPalette.DEEP_NAVY;
-      this.headerHover = AccountPalette.BOWL_TEAL;
+      this.header = AccountPalette.SURFACE_RAISED;
+      this.headerHover = AccountPalette.SURFACE;
       this.row = AccountPalette.SURFACE;
       this.rowAlt = AccountPalette.SURFACE_RAISED;
       this.rowHover = AccountPalette.ROW_HOVER;
@@ -46,16 +46,16 @@ public final class UiColors {
       this.border = AccountPalette.BORDER;
       this.borderSoft = AccountPalette.BORDER;
       this.buttonBorder = AccountPalette.CONTROL_BORDER;
-      this.hairline = AccountPalette.BOWL_TEAL;
-      this.hoverVeil = 0x22036E99;
-      this.accent = AccountPalette.GOLDEN_YELLOW;
-      this.accentDark = AccountPalette.ELECTRIC_BLUE;
+      this.hairline = AccountPalette.BORDER;
+      this.hoverVeil = 0x008181D9;
+      this.accent = AccountPalette.FOCUS;
+      this.accentDark = AccountPalette.PRIMARY;
       this.accentSoft = AccountPalette.SELECTED_ROW;
-      this.success = AccountPalette.HERB_GREEN;
-      this.successSoft = AccountPalette.HERB_GREEN;
+      this.success = AccountPalette.PRIMARY;
+      this.successSoft = AccountPalette.PRIMARY;
       this.text = AccountPalette.TEXT;
       this.muted = AccountPalette.TEXT_SECONDARY;
       this.disabled = AccountPalette.TEXT_DISABLED;
-      this.bad = AccountPalette.SPICE_ORANGE;
+      this.bad = AccountPalette.HOVER;
    }
 }

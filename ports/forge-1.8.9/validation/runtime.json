@@ -10,7 +10,7 @@
     "java": "8u504",
     "forge": "11.15.1.2318",
     "result": {
-      "sha256": "6542002b9ac56f21904ac0c0fc7bf63913e2eaae43a64499467202492b7e6daa",
+      "sha256": "4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c",
       "status": "PASSED",
       "checks": [
         "exact packaged JAR loaded",
@@ -34,6 +34,6 @@
         "original GUI scale restored after leaving manager"
       ]
     },
-    "sourceSha256": "6542002b9ac56f21904ac0c0fc7bf63913e2eaae43a64499467202492b7e6daa"
+    "sourceSha256": "4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c"
   }
 }

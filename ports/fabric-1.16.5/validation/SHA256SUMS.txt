@@ -1,1 +1,1 @@
-42fa81ee42d9560bb20c106ce8bdf6d9f7211c910227e12d2d8a1ab6e3484542  curryfarts-5.0-port.1+1.16.5-fabric.jar
+415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85  curryfarts-5.0-port.2+1.16.5-fabric.jar

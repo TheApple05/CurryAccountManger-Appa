@@ -195,7 +195,7 @@ public final class CompactOverlayButton {
             }
 
             if (!var2.active && !Boolean.TRUE.equals(var2.selected)) {
-               UiRenderer.frame(var0, var13, AccountPalette.FIELD, AccountPalette.BORDER);
+               UiRenderer.frame(var0, var13, AccountPalette.SURFACE, AccountPalette.BORDER);
                var12.text().drawCentered(var0, var5, var13, AccountPalette.TEXT_DISABLED);
             }
          }

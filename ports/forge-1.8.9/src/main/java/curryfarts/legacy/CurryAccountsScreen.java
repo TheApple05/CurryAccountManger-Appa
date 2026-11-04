@@ -41,36 +41,36 @@ public final class CurryAccountsScreen extends LegacyScreen {
     }
     private void add(int id,int x,int y,int w,String text,int fill,int edge){buttonList.add(new PaletteButton(id,x,y,w,18,text,fill,edge));}
     public void rebuild() {
-        buttonList.clear();add(0,10,10,74,"Back",Palette.NAVY,Palette.BORDER);
+        buttonList.clear();add(0,10,10,74,"Back",Palette.PANEL,Palette.BORDER);
         int editWidth=Math.max(100,panelWidth-216),tabWidth=Math.max(25,(editWidth-6)/4);
-        for(int i=0;i<4;i++)add(10+i,left+10+i*(tabWidth+2),top+38,tabWidth,types[i].equals("TheAltening")?"Altening":types[i],types[i].equals(type)?Palette.TEAL:Palette.NAVY,types[i].equals(type)?Palette.GOLD:Palette.BORDER);
-        add(20,left+10,top+94,Math.max(90,editWidth-74),renameId.isEmpty()?("Microsoft".equals(type)?"Microsoft login":"Add "+("TheAltening".equals(type)?"Altening":type)):"Save rename",Palette.BLUE,Palette.BLUE);
-        add(21,left+editWidth-56,top+94,66,"Clear",Palette.NAVY,Palette.BORDER);
-        add(22,left+panelWidth-196,top+132,112,"Restore launcher",Palette.NAVY,Palette.BORDER);
-        add(23,left+panelWidth-80,top+132,68,"Copy token",Palette.NAVY,Palette.BORDER);
-        if(busy)add(24,left+10,top+94,editWidth,"Cancel operation",Palette.DANGER,Palette.ORANGE);
+        for(int i=0;i<4;i++)add(10+i,left+10+i*(tabWidth+2),top+38,tabWidth,types[i].equals("TheAltening")?"Altening":types[i],types[i].equals(type)?Palette.PRIMARY:Palette.PANEL,Palette.BORDER);
+        add(20,left+10,top+94,Math.max(90,editWidth-74),renameId.isEmpty()?("Microsoft".equals(type)?"Microsoft login":"Add "+("TheAltening".equals(type)?"Altening":type)):"Save rename",Palette.PRIMARY,Palette.BORDER);
+        add(21,left+editWidth-56,top+94,66,"Clear",Palette.PANEL,Palette.BORDER);
+        add(22,left+panelWidth-196,top+132,112,"Restore launcher",Palette.PANEL,Palette.BORDER);
+        add(23,left+panelWidth-80,top+132,68,"Copy token",Palette.PANEL,Palette.BORDER);
+        if(busy)add(24,left+10,top+94,editWidth,"Cancel operation",Palette.PANEL,Palette.BORDER);
         int fw=Math.max(35,(panelWidth-24)/5);String[]filters={"Cracked","Microsoft","Session","TheAltening","Generated"};
-        for(int i=0;i<filters.length;i++)add(30+i,left+10+i*(fw+1),listTop-24,fw,filters[i].equals("TheAltening")?"Altening":filters[i],filters[i].equals(filter)?Palette.TEAL:Palette.NAVY,filters[i].equals(filter)?Palette.GOLD:Palette.BORDER);
-        add(40,left+panelWidth-304,listTop+4,74,"Clear list",Palette.DANGER,Palette.ORANGE);
-        add(41,left+panelWidth-226,listTop+4,70,"Generate",Palette.NAVY,Palette.BORDER);
-        add(42,left+panelWidth-152,listTop+4,82,"Clear expired",Palette.DANGER,Palette.ORANGE);
-        add(43,left+panelWidth-66,listTop+4,56,"Check",Palette.NAVY,Palette.BORDER);
+        for(int i=0;i<filters.length;i++)add(30+i,left+10+i*(fw+1),listTop-24,fw,filters[i].equals("TheAltening")?"Altening":filters[i],filters[i].equals(filter)?Palette.PRIMARY:Palette.PANEL,Palette.BORDER);
+        add(40,left+panelWidth-304,listTop+4,74,"Clear list",Palette.PANEL,Palette.BORDER);
+        add(41,left+panelWidth-226,listTop+4,70,"Generate",Palette.PANEL,Palette.BORDER);
+        add(42,left+panelWidth-152,listTop+4,82,"Clear expired",Palette.PANEL,Palette.BORDER);
+        add(43,left+panelWidth-66,listTop+4,56,"Check",Palette.PANEL,Palette.BORDER);
         rows.clear();String query=search==null?"":search.getText().toLowerCase(Locale.ROOT);
         for(Account a:CurryfartsMod.store().all())if((filter.isEmpty()||filter.equals(a.type))&&a.displayName().toLowerCase(Locale.ROOT).contains(query))rows.add(a);
         int maxRows=Math.max(1,(height-listTop-42)/25);scroll=Math.max(0,Math.min(scroll,Math.max(0,rows.size()-maxRows)));
         for(int i=scroll;i<rows.size()&&i<scroll+maxRows;i++){
             Account a=rows.get(i);int y=listTop+29+(i-scroll)*25;boolean current=LegacySessions.current(a);
-            add(100+i*4,left+panelWidth-182,y,54,current?"Active":"Login",current?Palette.GREEN:Palette.BLUE,current?Palette.GREEN:Palette.BLUE);
-            add(101+i*4,left+panelWidth-124,y,32,"Edit",Palette.NAVY,Palette.BORDER);
-            add(102+i*4,left+panelWidth-88,y,36,"Copy",Palette.NAVY,Palette.BORDER);
-            add(103+i*4,left+panelWidth-48,y,38,"Del",Palette.DANGER,Palette.ORANGE);
+            add(100+i*4,left+panelWidth-182,y,54,current?"Active":"Login",Palette.PANEL,Palette.BORDER);
+            add(101+i*4,left+panelWidth-124,y,32,"Edit",Palette.PANEL,Palette.BORDER);
+            add(102+i*4,left+panelWidth-88,y,36,"Copy",Palette.PANEL,Palette.BORDER);
+            add(103+i*4,left+panelWidth-48,y,38,"Del",Palette.PANEL,Palette.BORDER);
         }
         for(GuiButton b:buttonList)if(b.id!=0&&b.id!=24)b.enabled=!busy;
         revision=System.nanoTime();
     }
     private void field(GuiTextField field,String hint,int mouseX,int mouseY,float partial) {
         int x=field.xPosition,y=field.yPosition,w=field.width;
-        drawRect(x-2,y-3,x+w+2,y+15,field.isFocused()?Palette.GOLD:Palette.BORDER);
+        drawRect(x-2,y-3,x+w+2,y+15,field.isFocused()?Palette.FOCUS:(mouseX>=x-2&&mouseX<x+w+2&&mouseY>=y-3&&mouseY<y+15?Palette.HOVER:Palette.BORDER));
         drawRect(x-1,y-2,x+w+1,y+14,Palette.FIELD);field.drawTextBox();
         if(field.getText().isEmpty()&&!field.isFocused())fontRendererObj.drawString(hint,x+2,y+2,Palette.MUTED);
     }
@@ -88,25 +88,25 @@ public final class CurryAccountsScreen extends LegacyScreen {
         Account preview=selected;
         if(preview==null){preview=new Account();preview.username=mc.getSession().getUsername();preview.uuid=mc.getSession().getPlayerID();preview.type="Launcher";}
         previewModel.render(preview,previewX+90,top+105,35,mouseX,mouseY);
-        fontRendererObj.drawString(fontRendererObj.trimStringToWidth(preview.displayName(),180),previewX,top+110,Palette.GOLD);
+        fontRendererObj.drawString(fontRendererObj.trimStringToWidth(preview.displayName(),180),previewX,top+110,LegacySessions.current(preview)?Palette.FOCUS:Palette.TEXT);
         int maxRows=Math.max(1,(height-listTop-42)/25);
         for(int i=scroll;i<rows.size()&&i<scroll+maxRows;i++){
             Account a=rows.get(i);int y=listTop+27+(i-scroll)*25;boolean current=LegacySessions.current(a);
-            drawRect(left+8,y,left+panelWidth-8,y+23,current?Palette.CURRENT:(a==selected?Palette.NAVY:Palette.PANEL));
-            if(current)drawRect(left+8,y,left+10,y+23,Palette.GOLD);
+            drawRect(left+8,y,left+panelWidth-8,y+23,current?Palette.CURRENT:(a==selected?Palette.PANEL:Palette.PANEL));
+            if(current)drawRect(left+8,y,left+10,y+23,Palette.FOCUS);
             drawHead(a,left+14,y+3,16);
-            fontRendererObj.drawString(fontRendererObj.trimStringToWidth(a.displayName(),Math.max(40,panelWidth-236)),left+36,y+8,current?Palette.GOLD:Palette.TEXT);
+            fontRendererObj.drawString(fontRendererObj.trimStringToWidth(a.displayName(),Math.max(40,panelWidth-236)),left+36,y+8,current?Palette.FOCUS:Palette.TEXT);
             if(panelWidth>450)fontRendererObj.drawString(a.type,left+panelWidth-232,y+8,Palette.MUTED);
         }
         if(rows.isEmpty())fontRendererObj.drawString("No matching saved accounts.",left+12,listTop+36,Palette.MUTED);
         if(!message.isEmpty()){
-            int w=Math.min(width-16,fontRendererObj.getStringWidth(message)+16);drawRect((width-w)/2,height-31,(width+w)/2,height-10,Palette.NAVY);
-            drawCenteredString(fontRendererObj,fontRendererObj.trimStringToWidth(message,w-10),width/2,height-24,Palette.GOLD);
+            int w=Math.min(width-16,fontRendererObj.getStringWidth(message)+16);drawRect((width-w)/2,height-31,(width+w)/2,height-10,Palette.PANEL);
+            drawCenteredString(fontRendererObj,fontRendererObj.trimStringToWidth(message,w-10),width/2,height-24,Palette.TEXT);
         }
-        if(busy)fontRendererObj.drawString("Working...",left+10,top+54,Palette.GOLD);
+        if(busy)fontRendererObj.drawString("Working...",left+10,top+54,Palette.TEXT);
         super.drawScreen(mouseX,mouseY,partial);
     }
-    private void panel(int x,int y,int w,int h,int fill){drawRect(x,y,x+w,y+h,Palette.TEAL);drawRect(x+1,y+1,x+w-1,y+h-1,fill);}
+    private void panel(int x,int y,int w,int h,int fill){drawRect(x,y,x+w,y+h,Palette.BORDER);drawRect(x+1,y+1,x+w-1,y+h-1,fill);}
     private void drawHead(Account account,int x,int y,int size) {
         UUID uuid;
         try{String s=account.uuid.replace("-","");uuid=UUID.fromString(s.length()==32?s.substring(0,8)+"-"+s.substring(8,12)+"-"+s.substring(12,16)+"-"+s.substring(16,20)+"-"+s.substring(20):account.uuid);}catch(Exception ignored){uuid=UUID.nameUUIDFromBytes(("OfflinePlayer:"+account.displayName()).getBytes(java.nio.charset.StandardCharsets.UTF_8));}
@@ -162,16 +162,17 @@ public final class CurryAccountsScreen extends LegacyScreen {
     private static final class ConfirmScreen extends LegacyScreen {
         private final CurryAccountsScreen parent;private final boolean expired;
         ConfirmScreen(CurryAccountsScreen parent,boolean expired){this.parent=parent;this.expired=expired;}
-        @Override public void initGui(){buttonList.add(new PaletteButton(0,width/2-120,height/2+20,100,20,"Clear",Palette.DANGER,Palette.ORANGE));buttonList.add(new PaletteButton(1,width/2+20,height/2+20,100,20,"Cancel",Palette.NAVY,Palette.BORDER));}
-        @Override public void drawScreen(int x,int y,float p){parent.drawScreen(-1,-1,p);drawRect(0,0,width,height,0xCC00162F);drawRect(width/2-140,height/2-55,width/2+140,height/2+55,Palette.PANEL);drawCenteredString(fontRendererObj,expired?"Clear expired accounts?":"Clear all saved accounts?",width/2,height/2-35,Palette.GOLD);drawCenteredString(fontRendererObj,"This cannot be undone.",width/2,height/2-12,Palette.MUTED);super.drawScreen(x,y,p);}
+        @Override public void initGui(){buttonList.add(new PaletteButton(0,width/2-120,height/2+20,100,20,"Clear",Palette.PANEL,Palette.BORDER));buttonList.add(new PaletteButton(1,width/2+20,height/2+20,100,20,"Cancel",Palette.PANEL,Palette.BORDER));}
+        @Override public void drawScreen(int x,int y,float p){parent.drawScreen(-1,-1,p);drawRect(0,0,width,height,Palette.SCRIM);drawRect(width/2-140,height/2-55,width/2+140,height/2+55,Palette.PANEL);drawCenteredString(fontRendererObj,expired?"Clear expired accounts?":"Clear all saved accounts?",width/2,height/2-35,Palette.TEXT);drawCenteredString(fontRendererObj,"This cannot be undone.",width/2,height/2-12,Palette.MUTED);super.drawScreen(x,y,p);}
         @Override protected void actionPerformed(GuiButton b){if(b.id==0){for(Account a:CurryfartsMod.store().all())if(!expired||"EXPIRED".equals(a.checkStatus))CurryfartsMod.store().remove(a);}mc.displayGuiScreen(parent);parent.notice(b.id==0?"Accounts cleared.":"");}
     }
     private static final class GeneratorScreen extends LegacyScreen {
         private final CurryAccountsScreen parent;private GuiTextField count,password;private boolean listMode,setPassword=true;private String result="";
         GeneratorScreen(CurryAccountsScreen parent){this.parent=parent;}
-        @Override public void initGui(){int x=width/2-130,y=height/2-75;count=new GuiTextField(1,fontRendererObj,x,y+32,100,18);count.setText("10");count.setMaxStringLength(4);password=new GuiTextField(2,fontRendererObj,x,y+64,260,18);password.setMaxStringLength(64);buttonList.add(new PaletteButton(0,x,y,125,20,"Random",Palette.BLUE,Palette.BLUE));buttonList.add(new PaletteButton(1,x+135,y,125,20,"From clipboard",Palette.NAVY,Palette.BORDER));buttonList.add(new PaletteButton(4,x,y+98,260,20,"Set password: ON",Palette.GREEN,Palette.GREEN));buttonList.add(new PaletteButton(2,x,y+130,125,20,"Generate",Palette.BLUE,Palette.BLUE));buttonList.add(new PaletteButton(3,x+135,y+130,125,20,"Close",Palette.NAVY,Palette.BORDER));}
-        @Override public void drawScreen(int x,int y,float p){GlStateManager.disableDepth();drawRect(0,0,width,height,Palette.BACKGROUND);drawRect(width/2-145,height/2-110,width/2+145,height/2+110,Palette.PANEL);drawCenteredString(fontRendererObj,"Generate offline accounts",width/2,height/2-95,Palette.GOLD);drawString(fontRendererObj,listMode?"Paste name list using Generate":"Count",width/2-130,height/2-55,Palette.MUTED);count.drawTextBox();if(setPassword)password.drawTextBox();drawString(fontRendererObj,"Shared password (empty = random)",width/2-130,height/2-24,Palette.MUTED);drawString(fontRendererObj,result,width/2-130,height/2+88,Palette.MUTED);super.drawScreen(x,y,p);}
-        @Override protected void actionPerformed(GuiButton b){if(b.id==4){setPassword=!setPassword;b.displayString="Set password: "+(setPassword?"ON":"OFF");return;}if(b.id==0)listMode=false;if(b.id==1)listMode=true;if(b.id==3){mc.displayGuiScreen(parent);parent.notice(result);return;}if(b.id==2){List<String>names=new ArrayList<String>();if(listMode){for(String name:GuiScreen.getClipboardString().split("[\\s,;]+")){int colon=name.indexOf(':');if(colon>=0)name=name.substring(0,colon);if(name.matches("[A-Za-z0-9_]{1,16}"))names.add(name);}}else{int n=10;try{n=Integer.parseInt(count.getText());}catch(Exception ignored){}for(int i=0;i<Math.min(5000,Math.max(1,n));i++)names.add("Curry_"+UUID.randomUUID().toString().replace("-","").substring(0,10));}int added=0;for(String name:names){Account a=new Account();a.type="Generated";a.label=name;a.password=!setPassword?"":(password.getText().isEmpty()?UUID.randomUUID().toString().replace("-","").substring(0,12):password.getText());if(Auth.resolve(a)&&CurryfartsMod.store().add(a))added++;}result="Added "+added+" generated accounts.";}}
+        @Override public void initGui(){int x=width/2-130,y=height/2-75;count=new GuiTextField(1,fontRendererObj,x,y+32,100,18);count.setText("10");count.setMaxStringLength(4);password=new GuiTextField(2,fontRendererObj,x,y+64,260,18);password.setMaxStringLength(64);for(GuiTextField f:new GuiTextField[]{count,password}){f.setEnableBackgroundDrawing(false);f.setTextColor(Palette.TEXT);f.setDisabledTextColour(Palette.DISABLED);}buttonList.add(new PaletteButton(0,x,y,125,20,"Random",listMode?Palette.PANEL:Palette.PRIMARY,Palette.BORDER));buttonList.add(new PaletteButton(1,x+135,y,125,20,"From clipboard",listMode?Palette.PRIMARY:Palette.PANEL,Palette.BORDER));buttonList.add(new PaletteButton(4,x,y+98,260,20,"Set password: ON",setPassword?Palette.PRIMARY:Palette.PANEL,Palette.BORDER));buttonList.add(new PaletteButton(2,x,y+130,125,20,"Generate",Palette.PRIMARY,Palette.BORDER));buttonList.add(new PaletteButton(3,x+135,y+130,125,20,"Close",Palette.PANEL,Palette.BORDER));}
+        @Override public void drawScreen(int x,int y,float p){GlStateManager.disableDepth();drawRect(0,0,width,height,Palette.BACKGROUND);drawRect(width/2-145,height/2-110,width/2+145,height/2+110,Palette.PANEL);drawCenteredString(fontRendererObj,"Generate offline accounts",width/2,height/2-95,Palette.TEXT);drawString(fontRendererObj,listMode?"Paste name list using Generate":"Count",width/2-130,height/2-55,Palette.MUTED);parent.field(count,"Count",x,y,p);if(setPassword)parent.field(password,"Shared password",x,y,p);drawString(fontRendererObj,"Shared password (empty = random)",width/2-130,height/2-24,Palette.MUTED);drawString(fontRendererObj,result,width/2-130,height/2+88,Palette.MUTED);super.drawScreen(x,y,p);}
+        private void refreshModes(){for(GuiButton button:buttonList){if(button instanceof PaletteButton){if(button.id==0)((PaletteButton)button).setFill(listMode?Palette.PANEL:Palette.PRIMARY);else if(button.id==1)((PaletteButton)button).setFill(listMode?Palette.PRIMARY:Palette.PANEL);else if(button.id==4)((PaletteButton)button).setFill(setPassword?Palette.PRIMARY:Palette.PANEL);}}}
+        @Override protected void actionPerformed(GuiButton b){if(b.id==4){setPassword=!setPassword;b.displayString="Set password: "+(setPassword?"ON":"OFF");refreshModes();return;}if(b.id==0){listMode=false;refreshModes();}if(b.id==1){listMode=true;refreshModes();}if(b.id==3){mc.displayGuiScreen(parent);parent.notice(result);return;}if(b.id==2){List<String>names=new ArrayList<String>();if(listMode){for(String name:GuiScreen.getClipboardString().split("[\\s,;]+")){int colon=name.indexOf(':');if(colon>=0)name=name.substring(0,colon);if(name.matches("[A-Za-z0-9_]{1,16}"))names.add(name);}}else{int n=10;try{n=Integer.parseInt(count.getText());}catch(Exception ignored){}for(int i=0;i<Math.min(5000,Math.max(1,n));i++)names.add("Curry_"+UUID.randomUUID().toString().replace("-","").substring(0,10));}int added=0;for(String name:names){Account a=new Account();a.type="Generated";a.label=name;a.password=!setPassword?"":(password.getText().isEmpty()?UUID.randomUUID().toString().replace("-","").substring(0,12):password.getText());if(Auth.resolve(a)&&CurryfartsMod.store().add(a))added++;}result="Added "+added+" generated accounts.";}}
         @Override protected void keyTyped(char c,int key)throws IOException{count.textboxKeyTyped(c,key);password.textboxKeyTyped(c,key);if(key==Keyboard.KEY_ESCAPE)mc.displayGuiScreen(parent);}
         @Override protected void mouseClicked(int x,int y,int b)throws IOException{super.mouseClicked(x,y,b);count.mouseClicked(x,y,b);password.mouseClicked(x,y,b);}
     }

@@ -87,7 +87,7 @@ public final class CompactTheme {
       return switch (var1) {
          case TITLE, LABEL, BODY -> AccountPalette.TEXT;
          case MUTED -> AccountPalette.TEXT_SECONDARY;
-         case ACCENT -> AccountPalette.GOLDEN_YELLOW;
+         case ACCENT -> AccountPalette.FOCUS;
       };
    }
 
@@ -112,7 +112,7 @@ public final class CompactTheme {
    }
 
    public int headerFill() {
-      return AccountPalette.DEEP_NAVY;
+      return AccountPalette.SURFACE_RAISED;
    }
 
    public int headerFillInactive() {
@@ -120,7 +120,7 @@ public final class CompactTheme {
    }
 
    public int headerAccent() {
-      return AccountPalette.GOLDEN_YELLOW;
+      return AccountPalette.FOCUS;
    }
 
    public int borderColor() {

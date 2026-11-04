@@ -39,7 +39,7 @@ public final class PackagedSmoke implements ClientModInitializer {
                 original=mc.getUser();originalService=mc.getMinecraftSessionService();originalSkinManager=mc.getSkinManager();originalSocial=mc.getPlayerSocialManager();
                 mc.setScreen(new JoinMultiplayerScreen(mc.screen));next();break;
             case 1:
-                Button b=button(mc,"Accounts");require(b!=null,"multiplayer Accounts button injected");capture(mc,"00-multiplayer.png");b.onPress();require(mc.screen instanceof AccountsScreen,"Accounts button opens screen");screen=(AccountsScreen)mc.screen;next();break;
+                Button b=button(mc,"Accounts");require(b!=null,"multiplayer Accounts button injected");capture(mc,"00-multiplayer.png");b.onPress();require(mc.screen instanceof AccountsScreen,"Accounts button opens screen");screen=(AccountsScreen)mc.screen;hoverPrimary(mc);next();break;
             case 2:
                 capture(mc,"01-empty.png");PaletteField input=(PaletteField)field(screen,"nameField");input.setValue("CurryQA116");input.mouseClicked(input.x+5,input.y+5,0);require(input.getCursorPosition()<=1,"themed field retains mouse caret position");screen.addAccount();next();break;
             case 3:
@@ -67,6 +67,7 @@ public final class PackagedSmoke implements ClientModInitializer {
         }
     }
     private static Button button(Minecraft mc,String name){for(Object child:mc.screen.children())if(child instanceof Button&&((Button)child).getMessage().getString().equals(name))return (Button)child;return null;}
+    private static void hoverPrimary(Minecraft mc){Button b=button(mc,"Add Cracked");if(b!=null)org.lwjgl.glfw.GLFW.glfwSetCursorPos(mc.getWindow().getWindow(),(b.x+10d)*mc.getWindow().getWidth()/mc.getWindow().getGuiScaledWidth(),(b.y+10d)*mc.getWindow().getHeight()/mc.getWindow().getGuiScaledHeight());}
     private static Object field(Object instance,String name)throws Exception{Field f=instance.getClass().getDeclaredField(name);f.setAccessible(true);return f.get(instance);}
     private static void set(Object instance,String name,Object value)throws Exception{Field f=instance.getClass().getDeclaredField(name);f.setAccessible(true);f.set(instance,value);}
     private void require(boolean value,String name){if(!value)throw new AssertionError(name);checks.add(name);}

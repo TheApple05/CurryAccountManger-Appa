@@ -18,7 +18,7 @@ def main():
             subprocess.run(['taskkill','/PID',str(process.pid),'/T','/F'],capture_output=True)
             raise RuntimeError('QA timeout: '+str(run))
     result=json.loads((run/'qa-result.json').read_text()) if (run/'qa-result.json').is_file() else {'status':'NO_RESULT'}
-    jar=root/'build/libs/curryfarts-5.0-port.1+1.12.2-forge.jar'
+    jar=root/'build/libs/curryfarts-5.0-port.2+1.12.2-forge.jar'
     digest=hashlib.sha256(jar.read_bytes()).hexdigest()
     verdict={'passed':code==0 and result.get('status')=='PASSED' and result.get('jarSha256')==digest,'exitCode':code,'sourceSha256':digest,'minecraft':'1.12.2','forge':'14.23.5.2847','java':'8u504','result':result}
     (run/'verdict.json').write_text(json.dumps(verdict,indent=2)+'\n')
