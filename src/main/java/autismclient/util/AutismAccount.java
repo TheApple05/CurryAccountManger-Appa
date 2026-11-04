@@ -3,8 +3,6 @@ package autismclient.util;
 import autismclient.util.mm.crypto.AtRestSeal;
 import autismclient.util.tokenimport.TokenRefresher;
 import com.google.gson.JsonObject;
-import com.mojang.authlib.Environment;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.util.UndashedUuid;
 import de.florianreuth.waybackauthlib.InvalidCredentialsException;
 import de.florianreuth.waybackauthlib.WaybackAuthLib;
@@ -19,9 +17,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 
 public class AutismAccount {
-   private static final Environment ALTENING_ENVIRONMENT = new Environment(
-      "http://sessionserver.thealtening.com", "http://authserver.thealtening.com", "https://api.mojang.com", "The Altening"
-   );
+   private static final String ALTENING_AUTH_SERVER = "http://authserver.thealtening.com";
    public String id = UUID.randomUUID().toString();
    public AutismAccountType type = AutismAccountType.Cracked;
    public String label = "";
@@ -243,9 +239,8 @@ public class AutismAccount {
             this.username = var2.getCurrentProfile().name();
             this.uuid = var2.getCurrentProfile().id().toString();
             this.sessionToken = var2.getAccessToken() == null ? "" : var2.getAccessToken();
-            boolean var3 = AutismAccountSessionSwitcher.setSession(
-               new User(var2.getCurrentProfile().name(), var2.getCurrentProfile().id(), this.sessionToken, Optional.empty(), Optional.empty()),
-               new YggdrasilAuthenticationService(Minecraft.getInstance().getProxy(), ALTENING_ENVIRONMENT)
+            boolean var3 = AutismAccountSessionSwitcher.setTheAlteningSession(
+               new User(var2.getCurrentProfile().name(), var2.getCurrentProfile().id(), this.sessionToken, Optional.empty(), Optional.empty())
             );
             if (!var3) {
                this.lastError = AutismAccountSessionSwitcher.lastError();
@@ -265,7 +260,7 @@ public class AutismAccount {
    }
 
    private WaybackAuthLib createTheAlteningAuth() {
-      WaybackAuthLib var1 = new WaybackAuthLib(ALTENING_ENVIRONMENT.servicesHost());
+      WaybackAuthLib var1 = new WaybackAuthLib(ALTENING_AUTH_SERVER);
       var1.setUsername(this.token);
       var1.setPassword("AUTISM Client");
       return var1;

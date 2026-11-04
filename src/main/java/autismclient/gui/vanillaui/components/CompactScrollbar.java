@@ -3,7 +3,7 @@ package autismclient.gui.vanillaui.components;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiContexts;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class CompactScrollbar {
    private CompactScrollbar() {
@@ -34,7 +34,7 @@ public final class CompactScrollbar {
       }
    }
 
-   public static void draw(GuiGraphics var0, CompactScrollbar.Metrics var1, boolean var2, boolean var3) {
+   public static void draw(GuiGraphicsExtractor var0, CompactScrollbar.Metrics var1, boolean var2, boolean var3) {
       if (var1 != null && var1.hasScroll()) {
          Scrollbar.render(
             UiContexts.overlay(var0, Minecraft.getInstance().font, -1, -1),

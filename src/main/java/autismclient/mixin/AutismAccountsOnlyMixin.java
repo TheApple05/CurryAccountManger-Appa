@@ -25,7 +25,7 @@ public abstract class AutismAccountsOnlyMixin extends Screen {
    private void autism$repositionElements(CallbackInfo var1) {
       if (this.autism$accountsButton == null) {
          this.autism$accountsButton = (Button)this.addRenderableWidget(
-            new AccountMenuButton(var1x -> this.minecraft.setScreen(new AutismAccountsScreen(this)))
+            new AccountMenuButton(var1x -> this.minecraft.gui.setScreen(new AutismAccountsScreen(this)))
          );
       }
 

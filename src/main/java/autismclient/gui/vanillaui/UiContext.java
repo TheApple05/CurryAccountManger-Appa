@@ -1,9 +1,9 @@
 package autismclient.gui.vanillaui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class UiContext {
-   private final GuiGraphics graphics;
+   private final GuiGraphicsExtractor graphics;
    private final UiTheme theme;
    private final UiTextRenderer text;
    private final int screenWidth;
@@ -12,7 +12,7 @@ public final class UiContext {
    private final int mouseY;
    private final float delta;
 
-   public UiContext(GuiGraphics var1, UiTheme var2, UiTextRenderer var3, int var4, int var5, int var6, int var7, float var8) {
+   public UiContext(GuiGraphicsExtractor var1, UiTheme var2, UiTextRenderer var3, int var4, int var5, int var6, int var7, float var8) {
       this.graphics = var1;
       this.theme = var2;
       this.text = var3;
@@ -23,7 +23,7 @@ public final class UiContext {
       this.delta = var8;
    }
 
-   public GuiGraphics graphics() {
+   public GuiGraphicsExtractor graphics() {
       return this.graphics;
    }
 

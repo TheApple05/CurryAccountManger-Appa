@@ -192,7 +192,7 @@ public final class Dropdown implements UiComponent {
    @Override
    public UiInputResult mouseClicked(int var1, int var2, int var3) {
       this.prepareInputLayout();
-      if (var3 != 0) {
+      if (var3 != com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT) {
          if (!this.open) {
             return UiInputResult.IGNORED;
          }
@@ -248,7 +248,7 @@ public final class Dropdown implements UiComponent {
    @Override
    public UiInputResult mouseDragged(int var1, int var2, int var3, double var4, double var6) {
       this.prepareInputLayout();
-      if (this.draggingScrollbar && var3 == 0) {
+      if (this.draggingScrollbar && var3 == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT) {
          this.updateScrollbar(var2);
          return UiInputResult.HANDLED;
       } else {

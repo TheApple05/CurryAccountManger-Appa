@@ -1,10 +1,8 @@
 package autismclient.util;
 
 import autismclient.AutismClientAddon;
-import com.mojang.blaze3d.textures.TextureFormat;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.FilterMode;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,7 +78,7 @@ public final class AutismThemeTextures {
          try {
             NativeImage var6 = var5.mappedCopy(var2x -> AutismTheme.recolorImagePixel(var2x, var1, var2));
             Identifier var7 = derivedId(var0);
-            MC.getTextureManager().register(var7, new AutismThemeTextures.DynamicTexture(var0.toString(), var6, FilterMode.LINEAR));
+            MC.getTextureManager().register(var7, new AutismDynamicTexture(var0.toString(), var6));
             UI_IDS.put(var0, new AutismThemeTextures.Recolored(var7, var4));
             var8 = var7;
          } catch (Throwable var10) {
@@ -152,7 +150,7 @@ public final class AutismThemeTextures {
                      FAILED.put(var0, var3);
                   } else {
                      Identifier var3xx = derivedId(var0);
-                     MC.getTextureManager().register(var3xx, new AutismThemeTextures.DynamicTexture(var0.toString(), var12, FilterMode.LINEAR));
+                     MC.getTextureManager().register(var3xx, new AutismDynamicTexture(var0.toString(), var12));
                      UI_IDS.put(var0, new AutismThemeTextures.Recolored(var3xx, var3));
                   }
                });
@@ -202,7 +200,7 @@ public final class AutismThemeTextures {
          }
 
          Identifier var10 = Identifier.fromNamespaceAndPath("autismclient", "dynamic/theme/preview/" + var0.getPath().replace('/', '_').replace(".png", ""));
-         AutismThemeTextures.DynamicTexture var11 = new AutismThemeTextures.DynamicTexture("preview " + var0, var6, FilterMode.LINEAR);
+         AutismDynamicTexture var11 = new AutismDynamicTexture("preview " + var0, var6);
          MC.getTextureManager().register(var10, var11);
          return new AutismThemeTextures.Preview(var1, var5, var11, var10);
       } catch (Throwable var9) {
@@ -266,35 +264,10 @@ public final class AutismThemeTextures {
    private record ColorRecolored(Identifier id, int color) {
    }
 
-   private static final class DynamicTexture extends AbstractTexture {
-      private final NativeImage pixels;
-
-      private DynamicTexture(String var1, NativeImage var2, FilterMode var3) {
-         this.pixels = var2;
-         this.texture = RenderSystem.getDevice().createTexture(var1, 5, TextureFormat.RGBA8, var2.getWidth(), var2.getHeight(), 1, 1);
-         this.sampler = RenderSystem.getSamplerCache().getRepeat(var3);
-         this.textureView = RenderSystem.getDevice().createTextureView(this.texture);
-         this.upload();
-      }
-
-      private void upload() {
-         RenderSystem.getDevice().createCommandEncoder().writeToTexture(this.texture, this.pixels);
-      }
-
-      public void close() {
-         try {
-            this.pixels.close();
-         } catch (Throwable var2) {
-         }
-
-         super.close();
-      }
-   }
-
    public static final class Preview implements AutoCloseable {
       private final AutismTheme.Channel channel;
       private final NativeImage source;
-      private final AutismThemeTextures.DynamicTexture texture;
+      private final AutismDynamicTexture texture;
       private final Identifier id;
       private int signature = Integer.MIN_VALUE;
       private final Object lock = new Object();
@@ -303,7 +276,7 @@ public final class AutismThemeTextures {
       private boolean resourcesFreed;
       private AutismTheme.State pendingState;
 
-      private Preview(AutismTheme.Channel var1, NativeImage var2, AutismThemeTextures.DynamicTexture var3, Identifier var4) {
+      private Preview(AutismTheme.Channel var1, NativeImage var2, AutismDynamicTexture var3, Identifier var4) {
          this.channel = var1;
          this.source = var2;
          this.texture = var3;

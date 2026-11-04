@@ -8,6 +8,7 @@ import autismclient.util.tokenimport.TokenImportService;
 import autismclient.util.tokenimport.TokenRefresher;
 import autismclient.util.mm.crypto.AtRestSeal;
 import com.google.gson.GsonBuilder;
+import com.mojang.blaze3d.platform.InputConstants;
 import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -24,6 +25,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.nbt.CompoundTag;
@@ -46,7 +48,9 @@ public final class AccountManagerSmoke implements ClientModInitializer {
     private boolean clipboardRestored;
     private int clipboardAttempts;
     private int clipboardRetryAt;
+    private final List<Map<String, Object>> clipboardDiagnostics = new ArrayList<>();
     private static final String MALFORMED_IMPORT = "# Packaged QA fixture\nREFRESHTOKEN:\nMCTOKEN:\n : \n";
+    private static final String NATIVE_PICKER_INPUT = "# Native picker packaged QA fixture\nMCTOKEN:\nREFRESHTOKEN:\n";
     private static final UUID IMPORT_UUID = UUID.fromString("c4307e60-7397-49a7-9141-75622869d3e7");
     private static final String IMPORT_ACCESS = "synthetic-importer-access-secret";
     private static final String IMPORT_REFRESH = "M.Csynthetic-importer-refresh-secret";
@@ -66,12 +70,13 @@ public final class AccountManagerSmoke implements ClientModInitializer {
     private void tick(Minecraft client) throws Exception {
         ticks++;
         if (stage == -1) return;
-        if (ticks > 2400) throw new AssertionError("QA timed out at stage " + stage);
-        if (client.getOverlay() != null || ticks - stageTick < 30) return;
+        if (ticks > (Boolean.getBoolean("autism.qa.nativePicker") ? 7200 : 2400))
+            throw new AssertionError("QA timed out at stage " + stage);
+        if (client.gui.overlay() != null || ticks - stageTick < 30) return;
         switch (stage) {
             case 0 -> {
-                if (!(client.screen instanceof TitleScreen)) {
-                    client.setScreen(new TitleScreen());
+                if (!(client.gui.screen() instanceof TitleScreen)) {
+                    client.gui.setScreen(new TitleScreen());
                     return;
                 }
                 require(!FabricLoader.getInstance().isDevelopmentEnvironment(), "production loader environment");
@@ -81,28 +86,37 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 result.put("sha256", HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(origin))));
                 require(result.get("sha256").equals(System.getProperty("autism.qa.sha256")), "exact packaged JAR loaded");
                 original = client.getUser();
-                client.setScreen(new JoinMultiplayerScreen(client.screen));
+                client.gui.setScreen(new JoinMultiplayerScreen(client.gui.screen()));
                 next();
             }
             case 1 -> {
-                Button button = client.screen.children().stream()
+                Button button = client.gui.screen().children().stream()
                     .filter(child -> child instanceof Button b && b.getMessage().getString().equals("Accounts"))
                     .map(child -> (Button) child).findFirst().orElseThrow();
-                require(button.getX() >= 0 && button.getX() + button.getWidth() <= client.screen.width,
+                require(button.getX() >= 0 && button.getX() + button.getWidth() <= client.gui.screen().width,
                         "multiplayer Accounts button injected and positioned");
                 capture(client, "00-multiplayer.png");
-                button.onPress(new MouseButtonEvent(button.getX() + 2, button.getY() + 2, new MouseButtonInfo(0, 0)));
-                require(client.screen instanceof AutismAccountsScreen, "Accounts button opens account screen");
-                accounts = (AutismAccountsScreen) client.screen;
+                require(client.gui.screen().mouseClicked(new MouseButtonEvent(button.getX() + 2, button.getY() + 2,
+                        new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0)), false),
+                        "multiplayer Accounts button accepts the platform left mouse button");
+                require(client.gui.screen() instanceof AutismAccountsScreen, "Accounts button opens account screen");
+                accounts = (AutismAccountsScreen) client.gui.screen();
                 next();
             }
             case 2 -> {
                 capture(client, "01-empty-accounts.png");
                 EditBox label = (EditBox) field(accounts, "labelField");
                 label.setValue("BackportQA");
-                label.mouseClicked(new MouseButtonEvent(label.getX() + 5, label.getY() + 5,
-                    new MouseButtonInfo(0, 0)), false);
+                double scale = AutismUiScale.getOverlayDrawScale();
+                require(accounts.mouseClicked(new MouseButtonEvent((label.getX() + 5) * scale, (label.getY() + 5) * scale,
+                    new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0)), false),
+                        "themed input accepts a left click through the account screen");
                 require(label.getCursorPosition() <= 1, "themed input retains mouse cursor positioning");
+                require(label.isFocused(), "left click focuses the account input");
+                requireTextCapture(accounts);
+                label.setValue("");
+                typeText(client, "BackportQA");
+                require(label.getValue().equals("BackportQA"), "platform text input reaches the focused account field");
                 call(accounts, "addAccount");
                 next();
             }
@@ -118,7 +132,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 result.put("generatorParse", names.toString());
                 byte[] clear = "synthetic-qa-secret".getBytes(StandardCharsets.UTF_8);
                 byte[] sealed = AtRestSeal.seal(clear);
-                require(sealed[0] == 1 && Arrays.equals(clear, AtRestSeal.unseal(sealed)), "Windows DPAPI secret round trip on Java 21");
+                require(sealed[0] == 1 && Arrays.equals(clear, AtRestSeal.unseal(sealed)), "Windows DPAPI secret round trip on Java 25");
                 require(!Arrays.equals(clear, Arrays.copyOfRange(sealed, 1, sealed.length)), "saved secret is encrypted");
                 AutismAccountManager.get().save();
                 next();
@@ -133,41 +147,55 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 require(AutismAccountManager.get().findById(savedId).displayName().equals("BackportRenamed"), "NBT persistence and stable ID survive reload");
                 require(AutismAccountSessionSwitcher.setSession(original), "restore launcher session");
                 require(client.getUser().getName().equals(original.getName()), "original username restored");
-                client.setScreen(new AutismAccountsScreen(new JoinMultiplayerScreen(new TitleScreen())));
+                client.gui.setScreen(new AutismAccountsScreen(new JoinMultiplayerScreen(new TitleScreen())));
                 next();
             }
             case 5 -> {
                 capture(client, "03-renamed-and-restored.png");
-                accounts = (AutismAccountsScreen) client.screen;
+                accounts = (AutismAccountsScreen) client.gui.screen();
                 call(accounts, "openGenerator");
                 next();
             }
             case 6 -> {
                 require((int) field(accounts, "activePopup") == 1, "generator popup opens");
+                EditBox count = (EditBox) field(accounts, "generatorCountField");
+                double scale = AutismUiScale.getOverlayDrawScale();
+                require(accounts.mouseClicked(new MouseButtonEvent((count.getX() + 5) * scale, (count.getY() + 5) * scale,
+                        new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0)), false) && count.isFocused(),
+                        "generator count field accepts the platform left mouse button");
+                requireTextCapture(accounts);
+                count.setValue("");
+                typeText(client, "12");
+                require(count.getValue().equals("12"), "platform text input reaches the focused generator field");
                 capture(client, "04-generator.png");
-                call(accounts, "closePopup");
+                require(accounts.keyPressed(new KeyEvent(InputConstants.KEY_ESCAPE, 0, 0))
+                                && (int) field(accounts, "activePopup") == 0 && !count.isFocused(),
+                        "platform Escape key closes the generator and releases text focus");
                 call(accounts, "openClearConfirm");
                 next();
             }
             case 7 -> {
                 require((int) field(accounts, "activePopup") == 2, "clear confirmation opens");
                 capture(client, "05-clear-confirmation.png");
-                call(accounts, "closePopup");
+                require(accounts.keyPressed(new KeyEvent(InputConstants.KEY_ESCAPE, 0, 0))
+                                && (int) field(accounts, "activePopup") == 0,
+                        "platform Escape key closes the clear confirmation");
                 ((EditBox) field(accounts, "searchField")).setValue("BackportRenamed");
                 next();
             }
             case 8 -> {
                 capture(client, "06-search.png");
                 ((EditBox) field(accounts, "searchField")).setValue("");
-                ((EditBox) field(accounts, "labelField")).setFocused(true);
+                EditBox label = (EditBox) field(accounts, "labelField");
+                accounts.setFocused(label);
+                label.setFocused(true);
                 next();
             }
             case 9 -> {
                 capture(client, "07-field-focus.png");
                 EditBox label = (EditBox) field(accounts, "labelField");
                 double scale = AutismUiScale.getOverlayDrawScale() * client.getWindow().getGuiScale();
-                org.lwjgl.glfw.GLFW.glfwSetCursorPos(client.getWindow().handle(),
-                    (label.getX() + 50) * scale, 123 * scale);
+                moveCursor(client, (label.getX() + 50) * scale, 123 * scale);
                 next();
             }
             case 10 -> {
@@ -177,23 +205,32 @@ public final class AccountManagerSmoke implements ClientModInitializer {
             }
             case 11 -> {
                 capture(client, "09-compact-window.png");
-                require(client.screen instanceof AutismAccountsScreen, "account screen survives resize");
+                require(client.gui.screen() instanceof AutismAccountsScreen, "account screen survives resize");
                 AutismAccountManager.get().remove(AutismAccountManager.get().findById(savedId));
                 require(AutismAccountManager.get().all().isEmpty(), "account deletion");
                 client.getWindow().setWindowed(1280, 720);
                 next();
             }
             case 12 -> {
-                accounts = (AutismAccountsScreen) client.screen;
+                accounts = (AutismAccountsScreen) client.gui.screen();
                 require(overlayButton(accounts, "Session Token Switcher") != null,
                         "session switcher tab is present");
                 clickOverlay(accounts, "Session Token Importer");
-                require(client.screen instanceof SessionTokenImporterScreen,
+                require(client.gui.screen() instanceof SessionTokenImporterScreen,
                         "importer tab opens inside Minecraft");
-                importer = (SessionTokenImporterScreen) client.screen;
+                importer = (SessionTokenImporterScreen) client.gui.screen();
                 next();
             }
             case 13 -> {
+                MultiLineEditBox input = importInput();
+                double scale = AutismUiScale.getOverlayDrawScale();
+                require(importer.mouseClicked(new MouseButtonEvent((input.getX() + 10) * scale, (input.getY() + 10) * scale,
+                        new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0)), false),
+                        "multiline importer accepts the platform left mouse button");
+                require(input.isFocused(), "left click focuses the multiline importer");
+                requireTextCapture(importer);
+                typeText(client, "# Keyboard input fixture");
+                require(input.getValue().equals("# Keyboard input fixture"), "platform text input reaches the multiline importer");
                 capture(client, "10-session-token-importer.png");
                 Path fixture = client.gameDirectory.toPath().resolve("synthetic-import-fixture.txt");
                 Files.writeString(fixture, MALFORMED_IMPORT, StandardCharsets.UTF_8);
@@ -213,19 +250,41 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 if (ticks < clipboardRetryAt) return;
                 clipboardAttempts++;
                 client.keyboardHandler.setClipboard(MALFORMED_IMPORT);
-                boolean roundTrip = client.keyboardHandler.getClipboard().equals(MALFORMED_IMPORT);
-                if (roundTrip) {
+                String nativeClipboard = client.keyboardHandler.getClipboard();
+                boolean nativeExact = nativeClipboard.equals(MALFORMED_IMPORT);
+                boolean nativeNormalizedExact = normalizeLineEndings(nativeClipboard).equals(MALFORMED_IMPORT);
+                boolean pasteAttempted = nativeExact || nativeNormalizedExact;
+                if (pasteAttempted) {
                     importInput().setValue("");
                     clickOverlay(importer, "Paste");
-                    roundTrip = importInput().getValue().equals(MALFORMED_IMPORT);
                 }
+                String pasted = pasteAttempted ? importInput().getValue() : "";
+                Map<String, Object> diagnostic = new LinkedHashMap<>();
+                diagnostic.put("attempt", clipboardAttempts);
+                diagnostic.put("expectedLength", MALFORMED_IMPORT.length());
+                diagnostic.put("expectedLines", MALFORMED_IMPORT.split("\\n", -1).length);
+                diagnostic.put("nativeLength", nativeClipboard.length());
+                diagnostic.put("nativeLines", normalizeLineEndings(nativeClipboard).split("\\n", -1).length);
+                diagnostic.put("nativeExact", nativeExact);
+                diagnostic.put("nativeExactAfterLineEndingNormalization", nativeNormalizedExact);
+                diagnostic.put("pasteAttempted", pasteAttempted);
+                diagnostic.put("pastedLength", pasted.length());
+                diagnostic.put("pastedLines", normalizeLineEndings(pasted).split("\\n", -1).length);
+                diagnostic.put("pastedExact", pasteAttempted && pasted.equals(MALFORMED_IMPORT));
+                diagnostic.put("pastedExactAfterLineEndingNormalization",
+                        pasteAttempted && normalizeLineEndings(pasted).equals(MALFORMED_IMPORT));
+                clipboardDiagnostics.add(diagnostic);
+                result.put("clipboardDiagnostics", clipboardDiagnostics);
+                System.out.println("[AUTISM QA] Clipboard diagnostics: " + new GsonBuilder().create().toJson(diagnostic));
+                boolean roundTrip = nativeNormalizedExact && normalizeLineEndings(pasted).equals(MALFORMED_IMPORT);
                 if (!roundTrip) {
-                    if (clipboardAttempts >= 8) throw new AssertionError("Minecraft clipboard unavailable after 8 bounded attempts");
+                    if (clipboardAttempts >= 8) throw new AssertionError(
+                            "Minecraft clipboard/Paste mismatch after 8 bounded attempts; see clipboardDiagnostics metadata");
                     clipboardRetryAt = ticks + 15;
                     return;
                 }
-                require(importInput().getValue().equals(MALFORMED_IMPORT),
-                        "importer Paste reads multiline clipboard input after a verified clipboard round trip");
+                require(normalizeLineEndings(importInput().getValue()).equals(MALFORMED_IMPORT),
+                        "importer Paste preserves multiline clipboard content across platform line endings");
                 restoreClipboard(client);
                 clickOverlay(importer, "Validate & Import");
                 require(importInput().getValue().isEmpty(), "import input is cleared once processing begins");
@@ -246,7 +305,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 next();
             }
             case 16 -> {
-                require(client.screen == importer && importInput().getValue().equals("# Resize preservation fixture\nMCTOKEN:"),
+                require(client.gui.screen() == importer && importInput().getValue().equals("# Resize preservation fixture\nMCTOKEN:"),
                         "importer preserves multiline input across resize");
                 capture(client, "12-importer-compact.png");
                 importInput().setValue("MCTOKEN:\n".repeat(1000));
@@ -259,7 +318,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 require(AutismAccountManager.get().all().isEmpty(), "cancelled importer does not create accounts");
                 importInput().setValue("synthetic-should-clear-on-exit");
                 clickOverlay(importer, "Session Token Switcher");
-                require(client.screen instanceof AutismAccountsScreen, "switcher tab returns to saved accounts");
+                require(client.gui.screen() instanceof AutismAccountsScreen, "switcher tab returns to saved accounts");
                 require(importInput().getValue().isEmpty(), "leaving importer wipes input");
                 var verified = new TokenRefresher.VerifiedAccount("ImporterQA", IMPORT_UUID, IMPORT_ACCESS,
                         IMPORT_REFRESH, System.currentTimeMillis() + 3_600_000);
@@ -314,7 +373,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                                 && restored.label.equals(ROTATED_REFRESH),
                         "imported credentials and refresh provider survive encrypted disk reload");
                 client.getWindow().setWindowed(1280, 720);
-                client.setScreen(new AutismAccountsScreen(new JoinMultiplayerScreen(new TitleScreen())));
+                client.gui.setScreen(new AutismAccountsScreen(new JoinMultiplayerScreen(new TitleScreen())));
                 next();
             }
             case 19 -> {
@@ -334,7 +393,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 AutismAccountManager.get().add(networkFixture);
                 AutismAccountManager.get().add(rateLimitedFixture);
                 accounts = new AutismAccountsScreen(new JoinMultiplayerScreen(new TitleScreen()));
-                client.setScreen(accounts);
+                client.gui.setScreen(accounts);
                 call(accounts, "checkExpiredAccounts");
                 next();
             }
@@ -349,6 +408,27 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 AutismAccountManager.get().remove(networkFixture);
                 AutismAccountManager.get().remove(rateLimitedFixture);
                 require(AutismAccountManager.get().all().isEmpty(), "temporary authentication fixtures are removed");
+                if (Boolean.getBoolean("autism.qa.nativePicker")) next();
+                else finish(client, null);
+            }
+            case 22 -> {
+                importer = new SessionTokenImporterScreen(accounts);
+                client.gui.setScreen(importer);
+                Path fixture = client.gameDirectory.toPath().resolve("synthetic-native-picker.txt");
+                Files.writeString(fixture, NATIVE_PICKER_INPUT, StandardCharsets.UTF_8);
+                result.put("nativePickerFixture", fixture.toString());
+                System.out.println("[AUTISM QA] Select native picker fixture: " + fixture);
+                clickOverlay(importer, "Open TXT");
+                require((boolean) field(importer, "fileLoading"), "Open TXT starts the native file chooser");
+                next();
+            }
+            case 23 -> {
+                if ((boolean) field(importer, "fileLoading")) return;
+                require(importInput().getValue().equals(NATIVE_PICKER_INPUT),
+                        "native file picker loads the selected UTF-8 TXT fixture inside Minecraft");
+                require(field(importer, "summary") == null && !(boolean) field(importer, "running")
+                                && AutismAccountManager.get().all().isEmpty(),
+                        "native file picker waits for explicit validation before importing accounts");
                 finish(client, null);
             }
         }
@@ -400,12 +480,54 @@ public final class AccountManagerSmoke implements ClientModInitializer {
         if (!button.visible || !button.active) throw new AssertionError("Inactive overlay button: " + label);
         double scale = AutismUiScale.getOverlayDrawScale();
         if (!screen.mouseClicked(new MouseButtonEvent((button.getX() + button.getWidth() / 2.0) * scale,
-                (button.getY() + button.getHeight() / 2.0) * scale, new MouseButtonInfo(0, 0)), false)) {
+                (button.getY() + button.getHeight() / 2.0) * scale,
+                new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0)), false)) {
             throw new AssertionError("Overlay click not handled: " + label);
         }
     }
     private void capture(Minecraft client, String name) {
-        Screenshot.grab(client.gameDirectory, name, client.getMainRenderTarget(), 1, message -> {});
+        Screenshot.grab(client.gameDirectory, name, client.gameRenderer.mainRenderTarget(), 1, message -> {});
+    }
+
+    private static String normalizeLineEndings(String text) {
+        return text.replace("\r\n", "\n").replace('\r', '\n');
+    }
+
+    /** SDL text capture is present in 26.3; 26.2 still uses the earlier character callback. */
+    private void requireTextCapture(net.minecraft.client.gui.screens.Screen screen) throws Exception {
+        try {
+            Method capture = screen.getClass().getMethod("isInputCaptured");
+            require((boolean) capture.invoke(screen), "focused text field requests platform text capture");
+        } catch (NoSuchMethodException earlierInputBackend) {
+            require(screen.getFocused() != null, "focused text field is registered with the screen");
+        }
+    }
+
+    /** Exercise Minecraft's input dispatch without depending on GLFW or SDL test APIs. */
+    private static void typeText(Minecraft client, String text) throws Exception {
+        try {
+            Method textInput = client.keyboardHandler.getClass().getMethod("textInput", long.class, String.class);
+            textInput.invoke(client.keyboardHandler, client.getWindow().handle(), text);
+        } catch (NoSuchMethodException earlierInputBackend) {
+            Class<?> eventType = Class.forName("net.minecraft.client.input.CharacterEvent");
+            Constructor<?> constructor = eventType.getConstructor(int.class);
+            Method charTyped = client.keyboardHandler.getClass().getDeclaredMethod("charTyped", long.class, eventType);
+            charTyped.setAccessible(true);
+            for (int codePoint : text.codePoints().toArray()) {
+                charTyped.invoke(client.keyboardHandler, client.getWindow().handle(), constructor.newInstance(codePoint));
+            }
+        }
+    }
+
+    private static void moveCursor(Minecraft client, double x, double y) throws Exception {
+        Class<?> windowType = client.getWindow().getClass();
+        try {
+            InputConstants.class.getMethod("releaseMouse", windowType, double.class, double.class)
+                    .invoke(null, client.getWindow(), x, y);
+        } catch (NoSuchMethodException earlierInputBackend) {
+            InputConstants.class.getMethod("grabOrReleaseMouse", windowType, int.class, double.class, double.class)
+                    .invoke(null, client.getWindow(), InputConstants.class.getField("CURSOR_NORMAL").getInt(null), x, y);
+        }
     }
     private void restoreClipboard(Minecraft client) {
         if (clipboardPrepared && !clipboardRestored) {

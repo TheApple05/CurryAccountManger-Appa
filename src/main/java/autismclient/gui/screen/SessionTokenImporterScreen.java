@@ -17,13 +17,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
+import autismclient.util.AutismFilePicker;
 
 /** In-game batch importer. Only explicit user input reaches the authentication worker. */
 public final class SessionTokenImporterScreen extends AutismScreen {
@@ -143,11 +141,8 @@ public final class SessionTokenImporterScreen extends AutismScreen {
         statusMessage = "Choose a UTF-8 .txt file. Validation starts only when you click Import.";
         rebuildButtons();
         job = WORKERS.submit(() -> {
-            try (MemoryStack stack = MemoryStack.stackPush()) {
-                PointerBuffer filters = stack.mallocPointer(1);
-                filters.put(stack.UTF8("*.txt")).flip();
-                String selected = TinyFileDialogs.tinyfd_openFileDialog("Import Minecraft tokens", "", filters,
-                    "Text files (*.txt)", false);
+            try {
+                String selected = AutismFilePicker.chooseTextFile();
                 String value = selected == null ? null : AutismTokenImporter.readFile(Path.of(selected));
                 minecraft.execute(() -> {
                     if (closed || generation != request) return;
@@ -268,7 +263,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
         return summary == null ? 0 : Math.max(0, summary.results().size() - visibleResults());
     }
 
-    @Override public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    @Override public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         int mx = AutismUiScale.toVirtualInt(mouseX), my = AutismUiScale.toVirtualInt(mouseY);
         AutismUiScale.pushOverlayScale(graphics);
         try {
@@ -279,7 +274,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
             UiRenderer.frame(graphics, UiBounds.of(inputField.getX(), inputField.getY(), inputField.getWidth(), inputField.getHeight()),
                 inputField.isFocused() ? AccountPalette.FIELD_FOCUSED : AccountPalette.FIELD,
                 inputField.isFocused() ? AccountPalette.GOLDEN_YELLOW : AccountPalette.CONTROL_BORDER);
-            super.render(graphics, mx, my, delta);
+            super.extractRenderState(graphics, mx, my, delta);
             for (CompactOverlayButton button : buttons) CompactOverlayButton.renderStyled(graphics, font, button, mx, my);
             text(graphics, statusMessage, panelX() + 12, actionTop() + 26, AccountPalette.TEXT_SECONDARY);
             if (summary != null) {
@@ -297,7 +292,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
         }
     }
 
-    private void renderResults(GuiGraphics graphics) {
+    private void renderResults(GuiGraphicsExtractor graphics) {
         List<EntryResult> results = summary.results();
         int end = Math.min(results.size(), resultsOffset + visibleResults());
         for (int index = resultsOffset; index < end; index++) {
@@ -311,7 +306,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
         }
     }
 
-    private void text(GuiGraphics graphics, String text, int x, int y, int color) {
+    private void text(GuiGraphicsExtractor graphics, String text, int x, int y, int color) {
         UiText.drawFitted(graphics, font, text, null, color, x, y, Math.max(1, panelX() + panelWidth() - 12 - x), false);
     }
 
@@ -339,7 +334,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
         return super.mouseScrolled(x, y, horizontal, vertical);
     }
 
-    @Override public void onClose() { minecraft.setScreen(switcher); }
+    @Override public void onClose() { minecraft.gui.setScreen(switcher); }
 
     @Override public void removed() {
         cancelImport();

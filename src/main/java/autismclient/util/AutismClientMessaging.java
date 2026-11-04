@@ -11,7 +11,7 @@ public final class AutismClientMessaging {
         Minecraft client = Minecraft.getInstance();
         client.execute(() -> {
             if (client.player != null) {
-                client.gui.getChat().addMessage(Component.literal("[AUTISM] " + text));
+                client.gui.chatListener().handleSystemMessage(Component.literal("[AUTISM] " + text), false);
             } else {
                 AutismNotifications.show(text, 0xFFFF5555);
             }

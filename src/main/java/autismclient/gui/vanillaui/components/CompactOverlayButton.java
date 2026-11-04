@@ -9,7 +9,7 @@ import autismclient.util.AutismText;
 import autismclient.util.AutismTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -101,8 +101,8 @@ public final class CompactOverlayButton {
 
    public static boolean fireIfHit(CompactOverlayButton var0, double var1, double var3, int var5) {
       if (var0 != null && var0.visible && var0.active) {
-         if ((var5 == 0 || var5 == 1) && var0.contains(var1, var3)) {
-            CompactOverlayButton.PressAction var6 = var5 == 1 ? var0.secondaryAction : var0.primaryAction;
+         if ((var5 == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT || var5 == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT) && var0.contains(var1, var3)) {
+            CompactOverlayButton.PressAction var6 = var5 == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_RIGHT ? var0.secondaryAction : var0.primaryAction;
             if (var6 == null) {
                return false;
             }
@@ -117,7 +117,7 @@ public final class CompactOverlayButton {
       }
    }
 
-   public static void renderStyled(GuiGraphics var0, Font var1, CompactOverlayButton var2, int var3, int var4) {
+   public static void renderStyled(GuiGraphicsExtractor var0, Font var1, CompactOverlayButton var2, int var3, int var4) {
       if (var2 != null && var2.visible) {
          if (var2.icon != null) {
             boolean var17 = var2.contains(var3, var4);

@@ -11,14 +11,14 @@ import autismclient.util.AutismTheme;
 import autismclient.util.AutismUiIcons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
 public final class CompactSymbolButton {
    private CompactSymbolButton() {
    }
 
-   public static void render(GuiGraphics var0, Font var1, UiBounds var2, String var3, boolean var4, boolean var5, boolean var6) {
+   public static void render(GuiGraphicsExtractor var0, Font var1, UiBounds var2, String var3, boolean var4, boolean var5, boolean var6) {
       if (var0 != null && var1 != null && var2 != null && var2.width() > 0 && var2.height() > 0) {
          UiContext var7 = UiContexts.overlay(var0, var1, -10000, -10000);
          UiColors var8 = var7.theme().colors();
@@ -63,7 +63,7 @@ public final class CompactSymbolButton {
       return UiBounds.of(var0.x() + (var0.width() - var2) / 2, var0.y() + (var0.height() - var2) / 2, Math.max(1, var2), Math.max(1, var2));
    }
 
-   public static void renderIcon(GuiGraphics var0, Font var1, UiBounds var2, Identifier var3, boolean var4, boolean var5, boolean var6) {
+   public static void renderIcon(GuiGraphicsExtractor var0, Font var1, UiBounds var2, Identifier var3, boolean var4, boolean var5, boolean var6) {
       if (var0 != null && var1 != null && var2 != null && var2.width() > 0 && var2.height() > 0) {
          UiContext var7 = UiContexts.overlay(var0, var1, -10000, -10000);
          UiColors var8 = var7.theme().colors();

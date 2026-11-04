@@ -1,29 +1,32 @@
 plugins {
-    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
+
+layout.buildDirectory = file("build/${minecraft_version}")
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    implementation "net.fabricmc:fabric-loader:${loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
     implementation files('libs/waybackauthlib-1.1.0.jar')
 }
 
 processResources {
-    inputs.property 'version', project.version
-    filesMatching('fabric.mod.json') { expand version: project.version }
+    inputs.properties version: project.version, minecraft_version: minecraft_version, fabric_api_version: fabric_api_version
+    filesMatching('fabric.mod.json') {
+        expand version: project.version, minecraft_version: minecraft_version, fabric_api_version: fabric_api_version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.release = 21
+    options.release = 25
     options.encoding = 'UTF-8'
 }
 
 java {
     withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
@@ -32,6 +35,7 @@ jar {
 }
 
 sourceSets {
+    main.java.srcDir("src/${minecraft_version}/java")
     qa {
         compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
         runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
@@ -39,17 +43,13 @@ sourceSets {
 }
 
 tasks.register('qaJar', Jar) {
-    archiveClassifier = 'qa-dev'
+    archiveClassifier = 'qa'
     from sourceSets.qa.output
 }
 
-tasks.register('remapQaJar', net.fabricmc.loom.task.RemapJarTask) {
+// Compatibility alias: Minecraft 26.x ships unobfuscated, so no remapping occurs.
+tasks.register('remapQaJar') {
     dependsOn tasks.named('qaJar')
-    inputFile = tasks.named('qaJar').flatMap { it.archiveFile }
-    archiveClassifier = 'qa'
-    sourceNamespace = 'named'
-    targetNamespace = 'intermediary'
-    classpath.from(sourceSets.qa.compileClasspath)
 }
 
 // Credential tests use an injected transport and synthetic values only.

@@ -1,0 +1,10 @@
+{
+  "jar": "autism-account-manager-5.0-port.1+26.3.jar",
+  "sha256": "b309769b2c8bd6121e1222d51f3907b1f37aa95dc59731137486eadab596a02a",
+  "bytes": 626862,
+  "classes": 139,
+  "minecraft": "26.3",
+  "java": 25,
+  "namespace": "official",
+  "passed": true
+}

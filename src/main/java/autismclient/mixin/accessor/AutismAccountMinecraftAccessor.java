@@ -1,11 +1,11 @@
 package autismclient.mixin.accessor;
 
 import com.mojang.authlib.minecraft.UserApiService;
-import com.mojang.authlib.yggdrasil.ProfileResult;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;
+import net.minecraft.client.gui.screens.social.RemoteFriendListUpdateHandler;
 import net.minecraft.client.multiplayer.ProfileKeyPairManager;
 import net.minecraft.client.multiplayer.chat.report.ReportingContext;
 import net.minecraft.client.resources.SkinManager;
@@ -36,6 +36,16 @@ public interface AutismAccountMinecraftAccessor {
    @Accessor("playerSocialManager")
    void autism$setPlayerSocialManager(PlayerSocialManager var1);
 
+   @Accessor("remoteFriendListUpdateHandler")
+   RemoteFriendListUpdateHandler autism$getRemoteFriendListUpdateHandler();
+
+   @Mutable
+   @Accessor("remoteFriendListUpdateHandler")
+   void autism$setRemoteFriendListUpdateHandler(RemoteFriendListUpdateHandler handler);
+
+   @Mutable
+   @Accessor("userPropertiesFuture")
+   void autism$setUserPropertiesFuture(CompletableFuture<UserApiService.UserProperties> properties);
 
    @Mutable
    @Accessor("reportingContext")
@@ -43,7 +53,7 @@ public interface AutismAccountMinecraftAccessor {
 
    @Mutable
    @Accessor("profileFuture")
-   void autism$setProfileFuture(CompletableFuture<ProfileResult> var1);
+   void autism$setProfileFuture(CompletableFuture<?> var1);
 
    @Mutable
    @Accessor("services")

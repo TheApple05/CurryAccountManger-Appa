@@ -3,12 +3,13 @@ package autismclient.util;
 import autismclient.AutismClientAddon;
 import autismclient.mixin.accessor.AutismAccountMinecraftAccessor;
 import com.mojang.authlib.minecraft.UserApiService;
-import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.User;
 import net.minecraft.client.gui.screens.social.PlayerSocialManager;
+import net.minecraft.client.gui.screens.social.RemoteFriendListUpdateHandler;
 import net.minecraft.client.multiplayer.ProfileKeyPairManager;
 import net.minecraft.client.multiplayer.chat.report.ReportEnvironment;
 import net.minecraft.client.multiplayer.chat.report.ReportingContext;
@@ -18,78 +19,83 @@ import net.minecraft.server.Services;
 import net.minecraft.util.Util;
 
 public final class AutismAccountSessionSwitcher {
-   private static User originalUser;
-   private static String lastError = "";
+   private static volatile User originalUser;
+   private static volatile String lastError = "";
 
-   private AutismAccountSessionSwitcher() {
-   }
+   private AutismAccountSessionSwitcher() {}
 
    public static User getOriginalUser() {
-      if (originalUser == null) {
-         originalUser = Minecraft.getInstance().getUser();
-      }
-
+      if (originalUser == null) originalUser = Minecraft.getInstance().getUser();
       return originalUser;
    }
 
-   public static boolean setSession(User var0) {
-      return setSession(var0, new YggdrasilAuthenticationService(AutismAuthNetwork.directProxy()));
-   }
+   public static boolean setSession(User user) { return setSession(user, false); }
 
-   public static boolean setSession(User var0, YggdrasilAuthenticationService var1) {
+   public static boolean setTheAlteningSession(User user) { return setSession(user, true); }
+
+   private static boolean setSession(User user, boolean altening) {
       lastError = "";
-
+      PreparedServices prepared = null;
       try {
-         Minecraft var2 = Minecraft.getInstance();
-         if (originalUser == null) {
-            originalUser = var2.getUser();
-         }
+         Objects.requireNonNull(user, "user");
+         Minecraft client = Minecraft.getInstance();
+         getOriginalUser();
+         prepared = AccountAuthPlatform.prepare(client, user, altening);
+         PreparedServices ready = prepared;
+         Services services = ready.services();
+         UserApiService userApi = ready.userApiService();
+         Path skinPath = client.gameDirectory.toPath().resolve("assets").resolve("skins");
+         SkinManager skins = new SkinManager(skinPath, services,
+            new SkinTextureDownloader(AutismAuthNetwork.directProxy(), client.getTextureManager(), client), client);
+         ProfileKeyPairManager keys = ProfileKeyPairManager.create(userApi, user, client.gameDirectory.toPath());
+         ReportingContext reporting = ReportingContext.create(ReportEnvironment.local(), userApi);
+         // Capture this session: a later switch must not redirect an in-flight lookup.
+         CompletableFuture<?> profile = user.getAccessToken().isBlank() ? CompletableFuture.completedFuture(null)
+            : CompletableFuture.supplyAsync(() -> services.sessionService().fetchProfile(user.getProfileId(), true), Util.nonCriticalIoPool());
+         CompletableFuture<UserApiService.UserProperties> properties = user.getAccessToken().isBlank()
+            ? CompletableFuture.completedFuture(UserApiService.OFFLINE_PROPERTIES)
+            : CompletableFuture.supplyAsync(() -> {
+               try { return userApi.fetchProperties(); }
+               catch (Exception ignored) { return UserApiService.OFFLINE_PROPERTIES; }
+            }, Util.nonCriticalIoPool());
 
-         AutismAccountMinecraftAccessor var3 = (AutismAccountMinecraftAccessor)var2;
-         YggdrasilAuthenticationService var4 = new YggdrasilAuthenticationService(AutismAuthNetwork.directProxy());
-         Services var5 = Services.create(var1, var2.gameDirectory);
-         UserApiService var6 = var4.createUserApiService(var0.getAccessToken());
-         Path var9 = var2.gameDirectory.toPath().resolve("assets").resolve("skins");
-         var3.autism$setServices(var5);
-         var3.autism$setUser(var0);
-         var3.autism$setUserApiService(var6);
-         var3.autism$setPlayerSocialManager(new PlayerSocialManager(var2, var6));
-         var3.autism$setProfileKeyPairManager(ProfileKeyPairManager.create(var6, var0, var2.gameDirectory.toPath()));
-         var3.autism$setReportingContext(ReportingContext.create(ReportEnvironment.local(), var6));
-         var3.autism$setProfileFuture(
-            CompletableFuture.supplyAsync(() -> var2.services().sessionService().fetchProfile(var2.getUser().getProfileId(), true), Util.nonCriticalIoPool())
-         );
-         var3.autism$setSkinManager(
-            new SkinManager(var9, var5, new SkinTextureDownloader(AutismAuthNetwork.directProxy(), var2.getTextureManager(), var2), var2)
-         );
+         Runnable commit = () -> {
+            AutismAccountMinecraftAccessor accessor = (AutismAccountMinecraftAccessor) client;
+            RemoteFriendListUpdateHandler previousUpdates = accessor.autism$getRemoteFriendListUpdateHandler();
+            PlayerSocialManager previousSocial = client.getPlayerSocialManager();
+            accessor.autism$setServices(services);
+            accessor.autism$setUser(user);
+            accessor.autism$setUserApiService(userApi);
+            accessor.autism$setUserPropertiesFuture(properties);
+            accessor.autism$setRemoteFriendListUpdateHandler(ready.friendUpdates());
+            accessor.autism$setPlayerSocialManager(ready.socialManager());
+            accessor.autism$setProfileKeyPairManager(keys);
+            accessor.autism$setReportingContext(reporting);
+            accessor.autism$setProfileFuture(profile);
+            accessor.autism$setSkinManager(skins);
+            AccountAuthPlatform.applyProperties(ready.socialManager(), properties.getNow(UserApiService.OFFLINE_PROPERTIES));
+            properties.thenAccept(value -> client.execute(() -> {
+               if (client.getUser() == user && client.getPlayerSocialManager() == ready.socialManager()) {
+                  AccountAuthPlatform.applyProperties(ready.socialManager(), value);
+               }
+            }));
+            if (previousSocial != null) previousSocial.stopOnlineMode();
+            if (previousUpdates != null) previousUpdates.close();
+         };
+         if (client.isSameThread()) commit.run();
+         else client.executeBlocking(commit);
          return true;
-      } catch (Exception var10) {
-         lastError = shortError(var10);
-         AutismClientAddon.LOG.error("Failed to switch Autism account session", var10);
+      } catch (Exception failure) {
+         if (prepared != null) prepared.friendUpdates().close();
+         // Auth failures can contain server bodies or credentials; only retain the type.
+         lastError = failure.getClass().getSimpleName();
+         AutismClientAddon.LOG.error("Failed to switch Autism account session ({})", lastError);
          return false;
       }
    }
 
-   public static String lastError() {
-      return lastError == null ? "" : lastError;
-   }
+   public static String lastError() { return lastError; }
 
-   private static String shortError(Throwable var0) {
-      if (var0 == null) {
-         return "unknown error";
-      }
-
-      String var1 = var0.getClass().getSimpleName();
-      String var2 = var0.getMessage();
-      if (var2 != null && !var2.isBlank()) {
-         var2 = var2.replace('\n', ' ').replace('\r', ' ').trim();
-         if (var2.length() > 120) {
-            var2 = var2.substring(0, 117) + "...";
-         }
-
-         return var1 + ": " + var2;
-      } else {
-         return var1;
-      }
-   }
+   public record PreparedServices(Services services, UserApiService userApiService,
+      PlayerSocialManager socialManager, RemoteFriendListUpdateHandler friendUpdates) {}
 }

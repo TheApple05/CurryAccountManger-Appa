@@ -5,3 +5,17 @@ pluginManagement {
     }
 }
 rootProject.name = 'autism-account-manager'
+
+def targetMinecraft = providers.gradleProperty('targetMinecraft').getOrElse('26.3')
+def profile = file("versions/${targetMinecraft}.properties")
+if (!profile.isFile()) {
+    throw new GradleException("Unsupported targetMinecraft: ${targetMinecraft}. Choose 26.2 or 26.3.")
+}
+def targetProperties = new Properties()
+profile.withInputStream { targetProperties.load(it) }
+gradle.beforeProject { project ->
+    targetProperties.each { key, value ->
+        if (key == 'version') project.version = value.toString()
+        else project.ext.set(key.toString(), value.toString())
+    }
+}

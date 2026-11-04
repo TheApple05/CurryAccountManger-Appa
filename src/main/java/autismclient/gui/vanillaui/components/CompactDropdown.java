@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class CompactDropdown {
    private static boolean suppressUnderlyingPointerUntilRelease;
@@ -77,7 +77,7 @@ public final class CompactDropdown {
       return this;
    }
 
-   public static void renderButtons(GuiGraphics var0, Font var1, List<CompactDropdown> var2, int var3, int var4) {
+   public static void renderButtons(GuiGraphicsExtractor var0, Font var1, List<CompactDropdown> var2, int var3, int var4) {
       if (var0 != null && var1 != null && var2 != null) {
          UiContext var5 = context(var0, var1, var3, var4);
          boolean var6 = isMenuOpen(var2);
@@ -92,7 +92,7 @@ public final class CompactDropdown {
       }
    }
 
-   public static void renderOpenMenu(GuiGraphics var0, Font var1, List<CompactDropdown> var2, int var3, int var4) {
+   public static void renderOpenMenu(GuiGraphicsExtractor var0, Font var1, List<CompactDropdown> var2, int var3, int var4) {
       if (var0 != null && var1 != null && var2 != null) {
          for (CompactDropdown var6 : var2) {
             if (var6 != null && var6.visible && var6.dropdown.isOpen()) {
@@ -161,19 +161,19 @@ public final class CompactDropdown {
 
       CompactDropdown var6 = openDropdown(var0);
       if (var6 != null) {
-         if (var5 == 0) {
+         if (var5 == com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT) {
             suppressUnderlyingPointerUntilRelease = true;
          }
 
          var6.dropdown.mouseClicked((int)var1, (int)var3, var5);
-         if (var5 != 0 && !var6.bounds().contains((int)var1, (int)var3) && !var6.dropdown.containsMenu((int)var1, (int)var3)) {
+         if (var5 != com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT && !var6.bounds().contains((int)var1, (int)var3) && !var6.dropdown.containsMenu((int)var1, (int)var3)) {
             var6.close();
          }
 
          suppressUnderlyingPointerUntilRelease = var6.dropdown.isOpen();
          return true;
       } else {
-         if (var5 != 0) {
+         if (var5 != com.mojang.blaze3d.platform.InputConstants.MOUSE_BUTTON_LEFT) {
             return false;
          }
 
@@ -272,7 +272,7 @@ public final class CompactDropdown {
       return null;
    }
 
-   private static UiContext context(GuiGraphics var0, Font var1, int var2, int var3) {
+   private static UiContext context(GuiGraphicsExtractor var0, Font var1, int var2, int var3) {
       return UiContexts.overlay(var0, var1, var2, var3);
    }
 

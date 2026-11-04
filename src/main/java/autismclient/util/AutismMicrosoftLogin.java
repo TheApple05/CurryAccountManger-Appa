@@ -73,7 +73,11 @@ public final class AutismMicrosoftLogin {
          + "&code_challenge_method=S256&state="
          + enc(oauthState)
          + "&prompt=select_account";
-      Util.getPlatform().openUri(var1);
+      try {
+         AccountAuthPlatform.openBrowser(var1);
+      } catch (RuntimeException browserUnavailable) {
+         autismclient.AutismClientAddon.LOG.warn("Could not open the Microsoft sign-in browser.");
+      }
       return var1;
    }
 

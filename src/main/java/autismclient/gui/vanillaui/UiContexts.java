@@ -4,7 +4,7 @@ import autismclient.util.AutismUiScale;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class UiContexts {
    private static final UiTheme THEME = new UiTheme();
@@ -14,7 +14,7 @@ public final class UiContexts {
    private UiContexts() {
    }
 
-   public static UiContext overlay(GuiGraphics var0, Font var1, int var2, int var3) {
+   public static UiContext overlay(GuiGraphicsExtractor var0, Font var1, int var2, int var3) {
       return new UiContext(
          var0,
          THEME,

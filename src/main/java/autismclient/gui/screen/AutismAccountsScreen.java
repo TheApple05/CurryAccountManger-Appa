@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import net.minecraft.client.User;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.components.MultiLineEditBox.Builder;
@@ -59,7 +59,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.model.player.PlayerModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.PlayerSkinRenderCache.RenderInfo;
@@ -83,8 +85,8 @@ public class AutismAccountsScreen extends AutismScreen {
    private EditBox tokenField;
    private EditBox searchField;
    private AutismAccount renamingAccount;
-   private PlayerModel widePlayerModel;
-   private PlayerModel slimPlayerModel;
+   private Model.Simple widePlayerModel;
+   private Model.Simple slimPlayerModel;
    private AutismAccountType type = AutismAccountType.Cracked;
    private AutismAccount selectedAccount;
    private String searchQuery = "";
@@ -149,8 +151,8 @@ public class AutismAccountsScreen extends AutismScreen {
          this.searchDirty = true;
       });
       this.addRenderableWidget(this.searchField);
-      this.widePlayerModel = new PlayerModel(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER), false);
-      this.slimPlayerModel = new PlayerModel(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER_SLIM), true);
+      this.widePlayerModel = new Model.Simple(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER), RenderTypes::entityTranslucent);
+      this.slimPlayerModel = new Model.Simple(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER_SLIM), RenderTypes::entityTranslucent);
       this.generatorCountField = new PaletteEditBox(this.font, 0, 0, 58, 16, Component.literal("Count"));
       this.generatorCountField.setHint(Component.literal("Count"));
       this.generatorCountField.setMaxLength(4);
@@ -359,7 +361,7 @@ public class AutismAccountsScreen extends AutismScreen {
 
    private void openTokenImporter() {
       if (!this.isBusy()) {
-         this.minecraft.setScreen(new SessionTokenImporterScreen(this));
+         this.minecraft.gui.setScreen(new SessionTokenImporterScreen(this));
       }
    }
 
@@ -922,7 +924,7 @@ public class AutismAccountsScreen extends AutismScreen {
       }
    }
 
-   public void render(GuiGraphics var1, int var2, int var3, float var4) {
+   public void extractRenderState(GuiGraphicsExtractor var1, int var2, int var3, float var4) {
       int var5 = AutismUiScale.toVirtualInt(var2);
       int var6 = AutismUiScale.toVirtualInt(var3);
       this.refreshOperationControls();
@@ -979,7 +981,7 @@ public class AutismAccountsScreen extends AutismScreen {
             CompactScrollbar.draw(var1, var21, var21.contains(var5, var6), this.accountScrollbarDragging);
          }
 
-         super.render(var1, var5, var6, var4);
+         super.extractRenderState(var1, var5, var6, var4);
          if (this.activePopup != 0) {
             this.renderPopup(var1, var5, var6, var4);
          }
@@ -992,7 +994,7 @@ public class AutismAccountsScreen extends AutismScreen {
       super.removed();
    }
 
-   private void renderRow(GuiGraphics var1, AutismAccountsScreen.AccountRow var2, int var3, int var4) {
+   private void renderRow(GuiGraphicsExtractor var1, AutismAccountsScreen.AccountRow var2, int var3, int var4) {
       AutismAccount var5 = var2.account;
       boolean var6 = var2.defaultAccount ? this.isCurrentDefaultAccount() : this.isCurrentAccount(var5);
       boolean var7 = var5.equals(this.selectedAccount);
@@ -1055,7 +1057,7 @@ public class AutismAccountsScreen extends AutismScreen {
       }
    }
 
-   private void renderShareButton(GuiGraphics var1, CompactOverlayButton var2, int var3, int var4) {
+   private void renderShareButton(GuiGraphicsExtractor var1, CompactOverlayButton var2, int var3, int var4) {
       if (var2 != null) {
          CompactOverlayButton.renderStyled(var1, this.font, var2, var3, var4);
          UiBounds var5 = UiBounds.of(var2.getX(), var2.getY(), var2.getWidth(), var2.getHeight());
@@ -1063,7 +1065,7 @@ public class AutismAccountsScreen extends AutismScreen {
       }
    }
 
-   private void drawCopyGlyph(GuiGraphics var1, UiBounds var2, int var3) {
+   private void drawCopyGlyph(GuiGraphicsExtractor var1, UiBounds var2, int var3) {
       byte var4 = 7;
       byte var5 = 7;
       byte var6 = 3;
@@ -1075,7 +1077,7 @@ public class AutismAccountsScreen extends AutismScreen {
       UiRenderer.outline(var1, var9, var3);
    }
 
-   private void renderPreview(GuiGraphics var1, int var2, int var3, int var4, float var5) {
+   private void renderPreview(GuiGraphicsExtractor var1, int var2, int var3, int var4, float var5) {
       AutismAccount var6 = this.previewAccount();
       this.drawText(var1, "Skin preview", var2 + 12, 31, AccountPalette.TEXT, false);
       if (var6 == null) {
@@ -1105,16 +1107,16 @@ public class AutismAccountsScreen extends AutismScreen {
       }
    }
 
-   private void render3dSkin(GuiGraphics var1, PlayerSkin var2, int var3, int var4, int var5, int var6) {
+   private void render3dSkin(GuiGraphicsExtractor var1, PlayerSkin var2, int var3, int var4, int var5, int var6) {
       if (this.widePlayerModel != null && this.slimPlayerModel != null) {
-         PlayerModel var7 = var2.model().name().equalsIgnoreCase("slim") ? this.slimPlayerModel : this.widePlayerModel;
+         Model.Simple var7 = var2.model().name().equalsIgnoreCase("slim") ? this.slimPlayerModel : this.widePlayerModel;
          float var8 = AutismUiScale.getOverlayDrawScale();
          int var9 = Math.round(var3 * var8);
          int var10 = Math.round(var4 * var8);
          int var11 = Math.round(var5 * var8);
          int var12 = Math.round(var6 * var8);
          float var13 = 0.97F * Math.max(1, var12 - var10) / 2.125F;
-         var1.submitSkinRenderState(var7, var2.body().texturePath(), var13, this.previewRotationX, this.currentPreviewRotationY(), -1.0625F, var9, var10, var11, var12);
+         var1.skin(var7, var2.body().texturePath(), var13, this.previewRotationX, this.currentPreviewRotationY(), -1.0625F, var9, var10, var11, var12);
       }
    }
 
@@ -1122,7 +1124,7 @@ public class AutismAccountsScreen extends AutismScreen {
       return this.previewDragging ? this.previewRotationY : this.previewRotationY + (float)((Blaze3D.getTime() - this.previewAutoRotationStartTime) * 18.0);
    }
 
-   private void drawHead(GuiGraphics var1, PlayerSkin var2, int var3, int var4, int var5) {
+   private void drawHead(GuiGraphicsExtractor var1, PlayerSkin var2, int var3, int var4, int var5) {
       Identifier var6 = var2.body().texturePath();
       var1.blit(RenderPipelines.GUI_TEXTURED, var6, var3, var4, 8.0F, 8.0F, var5, var5, 8, 8, 64, 64);
       var1.blit(RenderPipelines.GUI_TEXTURED, var6, var3, var4, 40.0F, 8.0F, var5, var5, 8, 8, 64, 64);
@@ -1130,7 +1132,7 @@ public class AutismAccountsScreen extends AutismScreen {
 
    public boolean mouseClicked(MouseButtonEvent var1, boolean var2) {
       MouseButtonEvent var3 = virtualEvent(var1);
-      if (var3.button() != 0) {
+      if (var3.button() != InputConstants.MOUSE_BUTTON_LEFT) {
          return super.mouseClicked(var3, var2);
       }
 
@@ -1472,7 +1474,7 @@ public class AutismAccountsScreen extends AutismScreen {
       return var1.toString();
    }
 
-   private void renderPopup(GuiGraphics var1, int var2, int var3, float var4) {
+   private void renderPopup(GuiGraphicsExtractor var1, int var2, int var3, float var4) {
       int var5 = var2;
       int var6 = var3;
       if (CompactDropdown.isMenuOpen(this.popupDropdowns)) {
@@ -1496,11 +1498,11 @@ public class AutismAccountsScreen extends AutismScreen {
             this.drawText(var1, "Count:", var7 + 12, var8 + 54, AccountPalette.TEXT_SECONDARY, false);
             this.generatorCountField.setX(var7 + 50);
             this.generatorCountField.setY(var8 + 50);
-            this.generatorCountField.render(var1, var2, var3, var4);
+            this.generatorCountField.extractRenderState(var1, var2, var3, var4);
             if (this.passwordFieldVisible()) {
                this.generatorPasswordField.setX(var7 + 12);
                this.generatorPasswordField.setY(var8 + 116);
-               this.generatorPasswordField.render(var1, var2, var3, var4);
+               this.generatorPasswordField.extractRenderState(var1, var2, var3, var4);
             }
 
             if (!this.generatorResult.isBlank()) {
@@ -1511,7 +1513,7 @@ public class AutismAccountsScreen extends AutismScreen {
             this.generatorListField.setY(var8 + 48);
             this.generatorListField.setWidth(256);
             this.generatorListField.setHeight(108);
-            this.generatorListField.render(var1, var2, var3, var4);
+            this.generatorListField.extractRenderState(var1, var2, var3, var4);
             if (!this.generatorResult.isBlank()) {
                this.drawText(var1, this.generatorResult, var7 + 12, var8 + 182, AccountPalette.SUCCESS_TEXT, false, 180);
             }
@@ -1578,9 +1580,23 @@ public class AutismAccountsScreen extends AutismScreen {
       }
    }
 
+   // SDL asks the screen whether to enable text input. Popup fields are drawn
+   // separately from the normal widget tree, so include their focus explicitly.
+   public boolean isInputCaptured() {
+      if (this.activePopup == 1) {
+         return this.generatorMode == 0
+            ? (this.generatorCountField != null && this.generatorCountField.isFocused())
+               || (this.passwordFieldVisible() && this.generatorPasswordField != null && this.generatorPasswordField.isFocused())
+            : this.generatorListField != null && this.generatorListField.isFocused();
+      }
+      return (this.labelField != null && this.labelField.isFocused())
+         || (this.tokenField != null && this.tokenField.isFocused())
+         || (this.searchField != null && this.searchField.isFocused());
+   }
+
    public boolean keyPressed(KeyEvent var1) {
       if (this.activePopup != 0) {
-         if (var1.key() == 256) {
+         if (var1.key() == InputConstants.KEY_ESCAPE) {
             this.closePopup();
             return true;
          }
@@ -1696,7 +1712,7 @@ public class AutismAccountsScreen extends AutismScreen {
       this.cancelOperation();
       this.accountScrollbarDragging = false;
       this.pruneSkinLookups();
-      this.minecraft.setScreen(this.parent);
+      this.minecraft.gui.setScreen(this.parent);
    }
 
    private AutismAccountsScreen.SkinLookup skinLookup(AutismAccount var1) {
@@ -2248,11 +2264,11 @@ public class AutismAccountsScreen extends AutismScreen {
       return Math.max(0, Math.min(var2, var4));
    }
 
-   private void drawText(GuiGraphics var1, String var2, int var3, int var4, int var5, boolean var6) {
+   private void drawText(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5, boolean var6) {
       this.drawText(var1, var2, var3, var4, var5, var6, Integer.MAX_VALUE);
    }
 
-   private void drawText(GuiGraphics var1, String var2, int var3, int var4, int var5, boolean var6, int var7) {
+   private void drawText(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5, boolean var6, int var7) {
       Font var8 = this.font;
       Identifier var9 = THEME.fontFor(UiTone.BODY);
       String var10 = var2 == null ? "" : var2;

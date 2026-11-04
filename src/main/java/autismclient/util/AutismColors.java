@@ -4,7 +4,7 @@ import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiRenderer;
 import autismclient.gui.vanillaui.components.CompactTheme;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class AutismColors {
    private static final CompactTheme PACK_UI_THEME = new CompactTheme();
@@ -175,7 +175,7 @@ public class AutismColors {
       return lessTransparent60(822083583);
    }
 
-   public static void drawInsetPanel(GuiGraphics var0, int var1, int var2, int var3, int var4, boolean var5) {
+   public static void drawInsetPanel(GuiGraphicsExtractor var0, int var1, int var2, int var3, int var4, boolean var5) {
       UiRenderer.frame(var0, UiBounds.of(var1, var2, var3, var4), listBg(), var5 ? accent() : subPanelBorder());
    }
 }

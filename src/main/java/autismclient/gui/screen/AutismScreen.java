@@ -5,7 +5,7 @@ import autismclient.gui.vanillaui.UiContexts;
 import autismclient.gui.vanillaui.components.SectionPanel;
 import autismclient.util.AutismNotifications;
 import autismclient.util.AutismUiScale;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -34,7 +34,7 @@ public abstract class AutismScreen extends Screen {
       return var1 <= 0 ? this.height : var1;
    }
 
-   protected void drawPanel(GuiGraphics var1, int var2, int var3, int var4, int var5, int var6) {
+   protected void drawPanel(GuiGraphicsExtractor var1, int var2, int var3, int var4, int var5, int var6) {
       SectionPanel.renderBody(UiContexts.overlay(var1, this.font, -10000, -10000), UiBounds.of(var2, var3, var4, var5), var6);
    }
 

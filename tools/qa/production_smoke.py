@@ -1,23 +1,21 @@
-"""Run the remapped distribution in pristine Minecraft, using synthetic accounts only."""
+"""Run the exact distribution in pristine Minecraft, using synthetic accounts only."""
 import argparse
 import hashlib
-import io
 import json
 import os
 import platform
 import re
 import shutil
 import subprocess
-import sys
 import time
 import urllib.request
 import uuid
-import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
 
 USER_AGENT = "Autism-Account-Manager-Packaged-QA/1.0"
+SUPPORTED = {'1.21.11': 21, '26.2': 25, '26.3': 25}
 
 
 def digest(path, algorithm="sha256"):
@@ -95,34 +93,90 @@ def applies(rules):
     return allowed
 
 
+def properties(path):
+    return dict(re.findall(r'^([\w_]+)=(.*)$', path.read_text(), re.M))
+
+
+def manifest_jvm_arguments(mc, runtime, run):
+    """Honor Minecraft's native-access/export flags and native extraction paths."""
+    substitutions = {
+        'natives_directory': str(run / 'natives'),
+        'launcher_name': 'AutismAccountManagerQA',
+        'launcher_version': '1.0',
+        'classpath': os.pathsep.join(map(str, runtime)),
+    }
+    result = []
+    for argument in mc['arguments']['jvm']:
+        if isinstance(argument, dict):
+            if not applies(argument.get('rules')):
+                continue
+            argument = argument['value']
+        for value in argument if isinstance(argument, list) else [argument]:
+            for key, replacement in substitutions.items():
+                value = value.replace('${' + key + '}', replacement)
+            if '${' in value:
+                raise ValueError(f'Unknown Minecraft JVM argument placeholder: {value}')
+            result.append(value)
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--java-home', type=Path, required=True)
+    parser.add_argument('--minecraft', choices=SUPPORTED,
+                        help='Minecraft build profile (defaults to gradle.properties)')
+    parser.add_argument('--jar', type=Path, help='Exact installable JAR to test')
+    parser.add_argument('--qa-jar', type=Path, help='Separately packaged matching QA mod')
+    parser.add_argument('--loader', help='Override Fabric Loader version')
+    parser.add_argument('--fabric-api', help='Override Fabric API version')
+    parser.add_argument('--assets-dir', type=Path, help='Shared Minecraft assets directory')
+    parser.add_argument('--native-picker', action='store_true',
+                        help='Also wait for selection of the synthetic TXT file in the real OS chooser')
     parser.add_argument('--timeout', type=int, default=180)
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[2]
-    props = dict(re.findall(r'^([\w_]+)=(.*)$', (repo / 'gradle.properties').read_text(), re.M))
-    version, loader = props['minecraft_version'], props['loader_version']
-    distribution = repo / 'build/libs' / f"autism-account-manager-{props['version']}.jar"
-    qa = distribution.with_name(distribution.stem + '-qa.jar')
-    java = args.java_home.resolve() / 'bin/java.exe'
+    props = properties(repo / 'gradle.properties')
+    version = args.minecraft or props['minecraft_version']
+    profile_path = repo / 'versions' / f'{version}.properties'
+    if profile_path.is_file():
+        props.update(properties(profile_path))
+    loader = args.loader or props['loader_version']
+    build = repo / 'build' / version if version.startswith('26.') else repo / 'build'
+    distribution = (args.jar or build / 'libs' / f"autism-account-manager-{props['version']}.jar").resolve()
+    qa = (args.qa_jar or distribution.with_name(distribution.stem + '-qa.jar')).resolve()
+    java = args.java_home.resolve() / 'bin' / ('java.exe' if os.name == 'nt' else 'java')
     if not distribution.is_file() or not qa.is_file():
-        raise ValueError('Run gradlew build remapQaJar downloadAssets first')
+        raise ValueError(f'Build the distribution and QA JAR for {version} first: {distribution}, {qa}')
+    with zipfile.ZipFile(distribution) as jar:
+        mod = json.loads(jar.read('fabric.mod.json'))
+    if mod['depends']['minecraft'] != version:
+        raise ValueError(f"JAR targets {mod['depends']['minecraft']}, requested {version}")
     java_info = subprocess.run([str(java), '-version'], capture_output=True, text=True, check=True)
-    if 'version "21.' not in java_info.stderr:
-        raise ValueError('Use Java 21 to verify the minimum supported runtime')
+    java_description = (java_info.stderr + java_info.stdout).strip()
+    java_match = re.search(r'version "(\d+)', java_description)
+    expected_java = SUPPORTED[version]
+    if not java_match or int(java_match[1]) != expected_java:
+        raise ValueError(f'Use Java {expected_java} to verify the minimum supported runtime')
     tools = repo / '.tools'
     cache = tools / 'production-runtime'
     gradle = Path(os.environ.get('GRADLE_USER_HOME', Path.home() / '.gradle'))
-    run = repo / 'build/qa' / (time.strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
+    run = build / 'qa' / (time.strftime('%Y%m%d-%H%M%S') + '-' + uuid.uuid4().hex[:6])
     (run / 'mods').mkdir(parents=True)
     (run / 'natives/lwjgl').mkdir(parents=True)
     (run / 'natives/jna').mkdir(parents=True)
+    (run / 'natives/java').mkdir(parents=True)
+    (run / 'natives/netty').mkdir(parents=True)
     (tools / 'latest-qa-run.txt').write_text(str(run))
+    (tools / f'latest-qa-run-{version}.txt').write_text(str(run))
     for source in (distribution, qa):
         shutil.copyfile(source, run / 'mods' / source.name)
     manifest = metadata('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json', cache / 'manifest.json')
-    entry = next(item for item in manifest['versions'] if item['id'] == version)
+    entry = next((item for item in manifest['versions'] if item['id'] == version), None)
+    if entry is None:
+        # The version manifest is mutable; refresh an old cache when adding a target.
+        (cache / 'manifest.json').write_bytes(request('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json'))
+        manifest = json.loads((cache / 'manifest.json').read_bytes())
+        entry = next(item for item in manifest['versions'] if item['id'] == version)
     mc = metadata(entry['url'], cache / f'{version}.json', entry['sha1'])
     client_info = dict(mc['downloads']['client'], path=f'net/minecraft/client/{version}/client.jar')
     cached_client = gradle / f'caches/fabric-loom/{version}/minecraft-client.jar'
@@ -134,22 +188,21 @@ def main():
     profile = metadata(f'https://meta.fabricmc.net/v2/versions/loader/{version}/{loader}/profile/json', cache / f'loader-{version}-{loader}.json')
     for library in profile['libraries']:
         runtime.append(artifact(library, cache, gradle, tools, library['name']))
-    api = props['fabric_api_version']
+    api = args.fabric_api or props['fabric_api_version']
     api_path = artifact({'url': 'https://maven.fabricmc.net/'}, cache, gradle, tools, f'net.fabricmc.fabric-api:fabric-api:{api}')
     shutil.copyfile(api_path, run / 'mods' / api_path.name)
-    assets = gradle / 'caches/fabric-loom/assets'
+    assets = (args.assets_dir or gradle / 'caches/fabric-loom/assets').resolve()
     index = next((path for path in (assets / 'indexes').glob('*.json') if digest(path, 'sha1') == mc['assetIndex']['sha1']), None)
     if index is None:
-        raise ValueError('Minecraft assets are missing; run gradlew downloadAssets')
+        raise ValueError(f'Minecraft {version} assets are missing; run gradlew -PtargetMinecraft={version} downloadAssets')
     (run / 'options.txt').write_text('lang:en_us\nguiScale:2\nfullscreen:false\nmaxFps:60\nshowMenuBackground:true\n')
     expected = digest(distribution)
     arguments = [
         '-Xmx2G', '-Dfabric.development=false', '-Dfabric.noGui=true',
         '-Dmixin.debug.countInjections=true', '-Dmixin.debug.strict.targets=true',
         f'-Dautism.qa.result={run / "result.json"}', f'-Dautism.qa.sha256={expected}',
-        f'-Djna.tmpdir={run / "natives/jna"}',
-        f'-Dorg.lwjgl.system.SharedLibraryExtractPath={run / "natives/lwjgl"}',
-        '-cp', os.pathsep.join(map(str, runtime)), profile['mainClass'],
+        f'-Dautism.qa.nativePicker={str(args.native_picker).lower()}',
+        *manifest_jvm_arguments(mc, runtime, run), profile['mainClass'],
         '--username', 'AutismQa', '--version', version, '--versionType', 'release',
         '--gameDir', str(run), '--assetsDir', str(assets), '--assetIndex', index.stem,
         '--accessToken', '0', '--uuid', uuid.uuid3(uuid.NAMESPACE_DNS, 'OfflinePlayer:AutismQa').hex,
@@ -157,8 +210,10 @@ def main():
     ]
     argfile = run / 'java.args'
     argfile.write_text('\n'.join('"' + str(arg).replace('\\', '\\\\').replace('"', '\\"') + '"' for arg in arguments), encoding='utf-8')
-    plan = {'minecraft': version, 'loader': loader, 'java': java_info.stderr.strip(),
+    plan = {'minecraft': version, 'loader': loader, 'fabricApi': api, 'java': java_description,
             'jar': str(distribution), 'sha256': expected, 'development': False,
+            'nativePicker': args.native_picker,
+            'qaJar': str(qa), 'qaSha256': digest(qa),
             'runtime': [{'path': str(path), 'sha256': digest(path)} for path in runtime]}
     (run / 'launch-plan.json').write_text(json.dumps(plan, indent=2))
     print(f'Packaged QA run: {run}', flush=True)
@@ -177,8 +232,9 @@ def main():
             raise RuntimeError(f'Client exceeded timeout; inspect {run / "launcher.log"}')
     result_file = run / 'result.json'
     result = json.loads(result_file.read_bytes()) if result_file.exists() else {'status': 'NO_RESULT'}
-    verdict = {'passed': exit_code == 0 and result.get('status') == 'PASSED', 'exitCode': exit_code,
-               'sourceSha256': expected, 'result': result}
+    verdict = {'passed': exit_code == 0 and result.get('status') == 'PASSED'
+                          and result.get('sha256') == expected, 'exitCode': exit_code,
+               'minecraft': version, 'sourceSha256': expected, 'result': result}
     (run / 'verdict.json').write_text(json.dumps(verdict, indent=2))
     print(json.dumps(verdict, indent=2))
     if not verdict['passed']:

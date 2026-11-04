@@ -5,7 +5,7 @@ import autismclient.gui.vanillaui.components.UiText;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.resources.Identifier;
 
@@ -57,11 +57,11 @@ public final class AutismText {
       return UiText.trimToWidth(var0, var1, var2, fontIdFor(var3), colorFor(var3));
    }
 
-   public static void draw(GuiGraphics var0, Font var1, String var2, AutismText.Tone var3, int var4, int var5, boolean var6) {
+   public static void draw(GuiGraphicsExtractor var0, Font var1, String var2, AutismText.Tone var3, int var4, int var5, boolean var6) {
       UiText.draw(var0, var1, var2, fontIdFor(var3), colorFor(var3), var4, var5, var6);
    }
 
-   public static void draw(GuiGraphics var0, Font var1, String var2, int var3, int var4, int var5, boolean var6) {
+   public static void draw(GuiGraphicsExtractor var0, Font var1, String var2, int var3, int var4, int var5, boolean var6) {
       UiText.draw(var0, var1, var2, UiAssets.FONT_BODY, var3, var4, var5, var6);
    }
 

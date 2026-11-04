@@ -4,7 +4,7 @@ import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiRenderer;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 
@@ -21,7 +21,7 @@ public final class PaletteEditBox extends EditBox {
         super.setHint(hint == null ? null : hint.copy().withColor(AccountPalette.TEXT_SECONDARY));
     }
 
-    @Override public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    @Override public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
         int x = getX(), y = getY(), width = getWidth();
         boolean bordered = isBordered();
         UiRenderer.frame(graphics, UiBounds.of(x, y, width, getHeight()),
@@ -34,7 +34,7 @@ public final class PaletteEditBox extends EditBox {
         setY(y + (getHeight() - 8) / 2);
         setWidth(Math.max(1, width - 8));
         try {
-            super.renderWidget(graphics, mouseX, mouseY, delta);
+            super.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
         } finally {
             setX(x);
             setY(y);

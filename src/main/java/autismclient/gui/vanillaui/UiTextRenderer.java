@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Map.Entry;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class UiTextRenderer {
    private final Font font;
@@ -96,15 +96,15 @@ public final class UiTextRenderer {
       }
    }
 
-   public void draw(GuiGraphics var1, String var2, int var3, int var4, int var5) {
-      var1.drawString(this.font, var2 == null ? "" : var2, var3, var4, var5, false);
+   public void draw(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5) {
+      var1.text(this.font, var2 == null ? "" : var2, var3, var4, var5, false);
    }
 
-   public void drawFitted(GuiGraphics var1, String var2, int var3, int var4, int var5, int var6) {
+   public void drawFitted(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5, int var6) {
       this.drawFitted(var1, var2, var3, var4, var5, var6, 0.75F);
    }
 
-   public void drawFitted(GuiGraphics var1, String var2, int var3, int var4, int var5, int var6, float var7) {
+   public void drawFitted(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5, int var6, float var7) {
       String var8 = var2 == null ? "" : var2;
       if (!var8.isEmpty() && var5 > 0) {
          int var9 = this.width(var8);
@@ -125,7 +125,7 @@ public final class UiTextRenderer {
       }
    }
 
-   public void drawEllipsized(GuiGraphics var1, String var2, int var3, int var4, int var5, int var6) {
+   public void drawEllipsized(GuiGraphicsExtractor var1, String var2, int var3, int var4, int var5, int var6) {
       String var7 = this.trimEllipsis(var2, var5);
       if (!var7.isEmpty()) {
          this.draw(var1, var7, var3, var4, var6);
@@ -156,11 +156,11 @@ public final class UiTextRenderer {
       return var10;
    }
 
-   public void drawCentered(GuiGraphics var1, String var2, UiBounds var3, int var4) {
+   public void drawCentered(GuiGraphicsExtractor var1, String var2, UiBounds var3, int var4) {
       this.drawCentered(var1, var2, var3, var4, 0);
    }
 
-   public void drawCentered(GuiGraphics var1, String var2, UiBounds var3, int var4, int var5) {
+   public void drawCentered(GuiGraphicsExtractor var1, String var2, UiBounds var3, int var4, int var5) {
       String var6 = var2 == null ? "" : var2;
       int var7 = Math.max(0, var3.width() - 4);
       float var8 = this.width(var6) <= var7 ? 1.0F : Math.min(1.0F, (float)var7 / Math.max(1, this.width(var6)));

@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -85,11 +85,11 @@ public final class UiText {
       }
    }
 
-   public static void draw(GuiGraphics var0, Font var1, String var2, Identifier var3, int var4, int var5, int var6, boolean var7) {
-      var0.drawString(var1, var2 == null ? "" : var2, var5, var6, var4, var7);
+   public static void draw(GuiGraphicsExtractor var0, Font var1, String var2, Identifier var3, int var4, int var5, int var6, boolean var7) {
+      var0.text(var1, var2 == null ? "" : var2, var5, var6, var4, var7);
    }
 
-   public static void drawFitted(GuiGraphics var0, Font var1, String var2, Identifier var3, int var4, int var5, int var6, int var7, boolean var8) {
+   public static void drawFitted(GuiGraphicsExtractor var0, Font var1, String var2, Identifier var3, int var4, int var5, int var6, int var7, boolean var8) {
       String var9 = var2 == null ? "" : var2;
       if (!var9.isEmpty() && var7 > 0) {
          int var10 = width(var1, var9, var3, var4);
@@ -109,7 +109,7 @@ public final class UiText {
       }
    }
 
-   public static void fill(GuiGraphics var0, int var1, int var2, int var3, int var4, int var5) {
+   public static void fill(GuiGraphicsExtractor var0, int var1, int var2, int var3, int var4, int var5) {
       var0.fill(var1, var2, var3, var4, var5);
    }
 

@@ -3,7 +3,7 @@ package autismclient.util;
 import autismclient.gui.vanillaui.UiContexts;
 import autismclient.gui.vanillaui.components.ToastStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class AutismNotifications {
    private static final ToastStack TOASTS = new ToastStack(2100L, 140.0F, 220.0F, 4, 4, 18);
@@ -31,7 +31,7 @@ public final class AutismNotifications {
       TOASTS.show(var0, var1);
    }
 
-   public static void render(GuiGraphics var0) {
+   public static void render(GuiGraphicsExtractor var0) {
       Minecraft var1 = Minecraft.getInstance();
       if (var0 != null && var1 != null && var1.font != null) {
          if (TOASTS.hasVisibleToasts()) {
