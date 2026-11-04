@@ -8,18 +8,27 @@ artwork, authentication code, and the bundled GPL license are retained.
 
 ## Install
 
-Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.1+1.21.11.jar).
+Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.2+1.21.11.jar).
 The [release folder](releases/1.21.11) includes SHA-256 checksums, runtime results,
 and screenshots from the packaged client.
 
 1. Use Minecraft **1.21.11**, **Fabric Loader 0.20.1 or newer**, and **Java 21 or newer**.
 2. Install [Fabric API 0.141.6+1.21.11](https://modrinth.com/mod/fabric-api/versions?g=1.21.11).
-3. Put `autism-account-manager-5.0-backport.1+1.21.11.jar` in that instance's `mods` folder.
+3. Put `autism-account-manager-5.0-backport.2+1.21.11.jar` in that instance's `mods` folder.
 4. Open **Multiplayer**, then click **Accounts** in the upper-right corner.
 
 Use the installable JAR, rather than the sources or QA JAR. Keep one version of
 the account manager in the instance. The bundled `waybackauthlib` dependency is
 already included.
+
+## Color theme
+
+The account manager uses the supplied bowl palette: deep navy surfaces, electric
+blue primary actions, teal controls, golden current-account/focus markers, herb
+green success states, spice orange destructive actions, and spoon brown scroll
+accents. Shared tokens live in `AccountPalette.java`. Text and icon colors use
+readable neutral/tinted foregrounds. See [the Product Design review](design-qa.md)
+for screenshots, contrast measurements, and the review history.
 
 ## Scope and behavior
 
@@ -54,7 +63,7 @@ names in the installable JAR.
 ## Validation
 
 The exact installable JAR was launched with development mode disabled in a fresh
-Minecraft 1.21.11 / Fabric 0.20.1 / Java 21.0.13 instance. Fourteen runtime checks
+Minecraft 1.21.11 / Fabric 0.20.1 / Java 21.0.13 instance. Seventeen runtime checks
 passed, including the injected button, opening and rendering the account screen,
 adding/logging into a fake offline account through the UI, rename, disk reload
 with a stable ID, deletion, resize, and original-session restoration. Actual

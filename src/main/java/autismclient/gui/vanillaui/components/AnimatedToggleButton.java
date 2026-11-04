@@ -1,5 +1,6 @@
 package autismclient.gui.vanillaui.components;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.HoverFades;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiColors;
@@ -37,15 +38,15 @@ public final class AnimatedToggleButton {
    private static void renderStateButton(UiContext var0, UiBounds var1, String var2, boolean var3, float var4) {
       UiColors var5 = var0.theme().colors();
       float var6 = clamp01(var4);
-      UiRenderer.frame(var0.graphics(), var1, -1071766483, var5.buttonBorder);
+      UiRenderer.frame(var0.graphics(), var1, AccountPalette.SURFACE_RAISED, var5.buttonBorder);
       if (var6 > 0.001F) {
-         UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(AutismTheme.recolor(-736144845, AutismTheme.Channel.SUCCESS), var6));
+         UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(AccountPalette.HERB_GREEN, var6));
          UiRenderer.outline(var0.graphics(), var1, UiRenderer.applyAlpha(var5.success, var6));
       }
 
       float var7 = HoverFades.get(HoverFades.key(var1), var3);
       if (var7 > 0.001F) {
-         UiRenderer.rect(var0.graphics(), var1.inset(1), Math.round(20.0F * var7) << 24 | 16777215);
+         UiRenderer.rect(var0.graphics(), var1.inset(1), Math.round(12.0F * var7) << 24 | 16777215);
       }
 
       if (var2 != null && !var2.isEmpty()) {

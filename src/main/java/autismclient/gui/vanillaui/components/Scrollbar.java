@@ -1,5 +1,6 @@
 package autismclient.gui.vanillaui.components;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiContext;
 import autismclient.gui.vanillaui.UiRenderer;
@@ -22,12 +23,12 @@ public final class Scrollbar {
 
    public static void render(UiContext var0, Scrollbar.Metrics var1, boolean var2, boolean var3) {
       if (var1 != null && var1.maxScroll() > 0) {
-         UiRenderer.rect(var0.graphics(), var1.track(), 788529151);
+         UiRenderer.rect(var0.graphics(), var1.track(), AccountPalette.FIELD);
          UiBounds var4 = var1.thumb();
          boolean var5 = var2 || var3;
          int var6 = var5 ? var4.width() : Math.max(2, var4.width() - 2);
          int var7 = var4.x() + (var4.width() - var6) / 2;
-         UiRenderer.rect(var0.graphics(), UiBounds.of(var7, var4.y(), var6, var4.height()), var5 ? -3551788 : -6578008);
+         UiRenderer.rect(var0.graphics(), UiBounds.of(var7, var4.y(), var6, var4.height()), var5 ? AccountPalette.GOLDEN_YELLOW : AccountPalette.SPOON_BROWN);
       }
    }
 

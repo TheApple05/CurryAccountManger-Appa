@@ -1,5 +1,6 @@
 package autismclient.gui.vanillaui.components;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.assets.UiAssets;
 import autismclient.gui.vanillaui.direct.DirectUiInsets;
 import autismclient.util.AutismTheme;
@@ -84,9 +85,9 @@ public final class CompactTheme {
 
    public int color(UiTone var1) {
       return switch (var1) {
-         case TITLE, LABEL, BODY -> rc(-791321, AutismTheme.Channel.TEXT);
-         case MUTED -> rc(-4743522, AutismTheme.Channel.TEXT);
-         case ACCENT -> rc(-45747, AutismTheme.Channel.ACCENT);
+         case TITLE, LABEL, BODY -> AccountPalette.TEXT;
+         case MUTED -> AccountPalette.TEXT_SECONDARY;
+         case ACCENT -> AccountPalette.GOLDEN_YELLOW;
       };
    }
 
@@ -103,54 +104,54 @@ public final class CompactTheme {
    }
 
    public int windowFill() {
-      return this.overlaySurface(657932);
+      return AccountPalette.SURFACE;
    }
 
    public int windowFillInactive() {
-      return this.overlaySurfaceSoft(460553);
+      return AccountPalette.BACKGROUND;
    }
 
    public int headerFill() {
-      return this.overlaySurface(1118484);
+      return AccountPalette.DEEP_NAVY;
    }
 
    public int headerFillInactive() {
-      return this.overlaySurfaceSoft(657932);
+      return AccountPalette.SURFACE;
    }
 
    public int headerAccent() {
-      return rc(-50373, AutismTheme.Channel.HEADER);
+      return AccountPalette.GOLDEN_YELLOW;
    }
 
    public int borderColor() {
-      return rc(-2996152, AutismTheme.Channel.OUTLINE);
+      return AccountPalette.BORDER;
    }
 
    public int borderSoft() {
-      return rc(lessTransparent30(-1063699910), AutismTheme.Channel.OUTLINE);
+      return AccountPalette.BORDER;
    }
 
    public int dangerFill() {
-      return rc(this.overlaySurface(2756114), AutismTheme.Channel.DANGER);
+      return AccountPalette.DANGER_FILL;
    }
 
    public int listFill() {
-      return this.overlaySurface(1052692);
+      return AccountPalette.SURFACE;
    }
 
    public int listFillFocused() {
-      return this.overlaySurfaceStrong(1250328);
+      return AccountPalette.FIELD_FOCUSED;
    }
 
    public int rowFillNormal() {
-      return 639113758;
+      return AccountPalette.SURFACE;
    }
 
    public int rowFillHovered() {
-      return rc(1327766045, AutismTheme.Channel.HOVER);
+      return AccountPalette.ROW_HOVER;
    }
 
    public int rowFillSelected() {
-      return rc(this.overlaySurface(2308139), AutismTheme.Channel.TOGGLE);
+      return AccountPalette.SELECTED_ROW;
    }
 }

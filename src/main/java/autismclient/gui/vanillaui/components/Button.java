@@ -1,6 +1,7 @@
 package autismclient.gui.vanillaui.components;
 
 import autismclient.gui.vanillaui.HoverFades;
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.StateFades;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiColors;
@@ -25,33 +26,47 @@ public final class Button {
    private static void render(UiContext var0, UiBounds var1, String var2, Identifier var3, Button.Tone var4, boolean var5, boolean var6, float var7) {
       UiColors var8 = var0.theme().colors();
       float var9 = Math.min(1.0F, Math.max(0.0F, var7));
-      boolean var10 = var4 == Button.Tone.SUCCESS || var4 == Button.Tone.DANGER || var4 == Button.Tone.PRIMARY;
-      UiRenderer.frame(var0.graphics(), var1, -1071766483, var8.buttonBorder);
+      boolean var10 = var4 == Button.Tone.SUCCESS || var4 == Button.Tone.DANGER || var4 == Button.Tone.PRIMARY || var4 == Button.Tone.SELECTED;
+      int background = switch (var4) {
+         case PRIMARY -> AccountPalette.ELECTRIC_BLUE;
+         case DANGER -> AccountPalette.DANGER_FILL;
+         case SELECTED -> AccountPalette.BOWL_TEAL;
+         default -> AccountPalette.SURFACE_RAISED;
+      };
+      int border = switch (var4) {
+         case PRIMARY -> AccountPalette.ELECTRIC_BLUE;
+         case DANGER -> AccountPalette.SPICE_ORANGE;
+         case SELECTED -> AccountPalette.GOLDEN_YELLOW;
+         default -> var8.buttonBorder;
+      };
+      UiRenderer.frame(var0.graphics(), var1, background, border);
       if (var9 > 0.001F) {
          if (var10) {
             int var11 = switch (var4) {
-               case PRIMARY -> var8.accentDark;
-               case SUCCESS -> AutismTheme.recolor(-736144845, AutismTheme.Channel.SUCCESS);
-               case DANGER -> AutismTheme.recolor(-732751072, AutismTheme.Channel.DANGER);
-               default -> -869781959;
+               case PRIMARY -> AccountPalette.ELECTRIC_BLUE;
+               case SUCCESS -> AccountPalette.HERB_GREEN;
+               case DANGER -> AccountPalette.DANGER_FILL;
+               case SELECTED -> AccountPalette.BOWL_TEAL;
+               default -> AccountPalette.ROW_HOVER;
             };
 
             int var12 = switch (var4) {
-               case PRIMARY -> var8.accent;
+               case PRIMARY -> AccountPalette.ELECTRIC_BLUE;
                case SUCCESS -> var8.success;
                case DANGER -> var8.bad;
+               case SELECTED -> AccountPalette.GOLDEN_YELLOW;
                default -> var8.borderSoft;
             };
             UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(var11, var9));
             UiRenderer.outline(var0.graphics(), var1, UiRenderer.applyAlpha(var12, var9));
          } else {
-            UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(-869781959, var9));
+            UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(AccountPalette.ROW_HOVER, var9));
          }
       }
 
       float var17 = HoverFades.get(HoverFades.key(var1), var5);
       if (var17 > 0.001F) {
-         UiRenderer.rect(var0.graphics(), var1.inset(1), Math.round(20.0F * var17) << 24 | 16777215);
+         UiRenderer.rect(var0.graphics(), var1.inset(1), Math.round(12.0F * var17) << 24 | 16777215);
       }
 
       if (var3 == null) {
@@ -73,6 +88,7 @@ public final class Button {
       NORMAL,
       SECONDARY,
       PRIMARY,
+      SELECTED,
       SUCCESS,
       DANGER;
    }

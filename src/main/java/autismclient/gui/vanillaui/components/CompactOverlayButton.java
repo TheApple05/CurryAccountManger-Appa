@@ -1,5 +1,6 @@
 package autismclient.gui.vanillaui.components;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiContext;
 import autismclient.gui.vanillaui.UiContexts;
@@ -194,8 +195,8 @@ public final class CompactOverlayButton {
             }
 
             if (!var2.active && !Boolean.TRUE.equals(var2.selected)) {
-               UiRenderer.rect(var0, var13.inset(1), 1711276032);
-               UiRenderer.outline(var0, var13, AutismTheme.recolor(-2009060816, AutismTheme.Channel.OUTLINE));
+               UiRenderer.frame(var0, var13, AccountPalette.FIELD, AccountPalette.BORDER);
+               var12.text().drawCentered(var0, var5, var13, AccountPalette.TEXT_DISABLED);
             }
          }
       }
@@ -242,7 +243,8 @@ public final class CompactOverlayButton {
       return switch (var0) {
          case SECONDARY, GHOST, FILTER_OFF -> Button.Tone.NORMAL;
          case DANGER -> Button.Tone.DANGER;
-         case SUCCESS, FILTER_ON -> Button.Tone.SUCCESS;
+         case SUCCESS -> Button.Tone.SUCCESS;
+         case FILTER_ON -> Button.Tone.SELECTED;
          case PRIMARY -> Button.Tone.PRIMARY;
       };
    }

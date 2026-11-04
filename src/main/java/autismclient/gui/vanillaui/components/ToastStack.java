@@ -1,5 +1,6 @@
 package autismclient.gui.vanillaui.components;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiBounds;
 import autismclient.gui.vanillaui.UiContext;
 import autismclient.gui.vanillaui.UiRenderer;
@@ -95,11 +96,11 @@ public final class ToastStack {
                   float var24 = 1.0F - (1.0F - var23) * (1.0F - var23) * (1.0F - var23);
                   int var25 = var12 - Math.round((1.0F - var24) * (var21 + this.gap + 2));
                   UiBounds var26 = UiBounds.of(var22, var25, var33, var21);
-                  int var27 = tintToward(1183764, var14.accentColor(), 0.22F);
+                  int var27 = tintToward(AccountPalette.DEEP_NAVY & 0xFFFFFF, var14.accentColor(), 0.22F);
                   UiRenderer.roundFrame(
                      var1.graphics(), var26, 5, UiRenderer.applyAlpha(-704643072 | var27, var16), UiRenderer.applyAlpha(var14.accentColor(), var16)
                   );
-                  int var28 = UiRenderer.applyAlpha(-723724, var16);
+                  int var28 = UiRenderer.applyAlpha(AccountPalette.TEXT, var16);
                   int var29 = var25 + Math.max(2, (var21 - var34 + 1) / 2 + 1);
 
                   for (int var30 = 0; var30 < var17.size(); var30++) {

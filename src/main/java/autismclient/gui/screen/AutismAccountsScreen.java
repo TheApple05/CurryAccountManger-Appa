@@ -1,6 +1,8 @@
 package autismclient.gui.screen;
 
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiBounds;
+import autismclient.gui.vanillaui.components.PaletteEditBox;
 import autismclient.gui.vanillaui.UiRenderer;
 import autismclient.gui.vanillaui.components.CompactDropdown;
 import autismclient.gui.vanillaui.components.CompactOverlayButton;
@@ -129,15 +131,15 @@ public class AutismAccountsScreen extends AutismScreen {
    protected void init() {
       int var1 = this.panelX();
       byte var2 = 88;
-      this.labelField = new EditBox(this.font, var1 + 18, var2, 256, 18, Component.literal("Username"));
+      this.labelField = new PaletteEditBox(this.font, var1 + 18, var2, 256, 18, Component.literal("Username"));
       this.labelField.setHint(Component.literal("Username"));
       this.labelField.setMaxLength(256);
       this.addRenderableWidget(this.labelField);
-      this.tokenField = new EditBox(this.font, var1 + 18, var2, 256, 18, Component.literal("Token"));
+      this.tokenField = new PaletteEditBox(this.font, var1 + 18, var2, 256, 18, Component.literal("Token"));
       this.tokenField.setHint(Component.literal("Token"));
       this.tokenField.setMaxLength(4096);
       this.addRenderableWidget(this.tokenField);
-      this.searchField = new EditBox(this.font, var1 + 18, 140, 256, 18, Component.literal("Search accounts"));
+      this.searchField = new PaletteEditBox(this.font, var1 + 18, 140, 256, 18, Component.literal("Search accounts"));
       this.searchField.setHint(Component.literal("Search nickname..."));
       this.searchField.setMaxLength(64);
       this.searchField.setResponder(var1x -> {
@@ -147,11 +149,11 @@ public class AutismAccountsScreen extends AutismScreen {
       this.addRenderableWidget(this.searchField);
       this.widePlayerModel = new PlayerModel(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER), false);
       this.slimPlayerModel = new PlayerModel(this.minecraft.getEntityModels().bakeLayer(ModelLayers.PLAYER_SLIM), true);
-      this.generatorCountField = new EditBox(this.font, 0, 0, 58, 16, Component.literal("Count"));
+      this.generatorCountField = new PaletteEditBox(this.font, 0, 0, 58, 16, Component.literal("Count"));
       this.generatorCountField.setHint(Component.literal("Count"));
       this.generatorCountField.setMaxLength(4);
       this.generatorCountField.setValue("10");
-      this.generatorPasswordField = new EditBox(this.font, 0, 0, 186, 16, Component.literal("Password"));
+      this.generatorPasswordField = new PaletteEditBox(this.font, 0, 0, 186, 16, Component.literal("Password"));
       this.generatorPasswordField.setHint(Component.literal("Password"));
       this.generatorPasswordField.setMaxLength(16);
       this.generatorPasswordField.setValue(AutismConfig.getGlobal().accountGenSharedPassword);
@@ -203,7 +205,7 @@ public class AutismAccountsScreen extends AutismScreen {
          this.buttons.add(var7);
          if (this.type != AutismAccountType.Microsoft) {
             CompactOverlayButton var8 = CompactOverlayButton.create(var2 + 128, 114, 64, 18, Component.literal("Clear"), var1x -> this.clearFields())
-               .setVariant(CompactOverlayButton.Variant.SECONDARY);
+               .setVariant(CompactOverlayButton.Variant.GHOST);
             var8.active = !this.isBusy();
             this.buttons.add(var8);
          }
@@ -332,7 +334,7 @@ public class AutismAccountsScreen extends AutismScreen {
          }
       });
       var5.active = !this.isBusy();
-      var5.setVariant(this.type == var3 ? CompactOverlayButton.Variant.SUCCESS : CompactOverlayButton.Variant.SECONDARY);
+      var5.setVariant(this.type == var3 ? CompactOverlayButton.Variant.FILTER_ON : CompactOverlayButton.Variant.SECONDARY);
       this.buttons.add(var5);
    }
 
@@ -347,11 +349,11 @@ public class AutismAccountsScreen extends AutismScreen {
          if (this.renamingAccount != null) {
             String var4 = safeTrim(this.labelField.getValue());
             if (var4.isBlank()) {
-               this.toast("Enter a username first.", -14249);
+               this.toast("Enter a username first.", AccountPalette.GOLDEN_YELLOW);
             } else {
                boolean var2 = this.isCurrentAccount(this.renamingAccount);
                if (AutismAccountManager.get().rename(this.renamingAccount.stableId(), var4)) {
-                  this.toast("Renamed to " + var4 + ". Password and proxies carried over.", -13248397);
+                  this.toast("Renamed to " + var4 + ". Password and proxies carried over.", AccountPalette.SUCCESS_TEXT);
                   if (var2) {
                      AutismAccount var3 = AutismAccountManager.get().findById(this.renamingAccount.stableId());
                      if (var3 != null) {
@@ -362,7 +364,7 @@ public class AutismAccountsScreen extends AutismScreen {
                   this.renamingAccount = null;
                   this.clearFields();
                } else {
-                  this.toast("An account with that name already exists.", -14249);
+                  this.toast("An account with that name already exists.", AccountPalette.GOLDEN_YELLOW);
                }
 
                this.invalidateAccountSnapshot();
@@ -374,7 +376,7 @@ public class AutismAccountsScreen extends AutismScreen {
             if (this.type == AutismAccountType.Cracked) {
                var1.label = safeTrim(this.labelField.getValue());
                if (var1.label.isBlank()) {
-                  this.toast("Enter a username first.", -14249);
+                  this.toast("Enter a username first.", AccountPalette.GOLDEN_YELLOW);
                   return;
                }
 
@@ -382,7 +384,7 @@ public class AutismAccountsScreen extends AutismScreen {
             } else if (this.type == AutismAccountType.Session) {
                var1.token = safeTrim(this.tokenField.getValue());
                if (var1.token.isBlank()) {
-                  this.toast("Paste a token first.", -14249);
+                  this.toast("Paste a token first.", AccountPalette.GOLDEN_YELLOW);
                   return;
                }
 
@@ -390,7 +392,7 @@ public class AutismAccountsScreen extends AutismScreen {
             } else if (this.type == AutismAccountType.TheAltening) {
                var1.token = safeTrim(this.tokenField.getValue());
                if (var1.token.isBlank()) {
-                  this.toast("Paste a token first.", -14249);
+                  this.toast("Paste a token first.", AccountPalette.GOLDEN_YELLOW);
                   return;
                }
 
@@ -569,7 +571,7 @@ public class AutismAccountsScreen extends AutismScreen {
             this.selectedAccount = null;
          }
 
-         this.toast("Deleted " + var1.displayName() + ".", -6645094);
+         this.toast("Deleted " + var1.displayName() + ".", AccountPalette.TEXT_SECONDARY);
          this.rebuildButtons();
       }
    }
@@ -587,7 +589,7 @@ public class AutismAccountsScreen extends AutismScreen {
          }
 
          if (var1.isEmpty()) {
-            this.toast("No accounts to check.", -6645094);
+            this.toast("No accounts to check.", AccountPalette.TEXT_SECONDARY);
          } else {
             for (AutismAccount var6 : var1) {
                if (var6.checkStatus == AutismAccount.CheckStatus.UNKNOWN) {
@@ -665,10 +667,10 @@ public class AutismAccountsScreen extends AutismScreen {
 
          int var1 = AutismAccountManager.get().removeExpired();
          if (var1 == 0) {
-            this.toast("No expired accounts.", -6645094);
+            this.toast("No expired accounts.", AccountPalette.TEXT_SECONDARY);
          } else {
             this.invalidateAccountSnapshot();
-            this.toast("Cleared " + var1 + " expired.", -6645094);
+            this.toast("Cleared " + var1 + " expired.", AccountPalette.TEXT_SECONDARY);
             this.rebuildButtons();
          }
       }
@@ -676,24 +678,24 @@ public class AutismAccountsScreen extends AutismScreen {
 
    private static int nameColor(AutismAccount var0, boolean var1, boolean var2) {
       if (var1) {
-         return -13248397;
+         return AccountPalette.GOLDEN_YELLOW;
       }
 
       if (var2) {
-         return -7429889;
+         return AccountPalette.TEXT_SECONDARY;
       }
 
       if (var0 != null) {
          if (var0.checkStatus == AutismAccount.CheckStatus.EXPIRED) {
-            return -42149;
+            return AccountPalette.SPICE_ORANGE;
          }
 
          if (var0.checkStatus == AutismAccount.CheckStatus.CHECKING) {
-            return -14249;
+            return AccountPalette.GOLDEN_YELLOW;
          }
       }
 
-      return -855310;
+      return AccountPalette.TEXT;
    }
 
    private static String checkStatusLabel(AutismAccount.CheckStatus var0) {
@@ -711,14 +713,14 @@ public class AutismAccountsScreen extends AutismScreen {
 
    private static int checkStatusColor(AutismAccount.CheckStatus var0) {
       if (var0 == null) {
-         return -6645094;
+         return AccountPalette.TEXT_SECONDARY;
       }
 
       return switch (var0) {
-         case CHECKING -> -14249;
-         case VALID -> -13248397;
-         case EXPIRED -> -42149;
-         case UNKNOWN -> -6645094;
+         case CHECKING -> AccountPalette.GOLDEN_YELLOW;
+         case VALID -> AccountPalette.SUCCESS_TEXT;
+         case EXPIRED -> AccountPalette.SPICE_ORANGE;
+         case UNKNOWN -> AccountPalette.TEXT_SECONDARY;
       };
    }
 
@@ -738,18 +740,18 @@ public class AutismAccountsScreen extends AutismScreen {
       if (hasShareableSessionToken(var1)) {
          String var2 = shareableSessionToken(var1);
          if (var2.isBlank()) {
-            this.toast("No session token.", -14249);
+            this.toast("No session token.", AccountPalette.GOLDEN_YELLOW);
          } else if (this.minecraft != null && this.minecraft.keyboardHandler != null) {
             try {
                this.minecraft.keyboardHandler.setClipboard(var2);
             } catch (Exception var4) {
-               this.toast("Failed to copy token.", -42149);
+               this.toast("Failed to copy token.", AccountPalette.SPICE_ORANGE);
                return;
             }
 
-            this.toast("Copied session token.", -13248397);
+            this.toast("Copied session token.", AccountPalette.SUCCESS_TEXT);
          } else {
-            this.toast("Clipboard unavailable.", -42149);
+            this.toast("Clipboard unavailable.", AccountPalette.SPICE_ORANGE);
          }
       }
    }
@@ -770,7 +772,7 @@ public class AutismAccountsScreen extends AutismScreen {
             this.operation = AutismAccountsScreen.Operation.NONE;
             this.operationStartedAtMs = 0L;
             this.operationTask = null;
-            this.toast(var3, var2 ? -13248397 : -42149);
+            this.toast(var3, var2 ? AccountPalette.SUCCESS_TEXT : AccountPalette.SPICE_ORANGE);
             if (var2 && var4) {
                this.clearFields();
             }
@@ -807,7 +809,7 @@ public class AutismAccountsScreen extends AutismScreen {
          this.operationStartedAtMs = 0L;
          this.operationTask = null;
          this.clearInputFocus();
-         this.toast("Cancelled.", -14249);
+         this.toast("Cancelled.", AccountPalette.GOLDEN_YELLOW);
          this.updateInputVisibility();
          this.rebuildButtons();
       }
@@ -892,25 +894,25 @@ public class AutismAccountsScreen extends AutismScreen {
       AutismUiScale.pushOverlayScale(var1);
 
       try {
-         UiRenderer.rect(var1, UiBounds.of(0, 0, this.screenWidth(), this.screenHeight()), -15856112);
+         UiRenderer.rect(var1, UiBounds.of(0, 0, this.screenWidth(), this.screenHeight()), AccountPalette.BACKGROUND);
          int var7 = this.panelX();
          int var8 = var7 + 10;
          int var9 = this.previewX();
          if (!this.narrowLayout()) {
-            this.drawPanel(var1, var8, 20, 292, 178, -401074149);
-            this.drawPanel(var1, var9, 20, 200, 178, -1206643689);
+            this.drawPanel(var1, var8, 20, 292, 178, AccountPalette.SURFACE);
+            this.drawPanel(var1, var9, 20, 200, 178, AccountPalette.SURFACE_RAISED);
          }
 
          int var10 = this.listPanelHeight();
-         this.drawPanel(var1, this.listX(), this.listTop(), this.listWidth(), var10, -401074149);
+         this.drawPanel(var1, this.listX(), this.listTop(), this.listWidth(), var10, AccountPalette.SURFACE);
          if (!this.narrowLayout()) {
-            this.drawText(var1, "Accounts", var8 + 12, 31, -855310, false);
+            this.drawText(var1, "Accounts", var8 + 12, 31, AccountPalette.TEXT, false);
             this.renderPreview(var1, var9, var5, var6, var4);
          }
 
          List var11 = this.displayAccounts();
          if (this.compactListLayout()) {
-            this.drawText(var1, "Window too small.", this.listX() + 12, this.listTop() + 12, -6645094, false, Math.max(0, this.listWidth() - 24));
+            this.drawText(var1, "Window too small.", this.listX() + 12, this.listTop() + 12, AccountPalette.TEXT_SECONDARY, false, Math.max(0, this.listWidth() - 24));
          }
 
          int var12 = this.savedListScrollOffset / 24;
@@ -918,7 +920,7 @@ public class AutismAccountsScreen extends AutismScreen {
             ? "Accounts"
             : "Accounts  showing " + (var12 + 1) + "-" + Math.min(var11.size(), var12 + this.savedViewportRows()) + " / " + var11.size();
          int var14 = this.compactListLayout() ? this.listWidth() - 24 : Math.max(20, this.listWidth() - 24 - 328);
-         this.drawText(var1, var13, this.listX() + 12, this.listTop() + 10, -855310, false, var14);
+         this.drawText(var1, var13, this.listX() + 12, this.listTop() + 10, AccountPalette.TEXT, false, var14);
          if (!this.compactListLayout()) {
             for (AutismAccountsScreen.AccountRow var16 : this.accountRows) {
                this.renderRow(var1, var16, var5, var6);
@@ -926,10 +928,10 @@ public class AutismAccountsScreen extends AutismScreen {
          }
 
          if (this.accountSnapshot().isEmpty()) {
-            this.drawText(var1, "No extra accounts saved yet.", this.listX() + 12, this.listRowTop() + 24 + 8, -6645094, false, this.listWidth() - 24);
+            this.drawText(var1, "No extra accounts saved yet.", this.listX() + 12, this.listRowTop() + 24 + 8, AccountPalette.TEXT_SECONDARY, false, this.listWidth() - 24);
          } else if (this.filteredAccounts().isEmpty()) {
             this.drawText(
-               var1, "No accounts match the current search or filters.", this.listX() + 12, this.listRowTop() + 24 + 8, -6645094, false, this.listWidth() - 24
+               var1, "No accounts match the current search or filters.", this.listX() + 12, this.listRowTop() + 24 + 8, AccountPalette.TEXT_SECONDARY, false, this.listWidth() - 24
             );
          }
 
@@ -962,12 +964,12 @@ public class AutismAccountsScreen extends AutismScreen {
       int var8 = this.rowX();
       int var9 = var2.y;
       int var10 = this.rowWidth();
-      int var11 = var6 ? successColor(858052714) : (var2.defaultAccount ? 808137323 : (var7 ? outlineColor(606804509) : 403771667));
+      int var11 = var6 ? successColor(AccountPalette.CURRENT_ROW) : (var2.defaultAccount ? AccountPalette.SURFACE_RAISED : (var7 ? outlineColor(AccountPalette.SELECTED_ROW) : AccountPalette.SURFACE));
       UiRenderer.rect(var1, UiBounds.of(var8, var9, var10, this.rowVisualHeight()), var11);
       if (var6) {
-         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), successColor(-12588930));
+         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), successColor(AccountPalette.GOLDEN_YELLOW));
       } else if (var7) {
-         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), outlineColor(-10866632));
+         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), outlineColor(AccountPalette.ELECTRIC_BLUE));
       }
 
       PlayerSkin var12 = !var2.loadSkin && !var6 && !var7 ? this.fallbackSkin(var5) : this.skinLookup(var5).skin();
@@ -995,9 +997,9 @@ public class AutismAccountsScreen extends AutismScreen {
          int var19 = Math.max(20, var16 - var15 - 12);
          int var20 = Math.max(20, var17 - var16 - 10);
          this.drawText(var1, var13, var15, var9 + 7, nameColor(var5, var6, var2.defaultAccount), false, var19);
-         this.drawText(var1, var14, var16, var9 + 7, var2.defaultAccount ? -7429889 : -6645094, false, var20);
+         this.drawText(var1, var14, var16, var9 + 7, var2.defaultAccount ? AccountPalette.TEXT_SECONDARY : AccountPalette.TEXT_SECONDARY, false, var20);
          if (var6) {
-            this.drawText(var1, "CURRENT", var17, var9 + 8, -13248397, false, Math.max(1, var18 - var17 - 4));
+            this.drawText(var1, "CURRENT", var17, var9 + 8, AccountPalette.GOLDEN_YELLOW, false, Math.max(1, var18 - var17 - 4));
          } else if (!var2.defaultAccount) {
             String var21 = checkStatusLabel(var5.checkStatus);
             if (!var21.isEmpty()) {
@@ -1022,7 +1024,7 @@ public class AutismAccountsScreen extends AutismScreen {
       if (var2 != null) {
          CompactOverlayButton.renderStyled(var1, this.font, var2, var3, var4);
          UiBounds var5 = UiBounds.of(var2.getX(), var2.getY(), var2.getWidth(), var2.getHeight());
-         this.drawCopyGlyph(var1, var5, var2.active ? -855310 : -9016466);
+         this.drawCopyGlyph(var1, var5, var2.active ? AccountPalette.TEXT : AccountPalette.TEXT_DISABLED);
       }
    }
 
@@ -1034,16 +1036,16 @@ public class AutismAccountsScreen extends AutismScreen {
       int var8 = var2.y() + (var2.height() - (var5 + var6)) / 2;
       UiRenderer.outline(var1, UiBounds.of(var7 + var6, var8, var4, var5), var3);
       UiBounds var9 = UiBounds.of(var7, var8 + var6, var4, var5);
-      UiRenderer.rect(var1, var9, -15395557);
+      UiRenderer.rect(var1, var9, AccountPalette.SURFACE_RAISED);
       UiRenderer.outline(var1, var9, var3);
    }
 
    private void renderPreview(GuiGraphics var1, int var2, int var3, int var4, float var5) {
       AutismAccount var6 = this.previewAccount();
-      this.drawText(var1, "Skin preview", var2 + 12, 31, -855310, false);
+      this.drawText(var1, "Skin preview", var2 + 12, 31, AccountPalette.TEXT, false);
       if (var6 == null) {
-         this.drawText(var1, "No account selected", var2 + 16, 78, -6645094, false, 168);
-         this.drawText(var1, "Click a row to preview it.", var2 + 16, 94, -6645094, false, 168);
+         this.drawText(var1, "No account selected", var2 + 16, 78, AccountPalette.TEXT_SECONDARY, false, 168);
+         this.drawText(var1, "Click a row to preview it.", var2 + 16, 94, AccountPalette.TEXT_SECONDARY, false, 168);
       } else {
          AutismAccountsScreen.SkinLookup var7 = this.skinLookup(var6);
          PlayerSkin var8 = var7.skin();
@@ -1054,16 +1056,16 @@ public class AutismAccountsScreen extends AutismScreen {
          short var13 = 190;
          this.render3dSkin(var1, var8, var10, var11, var12, var13);
          if (var7.loading()) {
-            this.drawText(var1, "Loading skin...", var2 + 14, 178, -14249, false, 172);
+            this.drawText(var1, "Loading skin...", var2 + 14, 178, AccountPalette.GOLDEN_YELLOW, false, 172);
          }
 
          String var14 = var6.displayName().isBlank() ? "(unknown)" : var6.displayName();
          boolean var15 = this.isDefaultAccount(var6);
          boolean var16 = var15 ? this.isCurrentDefaultAccount() : this.isCurrentAccount(var6);
-         this.drawText(var1, var14, var2 + 12, 164, var16 ? -13248397 : -855310, false, 176);
-         this.drawText(var1, var15 ? "Default Minecraft" : var6.type.name(), var2 + 12, 150, var15 ? -7429889 : -6645094, false, 176);
+         this.drawText(var1, var14, var2 + 12, 164, var16 ? AccountPalette.GOLDEN_YELLOW : AccountPalette.TEXT, false, 176);
+         this.drawText(var1, var15 ? "Default Minecraft" : var6.type.name(), var2 + 12, 150, var15 ? AccountPalette.TEXT_SECONDARY : AccountPalette.TEXT_SECONDARY, false, 176);
          if (var16) {
-            this.drawText(var1, "CURRENT", var2 + 200 - 66, 31, -13248397, false, 54);
+            this.drawText(var1, "CURRENT", var2 + 200 - 66, 31, AccountPalette.GOLDEN_YELLOW, false, 54);
          }
       }
    }
@@ -1400,7 +1402,7 @@ public class AutismAccountsScreen extends AutismScreen {
       }
 
       this.closePopup();
-      this.toast("Cleared " + var1 + " accounts.", -6645094);
+      this.toast("Cleared " + var1 + " accounts.", AccountPalette.TEXT_SECONDARY);
       this.invalidateAccountSnapshot();
       this.rebuildButtons();
    }
@@ -1443,20 +1445,20 @@ public class AutismAccountsScreen extends AutismScreen {
          var3 = Integer.MIN_VALUE;
       }
 
-      UiRenderer.rect(var1, UiBounds.of(0, 0, this.screenWidth(), this.screenHeight()), -1610612736);
+      UiRenderer.rect(var1, UiBounds.of(0, 0, this.screenWidth(), this.screenHeight()), AccountPalette.MODAL_SCRIM);
       int var7 = this.popupX();
       int var8 = this.popupY();
       if (this.activePopup == 2) {
-         this.drawPanel(var1, var7, var8, 280, 100, -401074149);
-         this.drawText(var1, "Clear Accounts?", var7 + 12, var8 + 10, -855310, false);
-         this.drawText(var1, this.clearTargetCount() + " accounts will be deleted in:", var7 + 12, var8 + 28, -6645094, false, 256);
-         this.drawText(var1, this.clearTargetNames(), var7 + 12, var8 + 42, -14249, false, 256);
-         this.drawText(var1, "This cannot be undone.", var7 + 12, var8 + 56, -6645094, false, 256);
+         this.drawPanel(var1, var7, var8, 280, 100, AccountPalette.SURFACE);
+         this.drawText(var1, "Clear Accounts?", var7 + 12, var8 + 10, AccountPalette.TEXT, false);
+         this.drawText(var1, this.clearTargetCount() + " accounts will be deleted in:", var7 + 12, var8 + 28, AccountPalette.TEXT_SECONDARY, false, 256);
+         this.drawText(var1, this.clearTargetNames(), var7 + 12, var8 + 42, AccountPalette.GOLDEN_YELLOW, false, 256);
+         this.drawText(var1, "This cannot be undone.", var7 + 12, var8 + 56, AccountPalette.TEXT_SECONDARY, false, 256);
       } else {
-         this.drawPanel(var1, var7, var8, 280, 210, -401074149);
-         this.drawText(var1, "Generate Accounts", var7 + 12, var8 + 10, -855310, false);
+         this.drawPanel(var1, var7, var8, 280, 210, AccountPalette.SURFACE);
+         this.drawText(var1, "Generate Accounts", var7 + 12, var8 + 10, AccountPalette.TEXT, false);
          if (this.generatorMode == 0) {
-            this.drawText(var1, "Count:", var7 + 12, var8 + 54, -6645094, false);
+            this.drawText(var1, "Count:", var7 + 12, var8 + 54, AccountPalette.TEXT_SECONDARY, false);
             this.generatorCountField.setX(var7 + 50);
             this.generatorCountField.setY(var8 + 50);
             this.generatorCountField.render(var1, var2, var3, var4);
@@ -1467,7 +1469,7 @@ public class AutismAccountsScreen extends AutismScreen {
             }
 
             if (!this.generatorResult.isBlank()) {
-               this.drawText(var1, this.generatorResult, var7 + 12, var8 + 172, -13248397, false, 180);
+               this.drawText(var1, this.generatorResult, var7 + 12, var8 + 172, AccountPalette.SUCCESS_TEXT, false, 180);
             }
          } else {
             this.generatorListField.setX(var7 + 12);
@@ -1476,7 +1478,7 @@ public class AutismAccountsScreen extends AutismScreen {
             this.generatorListField.setHeight(108);
             this.generatorListField.render(var1, var2, var3, var4);
             if (!this.generatorResult.isBlank()) {
-               this.drawText(var1, this.generatorResult, var7 + 12, var8 + 182, -13248397, false, 180);
+               this.drawText(var1, this.generatorResult, var7 + 12, var8 + 182, AccountPalette.SUCCESS_TEXT, false, 180);
             }
          }
       }

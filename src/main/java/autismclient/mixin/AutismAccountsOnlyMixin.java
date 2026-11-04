@@ -1,6 +1,7 @@
 package autismclient.mixin;
 
 import autismclient.gui.screen.AutismAccountsScreen;
+import autismclient.gui.vanillaui.components.AccountMenuButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
@@ -24,7 +25,7 @@ public abstract class AutismAccountsOnlyMixin extends Screen {
    private void autism$repositionElements(CallbackInfo var1) {
       if (this.autism$accountsButton == null) {
          this.autism$accountsButton = (Button)this.addRenderableWidget(
-            Button.builder(Component.literal("Accounts"), var1x -> this.minecraft.setScreen(new AutismAccountsScreen(this))).bounds(0, 0, 60, 20).build()
+            new AccountMenuButton(var1x -> this.minecraft.setScreen(new AutismAccountsScreen(this)))
          );
       }
 

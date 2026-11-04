@@ -19,7 +19,20 @@
   "validation": {
     "productionMinecraft": "1.21.11",
     "java": "21.0.13+9",
-    "runtimeChecksPassed": 14,
+    "runtimeChecksPassed": 17,
     "dpapiOriginalBackportInteroperability": "passed both directions using synthetic data"
+  },
+  "ui": {
+    "paletteSource": "docs/design/palette-reference.png",
+    "reviewWorkflow": "Product Design plugin",
+    "palette": {
+      "electricBlue": "#005CFE",
+      "bowlTeal": "#036E99",
+      "deepNavy": "#002F67",
+      "herbGreen": "#3C7522",
+      "goldenYellow": "#F8B01B",
+      "spiceOrange": "#E17D0B",
+      "spoonBrown": "#B87527"
+    }
   }
 }

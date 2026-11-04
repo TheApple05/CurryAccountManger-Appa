@@ -1,6 +1,7 @@
 package autismclient.util;
 
 import autismclient.gui.vanillaui.UiBounds;
+import autismclient.gui.vanillaui.AccountPalette;
 import autismclient.gui.vanillaui.UiRenderer;
 import autismclient.gui.vanillaui.components.CompactTheme;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,7 +34,7 @@ public class AutismColors {
    }
 
    public static int accent() {
-      return AutismTheme.recolor(-5093304, AutismTheme.Channel.ACCENT);
+      return AutismTheme.recolor(AccountPalette.GOLDEN_YELLOW, AutismTheme.Channel.ACCENT);
    }
 
    public static int secondary() {
@@ -45,47 +46,47 @@ public class AutismColors {
    }
 
    public static int dangerText() {
-      return AutismTheme.recolor(-1938838, AutismTheme.Channel.DANGER);
+      return AutismTheme.recolor(AccountPalette.SPICE_ORANGE, AutismTheme.Channel.DANGER);
    }
 
    public static int successText() {
-      return AutismTheme.recolor(-11018872, AutismTheme.Channel.SUCCESS);
+      return AutismTheme.recolor(AccountPalette.SUCCESS_TEXT, AutismTheme.Channel.SUCCESS);
    }
 
    public static int packetGreen() {
-      return -8592483;
+      return AccountPalette.SUCCESS_TEXT;
    }
 
    public static int packetPink() {
-      return -27948;
+      return AccountPalette.GOLDEN_YELLOW;
    }
 
    public static int packetOrange() {
-      return -19091;
+      return AccountPalette.SPICE_ORANGE;
    }
 
    public static int packetBlue() {
-      return -8340993;
+      return AccountPalette.TEXT_SECONDARY;
    }
 
    public static int packetYellow() {
-      return -10134;
+      return AccountPalette.GOLDEN_YELLOW;
    }
 
    public static int packetCyan() {
-      return -9115393;
+      return AccountPalette.TEXT_SECONDARY;
    }
 
    public static int packetWhite() {
-      return -461586;
+      return AccountPalette.TEXT;
    }
 
    public static int packetGray() {
-      return -5195582;
+      return AccountPalette.TEXT_SECONDARY;
    }
 
    public static int packetLightYellow() {
-      return -3921;
+      return AccountPalette.GOLDEN_YELLOW;
    }
 
    public static int listBg() {
@@ -101,7 +102,7 @@ public class AutismColors {
    }
 
    public static int rowSelectedText() {
-      return AutismTheme.recolor(-2828, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.GOLDEN_YELLOW, AutismTheme.Channel.TEXT);
    }
 
    public static int packetRowBg(boolean var0, int var1, boolean var2) {
@@ -147,23 +148,23 @@ public class AutismColors {
    }
 
    public static int textPrimary() {
-      return AutismTheme.recolor(-791058, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.TEXT, AutismTheme.Channel.TEXT);
    }
 
    public static int textSecondary() {
-      return AutismTheme.recolor(-3361096, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.TEXT_SECONDARY, AutismTheme.Channel.TEXT);
    }
 
    public static int textDim() {
-      return AutismTheme.recolor(-6388344, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.TEXT_SECONDARY, AutismTheme.Channel.TEXT);
    }
 
    public static int textMuted() {
-      return AutismTheme.recolor(-6388344, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.TEXT_SECONDARY, AutismTheme.Channel.TEXT);
    }
 
    public static int textLight() {
-      return AutismTheme.recolor(-791058, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.TEXT, AutismTheme.Channel.TEXT);
    }
 
    public static int subPanelBorder() {

@@ -3,6 +3,7 @@ import hashlib
 import io
 import json
 import struct
+import re
 import sys
 import zipfile
 from pathlib import Path
@@ -46,6 +47,6 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         path = Path(sys.argv[1])
     else:
-        path = next(p for p in Path('build/libs').glob('*.jar')
-                    if not any(tag in p.name for tag in ('sources', '-qa', '-dev')))
+        version = re.search(r'^version=(.+)$', Path('gradle.properties').read_text(), re.M)[1]
+        path = Path('build/libs') / f'autism-account-manager-{version}.jar'
     print(json.dumps(inspect(path), indent=2))

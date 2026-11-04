@@ -67,6 +67,7 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                     .map(child -> (Button) child).findFirst().orElseThrow();
                 require(button.getX() >= 0 && button.getX() + button.getWidth() <= client.screen.width,
                         "multiplayer Accounts button injected and positioned");
+                capture(client, "00-multiplayer.png");
                 button.onPress(new MouseButtonEvent(button.getX() + 2, button.getY() + 2, new MouseButtonInfo(0, 0)));
                 require(client.screen instanceof AutismAccountsScreen, "Accounts button opens account screen");
                 accounts = (AutismAccountsScreen) client.screen;
@@ -76,6 +77,9 @@ public final class AccountManagerSmoke implements ClientModInitializer {
                 capture(client, "01-empty-accounts.png");
                 EditBox label = (EditBox) field(accounts, "labelField");
                 label.setValue("BackportQA");
+                label.mouseClicked(new MouseButtonEvent(label.getX() + 5, label.getY() + 5,
+                    new MouseButtonInfo(0, 0)), false);
+                require(label.getCursorPosition() <= 1, "themed input retains mouse cursor positioning");
                 call(accounts, "addAccount");
                 next();
             }
@@ -111,10 +115,45 @@ public final class AccountManagerSmoke implements ClientModInitializer {
             }
             case 5 -> {
                 capture(client, "03-renamed-and-restored.png");
-                client.screen.resize(420, 260);
+                accounts = (AutismAccountsScreen) client.screen;
+                call(accounts, "openGenerator");
                 next();
             }
             case 6 -> {
+                require((int) field(accounts, "activePopup") == 1, "generator popup opens");
+                capture(client, "04-generator.png");
+                call(accounts, "closePopup");
+                call(accounts, "openClearConfirm");
+                next();
+            }
+            case 7 -> {
+                require((int) field(accounts, "activePopup") == 2, "clear confirmation opens");
+                capture(client, "05-clear-confirmation.png");
+                call(accounts, "closePopup");
+                ((EditBox) field(accounts, "searchField")).setValue("BackportRenamed");
+                next();
+            }
+            case 8 -> {
+                capture(client, "06-search.png");
+                ((EditBox) field(accounts, "searchField")).setValue("");
+                ((EditBox) field(accounts, "labelField")).setFocused(true);
+                next();
+            }
+            case 9 -> {
+                capture(client, "07-field-focus.png");
+                EditBox label = (EditBox) field(accounts, "labelField");
+                double scale = AutismUiScale.getOverlayDrawScale() * client.getWindow().getGuiScale();
+                org.lwjgl.glfw.GLFW.glfwSetCursorPos(client.getWindow().handle(),
+                    (label.getX() + 50) * scale, 123 * scale);
+                next();
+            }
+            case 10 -> {
+                capture(client, "08-primary-hover.png");
+                client.getWindow().setWindowed(840, 520);
+                next();
+            }
+            case 11 -> {
+                capture(client, "09-compact-window.png");
                 require(client.screen instanceof AutismAccountsScreen, "account screen survives resize");
                 AutismAccountManager.get().remove(AutismAccountManager.get().findById(savedId));
                 require(AutismAccountManager.get().all().isEmpty(), "account deletion");
