@@ -96,7 +96,7 @@ public final class ToastStack {
                   float var24 = 1.0F - (1.0F - var23) * (1.0F - var23) * (1.0F - var23);
                   int var25 = var12 - Math.round((1.0F - var24) * (var21 + this.gap + 2));
                   UiBounds var26 = UiBounds.of(var22, var25, var33, var21);
-                  int var27 = tintToward(AccountPalette.DEEP_NAVY & 0xFFFFFF, var14.accentColor(), 0.22F);
+                  int var27 = tintToward(AccountPalette.SURFACE_RAISED & 0xFFFFFF, var14.accentColor(), 0.22F);
                   UiRenderer.roundFrame(
                      var1.graphics(), var26, 5, UiRenderer.applyAlpha(-704643072 | var27, var16), UiRenderer.applyAlpha(var14.accentColor(), var16)
                   );

@@ -349,7 +349,7 @@ public class AutismAccountsScreen extends AutismScreen {
          if (this.renamingAccount != null) {
             String var4 = safeTrim(this.labelField.getValue());
             if (var4.isBlank()) {
-               this.toast("Enter a username first.", AccountPalette.GOLDEN_YELLOW);
+               this.toast("Enter a username first.", AccountPalette.FOCUS);
             } else {
                boolean var2 = this.isCurrentAccount(this.renamingAccount);
                if (AutismAccountManager.get().rename(this.renamingAccount.stableId(), var4)) {
@@ -364,7 +364,7 @@ public class AutismAccountsScreen extends AutismScreen {
                   this.renamingAccount = null;
                   this.clearFields();
                } else {
-                  this.toast("An account with that name already exists.", AccountPalette.GOLDEN_YELLOW);
+                  this.toast("An account with that name already exists.", AccountPalette.FOCUS);
                }
 
                this.invalidateAccountSnapshot();
@@ -376,7 +376,7 @@ public class AutismAccountsScreen extends AutismScreen {
             if (this.type == AutismAccountType.Cracked) {
                var1.label = safeTrim(this.labelField.getValue());
                if (var1.label.isBlank()) {
-                  this.toast("Enter a username first.", AccountPalette.GOLDEN_YELLOW);
+                  this.toast("Enter a username first.", AccountPalette.FOCUS);
                   return;
                }
 
@@ -384,7 +384,7 @@ public class AutismAccountsScreen extends AutismScreen {
             } else if (this.type == AutismAccountType.Session) {
                var1.token = safeTrim(this.tokenField.getValue());
                if (var1.token.isBlank()) {
-                  this.toast("Paste a token first.", AccountPalette.GOLDEN_YELLOW);
+                  this.toast("Paste a token first.", AccountPalette.FOCUS);
                   return;
                }
 
@@ -392,7 +392,7 @@ public class AutismAccountsScreen extends AutismScreen {
             } else if (this.type == AutismAccountType.TheAltening) {
                var1.token = safeTrim(this.tokenField.getValue());
                if (var1.token.isBlank()) {
-                  this.toast("Paste a token first.", AccountPalette.GOLDEN_YELLOW);
+                  this.toast("Paste a token first.", AccountPalette.FOCUS);
                   return;
                }
 
@@ -678,7 +678,7 @@ public class AutismAccountsScreen extends AutismScreen {
 
    private static int nameColor(AutismAccount var0, boolean var1, boolean var2) {
       if (var1) {
-         return AccountPalette.GOLDEN_YELLOW;
+         return AccountPalette.FOCUS;
       }
 
       if (var2) {
@@ -687,11 +687,11 @@ public class AutismAccountsScreen extends AutismScreen {
 
       if (var0 != null) {
          if (var0.checkStatus == AutismAccount.CheckStatus.EXPIRED) {
-            return AccountPalette.SPICE_ORANGE;
+            return AccountPalette.HOVER;
          }
 
          if (var0.checkStatus == AutismAccount.CheckStatus.CHECKING) {
-            return AccountPalette.GOLDEN_YELLOW;
+            return AccountPalette.FOCUS;
          }
       }
 
@@ -717,9 +717,9 @@ public class AutismAccountsScreen extends AutismScreen {
       }
 
       return switch (var0) {
-         case CHECKING -> AccountPalette.GOLDEN_YELLOW;
+         case CHECKING -> AccountPalette.FOCUS;
          case VALID -> AccountPalette.SUCCESS_TEXT;
-         case EXPIRED -> AccountPalette.SPICE_ORANGE;
+         case EXPIRED -> AccountPalette.HOVER;
          case UNKNOWN -> AccountPalette.TEXT_SECONDARY;
       };
    }
@@ -740,18 +740,18 @@ public class AutismAccountsScreen extends AutismScreen {
       if (hasShareableSessionToken(var1)) {
          String var2 = shareableSessionToken(var1);
          if (var2.isBlank()) {
-            this.toast("No session token.", AccountPalette.GOLDEN_YELLOW);
+            this.toast("No session token.", AccountPalette.FOCUS);
          } else if (this.minecraft != null && this.minecraft.keyboardHandler != null) {
             try {
                this.minecraft.keyboardHandler.setClipboard(var2);
             } catch (Exception var4) {
-               this.toast("Failed to copy token.", AccountPalette.SPICE_ORANGE);
+               this.toast("Failed to copy token.", AccountPalette.HOVER);
                return;
             }
 
             this.toast("Copied session token.", AccountPalette.SUCCESS_TEXT);
          } else {
-            this.toast("Clipboard unavailable.", AccountPalette.SPICE_ORANGE);
+            this.toast("Clipboard unavailable.", AccountPalette.HOVER);
          }
       }
    }
@@ -772,7 +772,7 @@ public class AutismAccountsScreen extends AutismScreen {
             this.operation = AutismAccountsScreen.Operation.NONE;
             this.operationStartedAtMs = 0L;
             this.operationTask = null;
-            this.toast(var3, var2 ? AccountPalette.SUCCESS_TEXT : AccountPalette.SPICE_ORANGE);
+            this.toast(var3, var2 ? AccountPalette.SUCCESS_TEXT : AccountPalette.HOVER);
             if (var2 && var4) {
                this.clearFields();
             }
@@ -809,7 +809,7 @@ public class AutismAccountsScreen extends AutismScreen {
          this.operationStartedAtMs = 0L;
          this.operationTask = null;
          this.clearInputFocus();
-         this.toast("Cancelled.", AccountPalette.GOLDEN_YELLOW);
+         this.toast("Cancelled.", AccountPalette.FOCUS);
          this.updateInputVisibility();
          this.rebuildButtons();
       }
@@ -967,9 +967,9 @@ public class AutismAccountsScreen extends AutismScreen {
       int var11 = var6 ? successColor(AccountPalette.CURRENT_ROW) : (var2.defaultAccount ? AccountPalette.SURFACE_RAISED : (var7 ? outlineColor(AccountPalette.SELECTED_ROW) : AccountPalette.SURFACE));
       UiRenderer.rect(var1, UiBounds.of(var8, var9, var10, this.rowVisualHeight()), var11);
       if (var6) {
-         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), successColor(AccountPalette.GOLDEN_YELLOW));
+         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), successColor(AccountPalette.FOCUS));
       } else if (var7) {
-         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), outlineColor(AccountPalette.ELECTRIC_BLUE));
+         UiRenderer.rect(var1, UiBounds.of(var8, var9, 2, this.rowVisualHeight()), outlineColor(AccountPalette.PRIMARY));
       }
 
       PlayerSkin var12 = !var2.loadSkin && !var6 && !var7 ? this.fallbackSkin(var5) : this.skinLookup(var5).skin();
@@ -999,7 +999,7 @@ public class AutismAccountsScreen extends AutismScreen {
          this.drawText(var1, var13, var15, var9 + 7, nameColor(var5, var6, var2.defaultAccount), false, var19);
          this.drawText(var1, var14, var16, var9 + 7, var2.defaultAccount ? AccountPalette.TEXT_SECONDARY : AccountPalette.TEXT_SECONDARY, false, var20);
          if (var6) {
-            this.drawText(var1, "CURRENT", var17, var9 + 8, AccountPalette.GOLDEN_YELLOW, false, Math.max(1, var18 - var17 - 4));
+            this.drawText(var1, "CURRENT", var17, var9 + 8, AccountPalette.FOCUS, false, Math.max(1, var18 - var17 - 4));
          } else if (!var2.defaultAccount) {
             String var21 = checkStatusLabel(var5.checkStatus);
             if (!var21.isEmpty()) {
@@ -1056,16 +1056,16 @@ public class AutismAccountsScreen extends AutismScreen {
          short var13 = 190;
          this.render3dSkin(var1, var8, var10, var11, var12, var13);
          if (var7.loading()) {
-            this.drawText(var1, "Loading skin...", var2 + 14, 178, AccountPalette.GOLDEN_YELLOW, false, 172);
+            this.drawText(var1, "Loading skin...", var2 + 14, 178, AccountPalette.FOCUS, false, 172);
          }
 
          String var14 = var6.displayName().isBlank() ? "(unknown)" : var6.displayName();
          boolean var15 = this.isDefaultAccount(var6);
          boolean var16 = var15 ? this.isCurrentDefaultAccount() : this.isCurrentAccount(var6);
-         this.drawText(var1, var14, var2 + 12, 164, var16 ? AccountPalette.GOLDEN_YELLOW : AccountPalette.TEXT, false, 176);
+         this.drawText(var1, var14, var2 + 12, 164, var16 ? AccountPalette.FOCUS : AccountPalette.TEXT, false, 176);
          this.drawText(var1, var15 ? "Default Minecraft" : var6.type.name(), var2 + 12, 150, var15 ? AccountPalette.TEXT_SECONDARY : AccountPalette.TEXT_SECONDARY, false, 176);
          if (var16) {
-            this.drawText(var1, "CURRENT", var2 + 200 - 66, 31, AccountPalette.GOLDEN_YELLOW, false, 54);
+            this.drawText(var1, "CURRENT", var2 + 200 - 66, 31, AccountPalette.FOCUS, false, 54);
          }
       }
    }
@@ -1452,7 +1452,7 @@ public class AutismAccountsScreen extends AutismScreen {
          this.drawPanel(var1, var7, var8, 280, 100, AccountPalette.SURFACE);
          this.drawText(var1, "Clear Accounts?", var7 + 12, var8 + 10, AccountPalette.TEXT, false);
          this.drawText(var1, this.clearTargetCount() + " accounts will be deleted in:", var7 + 12, var8 + 28, AccountPalette.TEXT_SECONDARY, false, 256);
-         this.drawText(var1, this.clearTargetNames(), var7 + 12, var8 + 42, AccountPalette.GOLDEN_YELLOW, false, 256);
+         this.drawText(var1, this.clearTargetNames(), var7 + 12, var8 + 42, AccountPalette.FOCUS, false, 256);
          this.drawText(var1, "This cannot be undone.", var7 + 12, var8 + 56, AccountPalette.TEXT_SECONDARY, false, 256);
       } else {
          this.drawPanel(var1, var7, var8, 280, 210, AccountPalette.SURFACE);

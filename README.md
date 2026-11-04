@@ -7,18 +7,17 @@ Each Minecraft version has its own release and SHA-256 checksum:
 - **1.12.2** — Forge 14.23.5.2847, Java 8. [Install/build/test details](ports/forge-1.12.2/README.md).
 - **1.16.5** — Fabric Loader 0.20.1, full Fabric API 0.42.0+1.16, Java 8. [Install/build/test details](ports/fabric-1.16.5/README.md).
 - **1.21.10** — Fabric Loader 0.20.1, Fabric API 0.138.4+1.21.10, Java 21. [Install/build/test details](ports/fabric-1.21.10/README.md).
+- **1.21.11** — Fabric Loader 0.20.1, Fabric API 0.141.6+1.21.11, Java 21. [Release and validation](releases/1.21.11/README.md).
 
 Put one matching account-manager JAR in the instance's `mods` folder, install the
-listed loader and dependencies, then open **Multiplayer → Accounts**. The earlier **1.21.11** release is also available; use the versioned release
-assets for these four ports. These ports retain Melonik's account-manager authorship,
+listed loader and dependencies, then open **Multiplayer → Accounts**. Use the versioned release assets for your Minecraft version. These ports retain Melonik's account-manager authorship,
 GPL license, artwork, and account-manager functionality.
 
-The four ports use the requested indigo menu palette: `#06070B` background,
+All five versions use the requested indigo menu palette: `#06070B` background,
 `#101114` panels and idle buttons, black input fields, `#1A3BD1` primary actions
 and selected tabs, `#293C94` outlines, `#526FFF` focus/active usernames,
 `#8181D9` hover outlines, `#FCFCFC` text, and `#C8C9D1` placeholders.
-The updated releases are **5.0-port.2**. The original 1.21.11 build below retains
-its earlier theme.
+The four port releases are **5.0-port.2**; Minecraft 1.21.11 uses **5.0-backport.3**.
 
 The separate port projects live under `ports/`. Their `validation/` directories
 contain screenshots and exact packaged-JAR test results. All four must pass
@@ -39,13 +38,13 @@ artwork, authentication code, and the bundled GPL license are retained.
 
 ## Install
 
-Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.2+1.21.11.jar).
+Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.3+1.21.11.jar).
 The [release folder](releases/1.21.11) includes SHA-256 checksums, runtime results,
 and screenshots from the packaged client.
 
 1. Use Minecraft **1.21.11**, **Fabric Loader 0.20.1 or newer**, and **Java 21 or newer**.
 2. Install [Fabric API 0.141.6+1.21.11](https://modrinth.com/mod/fabric-api/versions?g=1.21.11).
-3. Put `autism-account-manager-5.0-backport.2+1.21.11.jar` in that instance's `mods` folder.
+3. Put `autism-account-manager-5.0-backport.3+1.21.11.jar` in that instance's `mods` folder.
 4. Open **Multiplayer**, then click **Accounts** in the upper-right corner.
 
 Use the installable JAR, rather than the sources or QA JAR. Keep one version of
@@ -54,12 +53,14 @@ already included.
 
 ## Color theme
 
-The account manager uses the supplied bowl palette: deep navy surfaces, electric
-blue primary actions, teal controls, golden current-account/focus markers, herb
-green success states, spice orange destructive actions, and spoon brown scroll
-accents. Shared tokens live in `AccountPalette.java`. Text and icon colors use
-readable neutral/tinted foregrounds. See [the Product Design review](design-qa.md)
-for screenshots, contrast measurements, and the review history.
+The account manager uses the same indigo theme as the four other Minecraft
+ports: deep blue `#1A3BD1` primary actions and selected tabs, `#06070B` background,
+`#101114` panels and idle buttons, black fields, `#293C94` default outlines,
+`#526FFF` focus rings and active usernames, and `#8181D9` hover outlines.
+Headings/button text use `#FCFCFC`; placeholders and empty states use `#C8C9D1`.
+Shared tokens live in `AccountPalette.java`. Primary fills retain their exact
+color on hover. See [the design review](design-qa.md) for current screenshot
+and pixel evidence and the earlier theme history.
 
 ## Scope and behavior
 
@@ -100,10 +101,9 @@ adding/logging into a fake offline account through the UI, rename, disk reload
 with a stable ID, deletion, resize, and original-session restoration. Actual
 game screenshots and the result are included in the distribution.
 
-Windows DPAPI encryption/decryption was also tested in both directions between
-the unmodified original JAR on Java 25 and the backport on Java 21, using synthetic
-data. The artifact verifier checks metadata, mixins, nested libraries, Java 21
-bytecode, license, and absence of QA classes.
+The packaged Java 21 test also checks Windows DPAPI encryption/decryption with
+synthetic data. The artifact verifier checks metadata, mixins, nested libraries,
+Java 21 bytecode, license, and absence of QA classes.
 
 Microsoft OAuth, real session tokens, TheAltening, real saved-account migration,
 multiplayer authentication, other mods, and Linux/macOS were **not tested**.

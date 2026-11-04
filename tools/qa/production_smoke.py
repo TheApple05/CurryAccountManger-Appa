@@ -128,12 +128,17 @@ def main():
     cached_client = gradle / f'caches/fabric-loom/{version}/minecraft-client.jar'
     client = cached_client if cached_client.exists() and digest(cached_client, 'sha1') == client_info['sha1'] else artifact(client_info, cache, gradle, tools)
     runtime = [client.resolve()]
+    library_paths = {}
+    def library_key(coordinate):
+        group, name, version, *classifier = coordinate.split(':')
+        return (group, name, *classifier)
     for library in mc['libraries']:
         if applies(library.get('rules')) and library['downloads'].get('artifact'):
-            runtime.append(artifact(library['downloads']['artifact'], cache, gradle, tools, library['name']))
+            library_paths[library_key(library['name'])] = artifact(library['downloads']['artifact'], cache, gradle, tools, library['name'])
     profile = metadata(f'https://meta.fabricmc.net/v2/versions/loader/{version}/{loader}/profile/json', cache / f'loader-{version}-{loader}.json')
     for library in profile['libraries']:
-        runtime.append(artifact(library, cache, gradle, tools, library['name']))
+        library_paths[library_key(library['name'])] = artifact(library, cache, gradle, tools, library['name'])
+    runtime.extend(library_paths.values())
     api = props['fabric_api_version']
     api_path = artifact({'url': 'https://maven.fabricmc.net/'}, cache, gradle, tools, f'net.fabricmc.fabric-api:fabric-api:{api}')
     shutil.copyfile(api_path, run / 'mods' / api_path.name)

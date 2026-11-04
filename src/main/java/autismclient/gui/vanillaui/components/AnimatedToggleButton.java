@@ -40,13 +40,13 @@ public final class AnimatedToggleButton {
       float var6 = clamp01(var4);
       UiRenderer.frame(var0.graphics(), var1, AccountPalette.SURFACE_RAISED, var5.buttonBorder);
       if (var6 > 0.001F) {
-         UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(AccountPalette.HERB_GREEN, var6));
+         UiRenderer.rect(var0.graphics(), var1.inset(1), UiRenderer.applyAlpha(AccountPalette.PRIMARY, var6));
          UiRenderer.outline(var0.graphics(), var1, UiRenderer.applyAlpha(var5.success, var6));
       }
 
       float var7 = HoverFades.get(HoverFades.key(var1), var3);
       if (var7 > 0.001F) {
-         UiRenderer.rect(var0.graphics(), var1.inset(1), Math.round(12.0F * var7) << 24 | 16777215);
+         UiRenderer.outline(var0.graphics(), var1, AccountPalette.HOVER);
       }
 
       if (var2 != null && !var2.isEmpty()) {

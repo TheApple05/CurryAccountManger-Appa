@@ -23,14 +23,14 @@ public final class CompactSymbolButton {
          UiContext var7 = UiContexts.overlay(var0, var1, -10000, -10000);
          UiColors var8 = var7.theme().colors();
          int var9 = var6 ? AccountPalette.DANGER_FILL : AccountPalette.SURFACE_RAISED;
-         UiRenderer.frame(var0, var2, var9, var6 ? var8.bad : var8.borderSoft);
+         UiRenderer.frame(var0, var2, var9, var4 && var5 ? AccountPalette.HOVER : AccountPalette.BORDER);
          float var10 = HoverFades.get(HoverFades.key(var2), var4 && var5);
          if (var10 > 0.001F) {
-            UiRenderer.rect(var0, var2.inset(1), (int)(8.0F * var10) << 24 | 16777215);
+            UiRenderer.outline(var0, var2, AccountPalette.HOVER);
          }
 
          if (!var5) {
-            UiRenderer.rect(var0, var2.inset(1), 0x6600162F);
+            UiRenderer.rect(var0, var2.inset(1), 0x6606070B);
          }
 
          int var11 = var5 ? var8.text : var8.disabled;
@@ -68,18 +68,18 @@ public final class CompactSymbolButton {
          UiContext var7 = UiContexts.overlay(var0, var1, -10000, -10000);
          UiColors var8 = var7.theme().colors();
          int var9 = var6 ? AccountPalette.DANGER_FILL : AccountPalette.SURFACE_RAISED;
-         int var10 = var6 ? AccountPalette.SPICE_ORANGE : var8.borderSoft;
+         int var10 = var4 && var5 ? AccountPalette.HOVER : AccountPalette.BORDER;
          UiRenderer.frame(var0, var2, var9, var10);
          float var11 = HoverFades.get(HoverFades.key(var2), var4 && var5);
          if (var11 > 0.001F) {
-            UiRenderer.rect(var0, var2.inset(1), (int)(8.0F * var11) << 24 | 16777215);
+            UiRenderer.outline(var0, var2, AccountPalette.HOVER);
          }
 
          if (!var5) {
-            UiRenderer.rect(var0, var2.inset(1), 0x6600162F);
+            UiRenderer.rect(var0, var2.inset(1), 0x6606070B);
          }
 
-         int var12 = var5 ? (var6 ? AccountPalette.SPICE_ORANGE : AccountPalette.TEXT) : AccountPalette.TEXT_DISABLED;
+         int var12 = var5 ? AccountPalette.TEXT : AccountPalette.TEXT_DISABLED;
          int var13 = Math.max(4, Math.min(var2.width(), var2.height()) - 5);
          int var14 = Math.min(var2.width(), var2.height());
          if ((var14 - var13 & 1) != 0) {

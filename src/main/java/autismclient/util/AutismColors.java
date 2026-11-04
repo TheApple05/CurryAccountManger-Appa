@@ -34,7 +34,7 @@ public class AutismColors {
    }
 
    public static int accent() {
-      return AutismTheme.recolor(AccountPalette.GOLDEN_YELLOW, AutismTheme.Channel.ACCENT);
+      return AutismTheme.recolor(AccountPalette.FOCUS, AutismTheme.Channel.ACCENT);
    }
 
    public static int secondary() {
@@ -46,7 +46,7 @@ public class AutismColors {
    }
 
    public static int dangerText() {
-      return AutismTheme.recolor(AccountPalette.SPICE_ORANGE, AutismTheme.Channel.DANGER);
+      return AutismTheme.recolor(AccountPalette.HOVER, AutismTheme.Channel.DANGER);
    }
 
    public static int successText() {
@@ -58,11 +58,11 @@ public class AutismColors {
    }
 
    public static int packetPink() {
-      return AccountPalette.GOLDEN_YELLOW;
+      return AccountPalette.FOCUS;
    }
 
    public static int packetOrange() {
-      return AccountPalette.SPICE_ORANGE;
+      return AccountPalette.HOVER;
    }
 
    public static int packetBlue() {
@@ -70,7 +70,7 @@ public class AutismColors {
    }
 
    public static int packetYellow() {
-      return AccountPalette.GOLDEN_YELLOW;
+      return AccountPalette.FOCUS;
    }
 
    public static int packetCyan() {
@@ -86,7 +86,7 @@ public class AutismColors {
    }
 
    public static int packetLightYellow() {
-      return AccountPalette.GOLDEN_YELLOW;
+      return AccountPalette.FOCUS;
    }
 
    public static int listBg() {
@@ -102,7 +102,7 @@ public class AutismColors {
    }
 
    public static int rowSelectedText() {
-      return AutismTheme.recolor(AccountPalette.GOLDEN_YELLOW, AutismTheme.Channel.TEXT);
+      return AutismTheme.recolor(AccountPalette.FOCUS, AutismTheme.Channel.TEXT);
    }
 
    public static int packetRowBg(boolean var0, int var1, boolean var2) {
