@@ -1,0 +1,9 @@
+{
+  "attempted": 1,
+  "kind": "REFRESH",
+  "sourceLineNumber": 3,
+  "status": "INVALID",
+  "elapsedMs": 799,
+  "minecraftArtifact": "26.3",
+  "jarSha256": "b309769b2c8bd6121e1222d51f3907b1f37aa95dc59731137486eadab596a02a"
+}

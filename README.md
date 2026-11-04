@@ -1,7 +1,7 @@
 # Curryfarts Account Manager ports
 
 Download the matching installable JAR from the [GitHub releases](https://github.com/TheApple05/CurryAccountManger-Appa/releases).
-Each update has one release containing all five Minecraft versions, checksums,
+Each update has one release containing all seven Minecraft versions, checksums,
 and validation results. [Browse updates](releases/README.md).
 
 - **1.8.9** — Forge 11.15.1.2318, Java 8. [Install/build/test details](ports/forge-1.8.9/README.md).
@@ -9,16 +9,18 @@ and validation results. [Browse updates](releases/README.md).
 - **1.16.5** — Fabric Loader 0.20.1, full Fabric API 0.42.0+1.16, Java 8. [Install/build/test details](ports/fabric-1.16.5/README.md).
 - **1.21.10** — Fabric Loader 0.20.1, Fabric API 0.138.4+1.21.10, Java 21. [Install/build/test details](ports/fabric-1.21.10/README.md).
 - **1.21.11** — Fabric Loader 0.20.1, Fabric API 0.141.6+1.21.11, Java 21. [Release and validation](releases/1.21.11/README.md).
+- **26.2** — Fabric Loader 0.20.1, Fabric API 0.153.0+26.2, Java 25. [Release and validation](releases/26.2/README.md).
+- **26.3** — Fabric Loader 0.20.1, Fabric API 0.161.0+26.3, Java 25. [Release and validation](releases/26.3/README.md).
 
 Put one matching account-manager JAR in the instance's `mods` folder, install the
 listed loader and dependencies, then open **Multiplayer → Accounts**. Use the versioned release assets for your Minecraft version. These ports retain Melonik's account-manager authorship,
 GPL license, artwork, and account-manager functionality.
 
-All five versions use the requested indigo menu palette: `#06070B` background,
+The five older versions use the requested indigo menu palette: `#06070B` background,
 `#101114` panels and idle buttons, black input fields, `#1A3BD1` primary actions
 and selected tabs, `#293C94` outlines, `#526FFF` focus/active usernames,
 `#8181D9` hover outlines, `#FCFCFC` text, and `#C8C9D1` placeholders.
-The four port releases are **5.0-port.3**; Minecraft 1.21.11 uses **5.0-backport.4**.
+The four older port releases are **5.0-port.3**; Minecraft 1.21.11 uses **5.0-backport.4**.
 Each includes **Session Token Importer** beside **Session Token Switcher**:
 paste or load a TXT, validate sessions or refresh Microsoft credentials, and
 import verified accounts without leaving Minecraft. Existing accounts receive
@@ -28,8 +30,15 @@ The separate port projects live under `ports/`. Their `validation/` directories
 contain screenshots and exact packaged-JAR test results. All four must pass
 before `python tools/package_ports.py` collects the JARs and checksums. Build
 JDKs differ from client Java versions; follow the instructions in each project.
-Live Microsoft/session/TheAltening accounts, multiplayer servers, other mod
-combinations, and non-Windows platforms have not been validated.
+Successful live Microsoft/session/TheAltening sign-in, multiplayer servers,
+other mod combinations, and non-Windows platforms have not been validated.
+
+To publish an update, bump `release.json`, include the tested artifacts and notes,
+and push to `origin main`. GitHub Actions automatically publishes one complete
+`vVERSION` release containing every supported Minecraft version. See
+[release preparation and automation](docs/releases.md). The 26.x source lives at
+the commit recorded in the release manifest; the root `main` build remains the
+1.21.11 project.
 
 ---
 

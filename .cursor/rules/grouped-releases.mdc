@@ -1,0 +1,23 @@
+---
+description: Maintain one complete release per update and automatic publication from the main release manifest.
+alwaysApply: true
+---
+
+# Grouped release contract
+
+- Follow `docs/releases.md` and treat `release.json` as the publication manifest.
+- Each update has one `vVERSION` release containing every supported Minecraft
+  version: Forge 1.8.9/1.12.2 and Fabric 1.16.5/1.21.10/1.21.11/26.2/26.3.
+  Do not create separate release pages or release tags per Minecraft version.
+- Bump the manifest's update version for new published behavior; preserve the
+  complete supported matrix, tested artifact paths or pinned release URLs,
+  SHA-256 digests, source commits, requirements, validation evidence and notes.
+- Carry forward unchanged tested JARs with their original bytes, filenames and
+  embedded mod versions. The grouped update version is independent of mod versions.
+- Build and test changed mods before publication. The publishing workflow only
+  verifies and uploads existing artifacts; it does not run Minecraft validation.
+- A push to `main` changing `release.json` publishes one complete grouped update
+  automatically. Keep workflow action references pinned and publication
+  idempotent; an exact existing release is a no-op and a mismatch must fail.
+- Keep historical releases and source tags. Use the recorded modern source
+  commit for 26.x development; the root `main` build remains the 1.21.11 project.

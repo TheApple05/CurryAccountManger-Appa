@@ -1,0 +1,61 @@
+name: Publish grouped release
+
+on:
+  push:
+    branches: [main]
+    paths: [release.json]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Keep distinct release updates queued while another update is uploading.
+# queue:max also preserves earlier pending runs; cancel-in-progress alone does not.
+concurrency:
+  group: release-publisher
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the triggering commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify checkout identity
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+
+      - name: Test release automation
+        run: python -m unittest discover -s tools/tests -v
+
+      - name: Check release script syntax
+        run: python -m py_compile tools/prepare_update.py tools/publish_update.py
+
+      - name: Verify and prepare every supported version
+        shell: bash
+        run: >-
+          python tools/prepare_update.py
+          --manifest release.json
+          --output dist/github-release
+          --commit "$GITHUB_SHA"
+          --repository "$GITHUB_REPOSITORY"
+
+      - name: Publish the complete update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/publish_update.py --plan dist/github-release/plan.json

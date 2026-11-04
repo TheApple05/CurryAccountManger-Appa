@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "version": "5.0.4",
+  "title": "Curryfarts Account Manager 5.0.4 \u2014 all Minecraft versions",
+  "notes": "releases/notes-5.0.4.md",
+  "supported": [
+    {
+      "minecraft": "1.8.9",
+      "loader": "forge"
+    },
+    {
+      "minecraft": "1.12.2",
+      "loader": "forge"
+    },
+    {
+      "minecraft": "1.16.5",
+      "loader": "fabric"
+    },
+    {
+      "minecraft": "1.21.10",
+      "loader": "fabric"
+    },
+    {
+      "minecraft": "1.21.11",
+      "loader": "fabric"
+    },
+    {
+      "minecraft": "26.2",
+      "loader": "fabric"
+    },
+    {
+      "minecraft": "26.3",
+      "loader": "fabric"
+    }
+  ],
+  "artifacts": [
+    {
+      "minecraft": "1.8.9",
+      "loader": "forge",
+      "java": 8,
+      "filename": "curryfarts-5.0-port.3+1.8.9-forge.jar",
+      "sha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
+      "source": {
+        "url": "https://github.com/TheApple05/CurryAccountManger-Appa/releases/download/v5.0.3/curryfarts-5.0-port.3%2B1.8.9-forge.jar"
+      },
+      "requirements": "Forge 11.15.1.2318; Java 8",
+      "sourceRef": "0ba22ee99d62bd269e816f6928edc45f5c8c7635",
+      "validation": {
+        "runtimeChecks": 29,
+        "deterministicChecks": 76
+      }
+    },
+    {
+      "minecraft": "1.12.2",
+      "loader": "forge",
+      "java": 8,
+      "filename": "curryfarts-5.0-port.3+1.12.2-forge.jar",
+      "sha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
+      "source": {
+        "url": "https://github.com/TheApple05/CurryAccountManger-Appa/releases/download/v5.0.3/curryfarts-5.0-port.3%2B1.12.2-forge.jar"
+      },
+      "requirements": "Forge 14.23.5.2847; Java 8",
+      "sourceRef": "0ba22ee99d62bd269e816f6928edc45f5c8c7635",
+      "validation": {
+        "runtimeChecks": 28,
+        "deterministicChecks": 76
+      }
+    },
+    {
+      "minecraft": "1.16.5",
+      "loader": "fabric",
+      "java": 8,
+      "filename": "curryfarts-5.0-port.3+1.16.5-fabric.jar",
+      "sha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+      "source": {
+        "url": "https://github.com/TheApple05/CurryAccountManger-Appa/releases/download/v5.0.3/curryfarts-5.0-port.3%2B1.16.5-fabric.jar"
+      },
+      "requirements": "Fabric Loader 0.20.1; Fabric API 0.42.0+1.16; Java 8",
+      "sourceRef": "0ba22ee99d62bd269e816f6928edc45f5c8c7635",
+      "validation": {
+        "runtimeChecks": 31,
+        "deterministicChecks": 76
+      }
+    },
+    {
+      "minecraft": "1.21.10",
+      "loader": "fabric",
+      "java": 21,
+      "filename": "curryfarts-5.0-port.3+1.21.10-fabric.jar",
+      "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
+      "source": {
+        "url": "https://github.com/TheApple05/CurryAccountManger-Appa/releases/download/v5.0.3/curryfarts-5.0-port.3%2B1.21.10-fabric.jar"
+      },
+      "requirements": "Fabric Loader 0.20.1; Fabric API 0.138.4+1.21.10; Java 21",
+      "sourceRef": "0ba22ee99d62bd269e816f6928edc45f5c8c7635",
+      "validation": {
+        "runtimeChecks": 47,
+        "deterministicChecks": 161
+      }
+    },
+    {
+      "minecraft": "1.21.11",
+      "loader": "fabric",
+      "java": 21,
+      "filename": "autism-account-manager-5.0-backport.4+1.21.11.jar",
+      "sha256": "54df1f29a59fb07375636f45b36977923a6e779756484f4b9576e412fc2e210f",
+      "source": {
+        "path": "releases/1.21.11/autism-account-manager-5.0-backport.4+1.21.11.jar"
+      },
+      "requirements": "Fabric Loader 0.20.1; Fabric API 0.141.6+1.21.11; Java 21",
+      "sourceRef": "0ba22ee99d62bd269e816f6928edc45f5c8c7635",
+      "validation": {
+        "runtimeChecks": 47,
+        "deterministicChecks": 161
+      }
+    },
+    {
+      "minecraft": "26.2",
+      "loader": "fabric",
+      "java": 25,
+      "filename": "autism-account-manager-5.0-port.1+26.2.jar",
+      "sha256": "d648d98f78e39cbbf0383878aff92476c8e3972a8d4197e9bdabeb32bc7d387d",
+      "source": {
+        "path": "releases/26.2/autism-account-manager-5.0-port.1+26.2.jar"
+      },
+      "requirements": "Fabric Loader 0.20.1; Fabric API 0.153.0+26.2; Java 25",
+      "sourceRef": "f09a7e4c838e76878fb0a0bc434a62184071483f",
+      "validation": {
+        "runtimeChecks": 61,
+        "deterministicChecks": 161
+      }
+    },
+    {
+      "minecraft": "26.3",
+      "loader": "fabric",
+      "java": 25,
+      "filename": "autism-account-manager-5.0-port.1+26.3.jar",
+      "sha256": "b309769b2c8bd6121e1222d51f3907b1f37aa95dc59731137486eadab596a02a",
+      "source": {
+        "path": "releases/26.3/autism-account-manager-5.0-port.1+26.3.jar"
+      },
+      "requirements": "Fabric Loader 0.20.1; Fabric API 0.161.0+26.3; Java 25",
+      "sourceRef": "f09a7e4c838e76878fb0a0bc434a62184071483f",
+      "validation": {
+        "runtimeChecks": 61,
+        "deterministicChecks": 161
+      }
+    }
+  ],
+  "attachments": [
+    {
+      "filename": "validation-legacy-builds.json",
+      "sha256": "273cf603c50df97d4f5b25cb19a1511cbf8e9b04342578db3cf748acb4aecd59",
+      "source": {
+        "path": "releases/validation-5.0.3.json"
+      }
+    },
+    {
+      "filename": "validation-26.2-fabric.json",
+      "sha256": "65b8dc56b841758ecfe5d6d1470e28268d0a709792fd66bafb62e107f5b967ea",
+      "source": {
+        "path": "releases/26.2/production-verdict.json"
+      }
+    },
+    {
+      "filename": "autism-account-manager-5.0-port.1+26.2-sources.jar",
+      "sha256": "4f265165f56ec236ba08b1d00b3ffcd14fa45ec333e5d5bfa7a4c163bcf10097",
+      "source": {
+        "path": "releases/26.2/autism-account-manager-5.0-port.1+26.2-sources.jar"
+      }
+    },
+    {
+      "filename": "autism-account-manager-5.0-port.1+26.2-bundle.zip",
+      "sha256": "0457ee87234742c95b3cbc904f2d262d4b2025ed3bef35e89e4144d6de7e0ea4",
+      "source": {
+        "path": "releases/26.2/autism-account-manager-5.0-port.1+26.2-bundle.zip"
+      }
+    },
+    {
+      "filename": "validation-26.3-fabric.json",
+      "sha256": "47cca8d716018e4e3c3a98a3e93fbb990ef405b2173f06d13ff1ff3543c36e18",
+      "source": {
+        "path": "releases/26.3/production-verdict.json"
+      }
+    },
+    {
+      "filename": "autism-account-manager-5.0-port.1+26.3-sources.jar",
+      "sha256": "8ae1b1a0b4c917d736a7a8cdf1be856c4579264482d73993476ccfeebc757289",
+      "source": {
+        "path": "releases/26.3/autism-account-manager-5.0-port.1+26.3-sources.jar"
+      }
+    },
+    {
+      "filename": "autism-account-manager-5.0-port.1+26.3-bundle.zip",
+      "sha256": "8094ada852882af5e26f6225029733a929ddb69bb8c0f5745024d755a2087b6a",
+      "source": {
+        "path": "releases/26.3/autism-account-manager-5.0-port.1+26.3-bundle.zip"
+      }
+    }
+  ]
+}
