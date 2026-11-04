@@ -1,8 +1,10 @@
 {
   "passed": true,
-  "java": "8",
-  "upstreamNbtRead": true,
+  "java": "8u504",
+  "sourceSha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+  "upstreamSchemaFixtureRead": true,
   "saveReloadPreservesAllFields": true,
   "encryptedFieldsRetained": true,
-  "syntheticDataOnly": true
+  "syntheticDataOnly": true,
+  "evidence": "core-compatibility.json"
 }

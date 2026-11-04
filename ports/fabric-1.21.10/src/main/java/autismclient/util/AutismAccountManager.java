@@ -1,8 +1,11 @@
 package autismclient.util;
 
+import autismclient.util.tokenimport.TokenImportService;
+import autismclient.util.tokenimport.TokenRefresher;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -60,6 +63,7 @@ public final class AutismAccountManager extends PersistentNbtManager<AutismAccou
             var2.username = var1.username;
             var2.uuid = var1.uuid;
             var2.sessionTokenExpiresAt = var1.sessionTokenExpiresAt;
+            var2.tokenRefresherAuth = var1.tokenRefresherAuth;
             this.save();
          }
       }
@@ -130,6 +134,68 @@ public final class AutismAccountManager extends PersistentNbtManager<AutismAccou
          this.items.add(var1);
          this.save();
       }
+   }
+
+   /** UUID deduplication and insertion are atomic, including imports from concurrent callers. */
+   public synchronized TokenImportService.StoreResult addVerifiedImport(TokenRefresher.VerifiedAccount verified, BooleanSupplier cancelled) {
+      if (Thread.currentThread().isInterrupted() || cancelled.getAsBoolean()) return TokenImportService.StoreResult.CANCELLED;
+      for (AutismAccount existing : this.items) {
+         if (existing.type != AutismAccountType.Session && existing.type != AutismAccountType.Microsoft) continue;
+         String id = existing.uuid == null ? "" : existing.uuid.replace("-", "");
+         if (id.equalsIgnoreCase(verified.uuid().toString().replace("-", ""))
+             || verified.accessToken().equals(existing.token)) {
+            if (Thread.currentThread().isInterrupted() || cancelled.getAsBoolean()) return TokenImportService.StoreResult.CANCELLED;
+            AutismAccount previous = new AutismAccount();
+            this.copyImportFields(previous, existing);
+            this.applyVerifiedImport(existing, verified);
+            try {
+               this.save();
+            } catch (RuntimeException failure) {
+               this.copyImportFields(existing, previous);
+               throw new IllegalStateException("Could not securely save imported credentials.");
+            }
+            return TokenImportService.StoreResult.DUPLICATE;
+         }
+      }
+      AutismAccount account = new AutismAccount();
+      account.type = AutismAccountType.Session;
+      this.applyVerifiedImport(account, verified);
+      if (Thread.currentThread().isInterrupted() || cancelled.getAsBoolean()) return TokenImportService.StoreResult.CANCELLED;
+      this.items.add(account);
+      try {
+         this.save();
+      } catch (RuntimeException failure) {
+         this.items.remove(account);
+         throw new IllegalStateException("Could not securely save imported credentials.");
+      }
+      return TokenImportService.StoreResult.IMPORTED;
+   }
+
+   private void applyVerifiedImport(AutismAccount account, TokenRefresher.VerifiedAccount verified) {
+      // Retain rotation even for an existing UUID, and preserve its stable ID and any existing refresh credential.
+      if (verified.refreshToken() != null && !verified.refreshToken().isBlank()) {
+         account.type = AutismAccountType.Microsoft;
+         account.tokenRefresherAuth = true;
+         account.label = verified.refreshToken();
+      } else if (account.type != AutismAccountType.Microsoft) account.label = verified.username();
+      account.username = verified.username();
+      account.uuid = verified.uuid().toString();
+      account.token = verified.accessToken();
+      account.sessionToken = verified.accessToken();
+      account.sessionTokenExpiresAt = verified.expiresAtMillis();
+      account.checkStatus = AutismAccount.CheckStatus.VALID;
+   }
+
+   private void copyImportFields(AutismAccount target, AutismAccount source) {
+      target.type = source.type;
+      target.label = source.label;
+      target.username = source.username;
+      target.uuid = source.uuid;
+      target.token = source.token;
+      target.sessionToken = source.sessionToken;
+      target.sessionTokenExpiresAt = source.sessionTokenExpiresAt;
+      target.tokenRefresherAuth = source.tokenRefresherAuth;
+      target.checkStatus = source.checkStatus;
    }
 
    public synchronized int addAll(List<AutismAccount> var1) {

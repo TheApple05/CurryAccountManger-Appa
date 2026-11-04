@@ -1,6 +1,7 @@
 package autismclient.util;
 
 import autismclient.util.mm.crypto.AtRestSeal;
+import autismclient.util.tokenimport.TokenRefresher;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.Environment;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
@@ -30,6 +31,8 @@ public class AutismAccount {
    public String uuid = "";
    public String password = "";
    public long sessionTokenExpiresAt;
+   public boolean tokenRefresherAuth;
+   public transient volatile TokenRefresher.FailureKind tokenImportFailureKind;
    public transient volatile AutismAccount.CheckStatus checkStatus = AutismAccount.CheckStatus.UNKNOWN;
    private transient String lastError = "";
    private transient WaybackAuthLib alteningAuth;
@@ -47,6 +50,7 @@ public class AutismAccount {
 
    public boolean fetchInfo() {
       this.lastError = "";
+      this.tokenImportFailureKind = null;
 
       return switch (this.type) {
          case Cracked, Generated -> this.fetchCracked();
@@ -117,17 +121,20 @@ public class AutismAccount {
    private boolean fetchSession() {
       if (this.token != null && !this.token.isBlank()) {
          try {
-            JsonObject var1 = AutismHttp.getJsonDirect("https://api.minecraftservices.com/minecraft/profile", this.token);
-            if (var1 != null && var1.has("id") && var1.has("name")) {
-               this.uuid = var1.get("id").getAsString();
-               this.username = var1.get("name").getAsString();
-               return true;
-            } else {
-               this.lastError = "profile response missing id/name";
-               return false;
-            }
-         } catch (Exception var2) {
-            this.lastError = shortError(var2);
+            TokenRefresher.VerifiedAccount verified = new TokenRefresher().validateSession(this.token);
+            this.uuid = verified.uuid().toString();
+            this.username = verified.username();
+            this.sessionToken = verified.accessToken();
+            this.sessionTokenExpiresAt = verified.expiresAtMillis();
+            return true;
+         } catch (TokenRefresher.Failure failure) {
+            this.tokenImportFailureKind = failure.kind();
+            this.lastError = failure.getMessage();
+            return false;
+         } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            this.tokenImportFailureKind = TokenRefresher.FailureKind.NETWORK;
+            this.lastError = "Session check cancelled.";
             return false;
          }
       } else {
@@ -152,6 +159,26 @@ public class AutismAccount {
          return false;
       } else if (this.hasFreshSessionToken()) {
          return true;
+      } else if (this.tokenRefresherAuth) {
+         try {
+            TokenRefresher.VerifiedAccount verified = new TokenRefresher().refresh(this.label);
+            this.token = verified.accessToken();
+            this.sessionToken = verified.accessToken();
+            this.uuid = verified.uuid().toString();
+            this.username = verified.username();
+            this.label = verified.refreshToken();
+            this.sessionTokenExpiresAt = verified.expiresAtMillis();
+            return true;
+         } catch (TokenRefresher.Failure failure) {
+            this.tokenImportFailureKind = failure.kind();
+            this.lastError = failure.getMessage();
+            return false;
+         } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            this.tokenImportFailureKind = TokenRefresher.FailureKind.NETWORK;
+            this.lastError = "Refresh cancelled.";
+            return false;
+         }
       } else {
          AutismMicrosoftLogin.LoginData var1 = AutismMicrosoftLogin.login(this.label);
          if (var1.isGood()) {
@@ -303,6 +330,7 @@ public class AutismAccount {
       }
 
       var1.putLong("sessionExpiresAt", this.sessionTokenExpiresAt);
+      var1.putBoolean("tokenRefresherAuth", this.tokenRefresherAuth);
       return var1;
    }
 
@@ -332,6 +360,7 @@ public class AutismAccount {
       String var5 = var1.getStringOr("encLabel", "");
       this.label = var5.isEmpty() ? var4 : unsealString(var5, var4);
       this.sessionTokenExpiresAt = var1.getLongOr("sessionExpiresAt", 0L);
+      this.tokenRefresherAuth = var1.getBooleanOr("tokenRefresherAuth", false);
       return this;
    }
 

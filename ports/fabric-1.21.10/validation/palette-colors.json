@@ -1,6 +1,6 @@
 {
   "theme": "indigo",
-  "artifactVersion": "5.0-port.2",
+  "artifactVersion": "5.0-port.3",
   "expectedColors": {
     "background": "#06070B",
     "panelAndIdle": "#101114",
@@ -14,37 +14,59 @@
   },
   "screenshotPixelCounts": {
     "02-offline-account.png": {
-      "background": 271326,
-      "panelAndIdle": 539761,
+      "background": 240604,
+      "panelAndIdle": 553308,
       "field": 30444,
-      "primaryAndSelected": 13152,
-      "outline": 27806,
+      "primaryAndSelected": 24761,
+      "outline": 30430,
       "focusAndUsername": 3888,
-      "hoverOutline": 0,
-      "text": 8702,
+      "hoverOutline": 1056,
+      "text": 10410,
       "placeholder": 3588
     },
     "07-field-focus.png": {
-      "background": 278336,
-      "panelAndIdle": 531106,
+      "background": 242112,
+      "panelAndIdle": 546309,
       "field": 31204,
-      "primaryAndSelected": 13152,
-      "outline": 26212,
+      "primaryAndSelected": 27932,
+      "outline": 29472,
       "focusAndUsername": 3964,
-      "hoverOutline": 0,
-      "text": 8462,
+      "hoverOutline": 1056,
+      "text": 10386,
       "placeholder": 3160
     },
     "08-primary-hover.png": {
-      "background": 278336,
-      "panelAndIdle": 531354,
+      "background": 242112,
+      "panelAndIdle": 546559,
       "field": 31224,
-      "primaryAndSelected": 13152,
-      "outline": 25156,
+      "primaryAndSelected": 27932,
+      "outline": 29472,
       "focusAndUsername": 3964,
       "hoverOutline": 1056,
-      "text": 8442,
+      "text": 10366,
       "placeholder": 3160
+    },
+    "10-session-token-importer.png": {
+      "background": 138720,
+      "panelAndIdle": 493280,
+      "field": 202112,
+      "primaryAndSelected": 45308,
+      "outline": 26632,
+      "focusAndUsername": 0,
+      "hoverOutline": 0,
+      "text": 4884,
+      "placeholder": 5200
+    },
+    "12-importer-compact.png": {
+      "background": 57440,
+      "panelAndIdle": 231132,
+      "field": 83230,
+      "primaryAndSelected": 28028,
+      "outline": 18232,
+      "focusAndUsername": 4490,
+      "hoverOutline": 0,
+      "text": 6548,
+      "placeholder": 7700
     }
   },
   "allExactColorsPresent": true

@@ -1,7 +1,8 @@
 # Curryfarts Account Manager ports
 
 Download the matching installable JAR from the [GitHub releases](https://github.com/TheApple05/CurryAccountManger-Appa/releases).
-Each Minecraft version has its own release and SHA-256 checksum:
+Each update has one release containing all five Minecraft versions, checksums,
+and validation results. [Browse updates](releases/README.md).
 
 - **1.8.9** — Forge 11.15.1.2318, Java 8. [Install/build/test details](ports/forge-1.8.9/README.md).
 - **1.12.2** — Forge 14.23.5.2847, Java 8. [Install/build/test details](ports/forge-1.12.2/README.md).
@@ -17,7 +18,11 @@ All five versions use the requested indigo menu palette: `#06070B` background,
 `#101114` panels and idle buttons, black input fields, `#1A3BD1` primary actions
 and selected tabs, `#293C94` outlines, `#526FFF` focus/active usernames,
 `#8181D9` hover outlines, `#FCFCFC` text, and `#C8C9D1` placeholders.
-The four port releases are **5.0-port.2**; Minecraft 1.21.11 uses **5.0-backport.3**.
+The four port releases are **5.0-port.3**; Minecraft 1.21.11 uses **5.0-backport.4**.
+Each includes **Session Token Importer** beside **Session Token Switcher**:
+paste or load a TXT, validate sessions or refresh Microsoft credentials, and
+import verified accounts without leaving Minecraft. Existing accounts receive
+updated verified credentials while retaining their stable IDs.
 
 The separate port projects live under `ports/`. Their `validation/` directories
 contain screenshots and exact packaged-JAR test results. All four must pass
@@ -38,13 +43,13 @@ artwork, authentication code, and the bundled GPL license are retained.
 
 ## Install
 
-Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.3+1.21.11.jar).
+Download the [Minecraft 1.21.11 JAR](releases/1.21.11/autism-account-manager-5.0-backport.4+1.21.11.jar).
 The [release folder](releases/1.21.11) includes SHA-256 checksums, runtime results,
 and screenshots from the packaged client.
 
 1. Use Minecraft **1.21.11**, **Fabric Loader 0.20.1 or newer**, and **Java 21 or newer**.
 2. Install [Fabric API 0.141.6+1.21.11](https://modrinth.com/mod/fabric-api/versions?g=1.21.11).
-3. Put `autism-account-manager-5.0-backport.3+1.21.11.jar` in that instance's `mods` folder.
+3. Put `autism-account-manager-5.0-backport.4+1.21.11.jar` in that instance's `mods` folder.
 4. Open **Multiplayer**, then click **Accounts** in the upper-right corner.
 
 ## Import session and refresh tokens inside Minecraft

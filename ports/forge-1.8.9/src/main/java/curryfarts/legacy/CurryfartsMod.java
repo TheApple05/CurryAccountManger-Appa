@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid="curryfarts",name="Curryfarts Account Manager",version="5.0-port.2+1.8.9",clientSideOnly=true,acceptableRemoteVersions="*")
+@Mod(modid="curryfarts",name="Curryfarts Account Manager",version="5.0-port.3+1.8.9",clientSideOnly=true,acceptableRemoteVersions="*")
 public final class CurryfartsMod {
     public static final AccountStore STORE=new AccountStore();
     private static boolean loaded;

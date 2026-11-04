@@ -58,7 +58,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
             .setX(panelX() + 12).setY(inputTop())
             .setPlaceholder(Component.literal("One token per line, username:token, or REFRESHTOKEN / MCTOKEN fields"))
             .setTextColor(AccountPalette.TEXT).setTextShadow(false)
-            .setCursorColor(AccountPalette.GOLDEN_YELLOW)
+            .setCursorColor(AccountPalette.FOCUS)
             .setShowBackground(false).setShowDecorations(false)
             .build(font, innerWidth(), inputHeight(), Component.literal("Tokens to validate and import"));
         inputField.setCharacterLimit(AutismTokenImporter.MAX_INPUT_CHARS);
@@ -278,7 +278,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
             if (screenHeight() >= 250) text(graphics, "Session tokens are checked; Microsoft refresh tokens create fresh sessions.", panelX() + 12, 82, AccountPalette.TEXT_SECONDARY);
             UiRenderer.frame(graphics, UiBounds.of(inputField.getX(), inputField.getY(), inputField.getWidth(), inputField.getHeight()),
                 inputField.isFocused() ? AccountPalette.FIELD_FOCUSED : AccountPalette.FIELD,
-                inputField.isFocused() ? AccountPalette.GOLDEN_YELLOW : AccountPalette.CONTROL_BORDER);
+                inputField.isFocused() ? AccountPalette.FOCUS : AccountPalette.CONTROL_BORDER);
             super.render(graphics, mx, my, delta);
             for (CompactOverlayButton button : buttons) CompactOverlayButton.renderStyled(graphics, font, button, mx, my);
             text(graphics, statusMessage, panelX() + 12, actionTop() + 26, AccountPalette.TEXT_SECONDARY);
@@ -291,7 +291,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
                 renderResults(graphics);
             }
             if (screenHeight() < 226) text(graphics, "Increase the window height to see full results.", panelX() + 12,
-                Math.max(0, screenHeight() - 12), AccountPalette.GOLDEN_YELLOW);
+                Math.max(0, screenHeight() - 12), AccountPalette.FOCUS);
         } finally {
             AutismUiScale.popOverlayScale(graphics);
         }
@@ -306,7 +306,7 @@ public final class SessionTokenImporterScreen extends AutismScreen {
             UiRenderer.rect(graphics, UiBounds.of(panelX() + 12, y - 2, innerWidth(), 15),
                 index % 2 == 0 ? AccountPalette.FIELD : AccountPalette.SURFACE_RAISED);
             int color = entry.status() == TokenImportService.Status.IMPORTED ? AccountPalette.SUCCESS_TEXT
-                : entry.status() == TokenImportService.Status.DUPLICATE ? AccountPalette.TEXT_SECONDARY : AccountPalette.GOLDEN_YELLOW;
+                : entry.status() == TokenImportService.Status.DUPLICATE ? AccountPalette.TEXT_SECONDARY : AccountPalette.FOCUS;
             text(graphics, "Line " + entry.lineNumber() + "  " + entry.status() + "  " + entry.message(), panelX() + 16, y + 1, color);
         }
     }

@@ -1,0 +1,44 @@
+{
+  "theme": "indigo-menu",
+  "artifactVersion": "5.0-port.3+1.16.5",
+  "sourceSha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+  "screenshot": "08-token-import-results.png",
+  "colors": {
+    "background": {
+      "hex": "#06070B",
+      "pixelCount": 133760
+    },
+    "panel": {
+      "hex": "#101114",
+      "pixelCount": 622040
+    },
+    "inputField": {
+      "hex": "#000000",
+      "pixelCount": 71136
+    },
+    "primaryAndSelected": {
+      "hex": "#1A3BD1",
+      "pixelCount": 45692
+    },
+    "outline": {
+      "hex": "#293C94",
+      "pixelCount": 22464
+    },
+    "focusAndSuccess": {
+      "hex": "#526FFF",
+      "pixelCount": 1644
+    },
+    "hoverOutline": {
+      "hex": "#8181D9",
+      "pixelCount": 3840
+    },
+    "text": {
+      "hex": "#FCFCFC",
+      "pixelCount": 6688
+    },
+    "muted": {
+      "hex": "#C8C9D1",
+      "pixelCount": 14336
+    }
+  }
+}

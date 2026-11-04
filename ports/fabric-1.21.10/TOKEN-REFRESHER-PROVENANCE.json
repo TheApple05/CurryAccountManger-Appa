@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/TheApple05/Token-refresher",
+  "commit": "fa96d07434d50eb451cbc5609d45d9787fc8ce48",
+  "integration": "Independent Java implementation of the inspected input formats and public authentication protocol, embedded in the Fabric mod. No C# binaries or source are bundled.",
+  "referencePaths": [
+    "src/LocaltsAccountManager.Infrastructure/Import/TxtCredentialParser.cs",
+    "src/LocaltsAccountManager.Infrastructure/Import/RefreshTokenLineExtractor.cs",
+    "src/LocaltsAccountManager.Infrastructure/Auth"
+  ],
+  "microsoftClientId": "00000000402b5328",
+  "microsoftTokenEndpoint": "https://login.live.com/oauth20_token.srf",
+  "microsoftRedirectUri": "https://login.live.com/oauth20_desktop.srf",
+  "microsoftScope": "service::user.auth.xboxlive.com::MBI_SSL",
+  "xboxTicketPrefix": "t=",
+  "implementation": "src/main/java/autismclient/util/tokenimport/TokenRefresher.java",
+  "verification": "Synthetic transport tests and isolated packaged Minecraft client checks. Real-account authentication and multiplayer remain unverified."
+}

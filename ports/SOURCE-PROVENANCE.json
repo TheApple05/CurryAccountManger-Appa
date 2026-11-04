@@ -17,5 +17,12 @@
   "inputBaseCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
   "repository": "https://github.com/TheApple05/CurryAccountManger-Appa",
   "baseCommit": "001f1abcc72613b84561e51e10e4ebe877827c27",
-  "themeUpdate": "5.0-port.2 applies the exact supplied nine-role indigo palette; account and authentication behavior unchanged."
+  "themeUpdate": "5.0-port.2 applies the exact supplied nine-role indigo palette; retained in 5.0-port.3.",
+  "importerUpdate": {
+    "release": "v5.0.3",
+    "tokenRefresherRepository": "https://github.com/TheApple05/Token-refresher",
+    "tokenRefresherCommit": "fa96d07434d50eb451cbc5609d45d9787fc8ce48",
+    "implementation": "Independent Java 8 and Java 21 implementations of the public input formats and Microsoft/Xbox/Minecraft authentication protocol. No C# binaries or source are bundled.",
+    "verification": "Synthetic protocol/import tests and isolated exact packaged-JAR client tests, with per-version results in validation/."
+  }
 }

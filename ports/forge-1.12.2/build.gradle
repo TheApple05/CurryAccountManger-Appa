@@ -3,7 +3,7 @@ plugins {
  id 'com.gtnewhorizons.retrofuturagradle' version '2.0.6'
 }
 group = 'curryfarts'
-version = '5.0-port.2+1.12.2'
+version = '5.0-port.3+1.12.2'
 base { archivesName = 'curryfarts' }
 java {
  toolchain { languageVersion = JavaLanguageVersion.of(8) }
@@ -55,3 +55,15 @@ tasks.register('exportQaClasspath') {
  dependsOn tasks.named('qaClasses'), tasks.named('packagePatchedMc')
  doLast { file('.tools').mkdirs(); file('.tools/qa-classpath.txt').text = sourceSets.qa.runtimeClasspath.asPath }
 }
+
+// Deterministic Java 8 protocol/parser/lifecycle checks. No credentials or network.
+tasks.register('tokenImportTest', JavaExec) {
+ dependsOn tasks.named('testClasses')
+ classpath = sourceSets.test.runtimeClasspath
+ mainClass = 'curryfarts.legacy.TokenImporterTest'
+ if (System.getenv('JAVA8_HOME')) executable = new File(System.getenv('JAVA8_HOME'), 'bin/java.exe').absolutePath
+}
+tasks.named('check') { dependsOn tasks.named('tokenImportTest') }
+
+// Tests are standalone Java mains executed by tokenImportTest.
+tasks.named("test") { enabled = false }

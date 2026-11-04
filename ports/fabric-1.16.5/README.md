@@ -9,7 +9,7 @@ This is an independent port, not a metadata-only version override.
 - Minecraft **1.16.5** with **Java 8**.
 - Fabric Loader **0.20.1**.
 - The full official **Fabric API 0.42.0+1.16** release JAR.
-- Install `curryfarts-5.0-port.2+1.16.5-fabric.jar` in the instance's `mods` folder.
+- Install `curryfarts-5.0-port.3+1.16.5-fabric.jar` in the instance's `mods` folder.
 - Open **Multiplayer → Accounts**.
 
 Use the complete Fabric API download from
@@ -19,15 +19,15 @@ installed alone.
 
 ## Indigo menu theme
 
-Release **5.0-port.2+1.16.5** applies the requested theme throughout account
+Release **5.0-port.3+1.16.5** applies the requested theme throughout account
 management, generator, and confirmation screens: background `#06070B`, panels
 and idle buttons `#101114`, black input interiors, primary Add Cracked and
 selected tabs `#1A3BD1`, default outlines `#293C94`, focused field outlines
 and active usernames `#526FFF`, hover outlines `#8181D9`, white text `#FCFCFC`,
 and placeholder/empty-state text `#C8C9D1`. Hover changes only the outline,
 so the primary fill stays exact. Errors and destructive actions use explicit
-wording rather than the previous warm colors. Account storage and authentication
-behavior are unchanged.
+wording rather than the previous warm colors. The importer uses the same encrypted account schema and adds its embedded
+Live/Xbox/Minecraft refresh flow alongside the existing sign-in paths.
 
 ## Preserved behavior
 
@@ -90,11 +90,10 @@ Focused synthetic callback checks also verify that resolved classic/slim metadat
 overrides the default model. They do not establish live custom-skin service results.
 
 See `validation/` for the final runtime verdict and captured UI. The
-port.2 packaged run passed all **21 checks** with exit code **0**. The account,
+port.3 packaged run passed all **31 checks** with exit code **0**. The account,
 generator, and confirmation screenshots show the new theme; `theme-pixels.json`
-records exact RGB samples for the hovered primary button, focused username field,
-selected tab, surfaces, outlines, and text. The primary fill remains `#1A3BD1`
-while its hover outline is `#8181D9`.
+records exact RGB color counts from the current importer screenshot. The new
+importer preserves the primary fill, indigo outlines, surfaces and text palette.
 
 The synthetic upstream NBT compatibility check separately verified all identity/credential/expiry
 fields through read → save → reload. Two-way DPAPI interoperability was verified
@@ -108,3 +107,26 @@ tested. Those network/authentication flows are ported, not established as workin
 against live accounts. The synthetic game identity causes expected vanilla
 Realms/profile lookup warnings. Windows narrator startup availability is separate
 from the mod and was not an accessibility validation gate.
+
+## In-game token importer (v5.0.3)
+
+The **Session Token Importer** tab sits beside **Session Token Switcher**.
+Paste a multiline batch or choose a UTF-8 `.txt` file, then click **Validate & Import**.
+Input previews hide credential text. Tokens are checked in the background; per-line
+results and cancellation stay inside Minecraft. Only verified account identities
+are saved. Repeated UUIDs keep their stable IDs and receive fresh session data;
+Microsoft refresh-token rotations are retained in the encrypted account store.
+Network failures remain retryable, and rate limits stop the batch.
+
+This embeds an independent Java 8 implementation of the public authentication flow
+used by [Token-refresher](https://github.com/TheApple05/Token-refresher) at commit
+`fa96d07434d50eb451cbc5609d45d9787fc8ce48`. It uses the same approved Live/Xbox/Minecraft
+endpoints and Live client, blocks redirects, bounds response size/time, and never
+logs credentials or remote error bodies. Raw Minecraft access tokens are validated;
+only Microsoft refresh tokens can obtain fresh sessions. No external helper runs.
+
+All current version JARs are grouped in [release v5.0.3](https://github.com/TheApple05/CurryAccountManger-Appa/releases/tag/v5.0.3).
+Run `tokenImportTest` for deterministic synthetic protocol/parser/cancellation checks.
+The separate QA mod also exercises the importer UI, duplicate refresh updates,
+encrypted disk reload and cancellation with synthetic data. Real account login,
+OAuth consent and real-server authentication remain unverified.

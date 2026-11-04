@@ -1,0 +1,74 @@
+{
+  "release": "v5.0.3",
+  "artifacts": [
+    {
+      "file": "curryfarts-5.0-port.3+1.8.9-forge.jar",
+      "bytes": 296632,
+      "classes": 47,
+      "sha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
+      "minecraft": "1.8.9",
+      "loader": "forge",
+      "java": 8,
+      "release": "5.0-port.3",
+      "sourceProject": "ports/forge-1.8.9",
+      "runtimeChecks": 29,
+      "deterministicChecks": 76,
+      "compatibilityChecks": 7
+    },
+    {
+      "file": "curryfarts-5.0-port.3+1.12.2-forge.jar",
+      "bytes": 291343,
+      "classes": 47,
+      "sha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
+      "minecraft": "1.12.2",
+      "loader": "forge",
+      "java": 8,
+      "release": "5.0-port.3",
+      "sourceProject": "ports/forge-1.12.2",
+      "runtimeChecks": 28,
+      "deterministicChecks": 76,
+      "compatibilityChecks": 7
+    },
+    {
+      "file": "curryfarts-5.0-port.3+1.16.5-fabric.jar",
+      "bytes": 298525,
+      "classes": 50,
+      "sha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+      "minecraft": "1.16.5",
+      "loader": "fabric",
+      "java": 8,
+      "release": "5.0-port.3",
+      "sourceProject": "ports/fabric-1.16.5",
+      "runtimeChecks": 31,
+      "deterministicChecks": 76,
+      "compatibilityChecks": 7
+    },
+    {
+      "file": "curryfarts-5.0-port.3+1.21.10-fabric.jar",
+      "bytes": 617049,
+      "classes": 135,
+      "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
+      "minecraft": "1.21.10",
+      "loader": "fabric",
+      "java": 21,
+      "release": "5.0-port.3",
+      "sourceProject": "ports/fabric-1.21.10",
+      "runtimeChecks": 47,
+      "deterministicChecks": 161,
+      "compatibilityChecks": 0
+    },
+    {
+      "minecraft": "1.21.11",
+      "loader": "fabric",
+      "java": 21,
+      "file": "autism-account-manager-5.0-backport.4+1.21.11.jar",
+      "sha256": "54df1f29a59fb07375636f45b36977923a6e779756484f4b9576e412fc2e210f",
+      "runtimeChecks": 47,
+      "deterministicChecks": 161,
+      "compatibilityChecks": 0
+    }
+  ],
+  "runtimeChecks": 182,
+  "deterministicChecks": 550,
+  "compatibilityChecks": 21
+}

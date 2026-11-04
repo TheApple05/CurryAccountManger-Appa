@@ -2,14 +2,15 @@
   "upstreamMinecraft": "1.21.11",
   "targetMinecraft": "1.21.10",
   "loader": "Fabric",
-  "artifact": "curryfarts-5.0-port.2+1.21.10-fabric.jar",
-  "sha256": "da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500",
+  "artifact": "curryfarts-5.0-port.3+1.21.10-fabric.jar",
+  "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
   "sourceAuthor": "Melonik",
-  "portScope": "Uploaded account manager and palette; inactive full-client modules not enabled",
+  "portScope": "Account manager, indigo palette, embedded session-token importer and refresh flow",
   "theme": "Exact user-supplied nine-role indigo palette",
-  "runtimeChecks": 17,
+  "runtimeChecks": 47,
   "inputRepository": "https://github.com/TheApple05/Curryfarts",
   "inputSourceCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
   "repository": "https://github.com/TheApple05/CurryAccountManger-Appa",
-  "baseCommit": "001f1abcc72613b84561e51e10e4ebe877827c27"
+  "baseCommit": "001f1abcc72613b84561e51e10e4ebe877827c27",
+  "tokenRefresherReference": "TOKEN-REFRESHER-PROVENANCE.json"
 }

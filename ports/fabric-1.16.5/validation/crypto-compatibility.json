@@ -5,5 +5,8 @@
   "portJava": "1.8.0_504",
   "originalEncryptPortDecrypt": true,
   "portEncryptOriginalDecrypt": true,
-  "recordFormat": "original Windows DPAPI flag-1"
+  "recordFormat": "original Windows DPAPI flag-1",
+  "historical": true,
+  "artifact": "curryfarts-5.0-port.2+1.16.5-fabric.jar",
+  "note": "Prior port.2 interoperability result; current DPAPI round-trip covered by runtime and core-compatibility."
 }

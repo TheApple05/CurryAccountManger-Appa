@@ -1,0 +1,16 @@
+{
+  "status": "PASSED",
+  "checks": 76,
+  "java": "8u504",
+  "syntheticDataOnly": true,
+  "networkRequests": 0,
+  "sourceSha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
+  "command": "gradlew tokenImportTest",
+  "covers": [
+    "Refresh protocol and token rotation",
+    "Official endpoint routing and credential redaction",
+    "UTF-8 input, bounds and mixed fields",
+    "Session validation and expiry categories",
+    "Duplicate handling, progress, cancellation and rate-limit stop"
+  ]
+}

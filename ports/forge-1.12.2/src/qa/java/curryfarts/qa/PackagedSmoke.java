@@ -72,7 +72,11 @@ public final class PackagedSmoke {
             require(CurryfartsMod.store().all().size()==4,"cancel preserves saved accounts");accounts=(CurryAccountsScreen)mc.currentScreen;click(accounts,103);require(CurryfartsMod.store().findById(id)==null,"UI deletes selected account");
             next();break;
         case 8:
-            capture(mc,"06-generated-accounts.png");for(Account record2:CurryfartsMod.store().all())CurryfartsMod.store().remove(record2);
+            capture(mc,"06-generated-accounts.png");click(accounts,81);require(mc.currentScreen instanceof TokenImporterScreen,"adjacent importer tab opens native screen");next();break;
+        case 9:
+            capture(mc,"07-token-importer.png");ImporterPackagedChecks.prepare(mc.currentScreen);((TokenImporterScreen)mc.currentScreen).startImport();next();break;
+        case 10:
+            if((Boolean)field(mc.currentScreen,"busy"))return;ImporterPackagedChecks.verify(mc.currentScreen,CurryfartsMod.store(),mc.gameDir,checks::add);capture(mc,"08-token-import-results.png");mc.displayGuiScreen(accounts);for(Account record2:CurryfartsMod.store().all())CurryfartsMod.store().remove(record2);
             require(CurryfartsMod.store().all().isEmpty(),"cleanup leaves isolated test store empty");mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));require(mc.gameSettings.guiScale==originalGuiScale,"original GUI scale restored after leaving manager");finish(null);break;
         default:throw new AssertionError("Unknown stage");}
     }

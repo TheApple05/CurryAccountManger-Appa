@@ -63,7 +63,11 @@ public final class PackagedSmoke implements ClientModInitializer {
                 capture(mc,"05-clear-confirmation.png");button(mc,"Cancel").onPress();require(mc.screen==screen&&CurryfartsClient.ACCOUNTS.all().size()==3,"cancel clear preserves accounts");button(mc,"Microsoft").onPress();next();break;
             case 8:
                 capture(mc,"06-microsoft-category.png");require(!((PaletteField)field(screen,"nameField")).visible,"Microsoft category hides username field");
-                screen.clearAll();CurryfartsClient.ACCOUNTS.load(mc.gameDirectory);require(CurryfartsClient.ACCOUNTS.all().isEmpty(),"clear/delete persists to disk");finish(mc,null);break;
+                button(mc,"Session Token Importer").onPress();require(mc.screen instanceof TokenImporterScreen,"adjacent importer tab opens native screen");next();break;
+            case 9:
+                capture(mc,"07-token-importer.png");ImporterPackagedChecks.prepare(mc.screen);((TokenImporterScreen)mc.screen).startImport();next();break;
+            case 10:
+                if((Boolean)field(mc.screen,"busy"))return;ImporterPackagedChecks.verify(mc.screen,CurryfartsClient.ACCOUNTS,mc.gameDirectory,checks::add);capture(mc,"08-token-import-results.png");mc.setScreen(screen);screen.clearAll();CurryfartsClient.ACCOUNTS.load(mc.gameDirectory);require(CurryfartsClient.ACCOUNTS.all().isEmpty(),"clear/delete persists to disk");finish(mc,null);break;
         }
     }
     private static Button button(Minecraft mc,String name){for(Object child:mc.screen.children())if(child instanceof Button&&((Button)child).getMessage().getString().equals(name))return (Button)child;return null;}

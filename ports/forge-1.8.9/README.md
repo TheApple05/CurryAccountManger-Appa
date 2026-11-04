@@ -6,7 +6,7 @@ GPL license, artwork, saved-account format, and the requested indigo menu palett
 ## Install
 
 Use **Minecraft 1.8.9**, **Forge 11.15.1.2318**, and **Java 8**. Download
-`curryfarts-5.0-port.2+1.8.9-forge.jar` from this version's GitHub release
+`curryfarts-5.0-port.3+1.8.9-forge.jar` from this version's GitHub release
 and place it in that instance's `mods` folder. Open **Multiplayer → Accounts**.
 Fabric API is not required. Keep one account-manager build in an instance.
 
@@ -54,7 +54,7 @@ python tools\production_smoke.py
 The Windows native harness uses a fresh game directory and synthetic records,
 loads the exact reobfuscated installable JAR, exercises the actual account UI,
 and requires clean process exit. The QA JAR is separate and must not be installed
-for normal play. The final JAR passed **19 runtime checks** and **7 synthetic compatibility checks**, with exit code 0. Results and actual game screenshots are in `validation/`.
+for normal play. The final JAR passed **29 runtime checks** and **7 synthetic compatibility checks**, with exit code 0. Results and actual game screenshots are in `validation/`.
 
 The additional `CoreCompatibility` check reads an upstream-schema fixture,
 verifies all nine fields and encrypted save/reload, and checks Meteor import
@@ -66,3 +66,26 @@ QA classpath. Java 8 is the tested client runtime (8u504 on Windows).
 Real Microsoft OAuth, session-token/TheAltening authentication, multiplayer
 joining, other mods, and non-Windows systems remain unverified. This is an
 unofficial port; successful offline tests do not prove those live integrations.
+
+## In-game token importer (v5.0.3)
+
+The **Session Token Importer** tab sits beside **Session Token Switcher**.
+Paste a multiline batch or choose a UTF-8 `.txt` file, then click **Validate & Import**.
+Input previews hide credential text. Tokens are checked in the background; per-line
+results and cancellation stay inside Minecraft. Only verified account identities
+are saved. Repeated UUIDs keep their stable IDs and receive fresh session data;
+Microsoft refresh-token rotations are retained in the encrypted account store.
+Network failures remain retryable, and rate limits stop the batch.
+
+This embeds an independent Java 8 implementation of the public authentication flow
+used by [Token-refresher](https://github.com/TheApple05/Token-refresher) at commit
+`fa96d07434d50eb451cbc5609d45d9787fc8ce48`. It uses the same approved Live/Xbox/Minecraft
+endpoints and Live client, blocks redirects, bounds response size/time, and never
+logs credentials or remote error bodies. Raw Minecraft access tokens are validated;
+only Microsoft refresh tokens can obtain fresh sessions. No external helper runs.
+
+All current version JARs are grouped in [release v5.0.3](https://github.com/TheApple05/CurryAccountManger-Appa/releases/tag/v5.0.3).
+Run `tokenImportTest` for deterministic synthetic protocol/parser/cancellation checks.
+The separate QA mod also exercises the importer UI, duplicate refresh updates,
+encrypted disk reload and cancellation with synthetic data. Real account login,
+OAuth consent and real-server authentication remain unverified.
