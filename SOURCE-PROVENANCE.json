@@ -1,0 +1,38 @@
+{
+  "upstream": "https://github.com/TheApple05/Autism-Client",
+  "commit": "f248faf0381887361e71e6677445c7ac346f1435",
+  "originalFile": "AUTISM Account Manager-5.0-26.2-dev.jar",
+  "originalSha256": "4a52fb89455cf32e3122fecd6323f25130bf1ce00f19d4298454a02023221af8",
+  "upstreamAuthor": "Melonik",
+  "originalMinecraft": "26.2",
+  "targetMinecraft": "1.21.11",
+  "scope": "Uploaded account-manager build; inactive full-client features excluded",
+  "decompiler": "Vineflower 1.12.0",
+  "licenseFile": "LICENSE",
+  "toolchain": {
+    "loom": "1.19.3",
+    "gradle": "9.8.2",
+    "loader": "0.20.1",
+    "fabricApi": "0.141.6+1.21.11",
+    "bytecodeJava": 21
+  },
+  "validation": {
+    "productionMinecraft": "1.21.11",
+    "java": "21.0.13+9",
+    "runtimeChecksPassed": 17,
+    "dpapiOriginalBackportInteroperability": "passed both directions using synthetic data"
+  },
+  "ui": {
+    "paletteSource": "docs/design/palette-reference.png",
+    "reviewWorkflow": "Product Design plugin",
+    "palette": {
+      "electricBlue": "#005CFE",
+      "bowlTeal": "#036E99",
+      "deepNavy": "#002F67",
+      "herbGreen": "#3C7522",
+      "goldenYellow": "#F8B01B",
+      "spiceOrange": "#E17D0B",
+      "spoonBrown": "#B87527"
+    }
+  }
+}

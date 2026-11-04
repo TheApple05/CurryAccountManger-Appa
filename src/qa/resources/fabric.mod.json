@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "autism_qa",
+  "version": "1.0.0",
+  "name": "Isolated account manager QA",
+  "environment": "client",
+  "entrypoints": { "client": ["autismclient.qa.AccountManagerSmoke"] },
+  "depends": {
+    "autism": "*",
+    "fabric-lifecycle-events-v1": "*"
+  }
+}

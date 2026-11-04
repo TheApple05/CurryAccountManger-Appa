@@ -1,0 +1,82 @@
+[
+  {
+    "foreground": "TEXT",
+    "background": "ELECTRIC_BLUE",
+    "whiteHoverAlpha": 0,
+    "contrast": 4.99,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "TEXT",
+    "background": "ELECTRIC_BLUE",
+    "whiteHoverAlpha": 12,
+    "contrast": 4.63,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "TEXT",
+    "background": "BOWL_TEAL",
+    "whiteHoverAlpha": 12,
+    "contrast": 4.87,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "TEXT",
+    "background": "HERB_GREEN",
+    "whiteHoverAlpha": 12,
+    "contrast": 4.79,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "TEXT_SECONDARY",
+    "background": "SURFACE",
+    "whiteHoverAlpha": 0,
+    "contrast": 9.66,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "GOLDEN_YELLOW",
+    "background": "SURFACE",
+    "whiteHoverAlpha": 0,
+    "contrast": 8.32,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "TEXT",
+    "background": "DANGER_FILL",
+    "whiteHoverAlpha": 12,
+    "contrast": 9.04,
+    "minimum": 4.5,
+    "passed": true
+  },
+  {
+    "foreground": "SPICE_ORANGE",
+    "background": "DANGER_FILL",
+    "whiteHoverAlpha": 8,
+    "contrast": 3.45,
+    "minimum": 3,
+    "passed": true
+  },
+  {
+    "foreground": "CONTROL_BORDER",
+    "background": "FIELD",
+    "whiteHoverAlpha": 0,
+    "contrast": 4.87,
+    "minimum": 3,
+    "passed": true
+  },
+  {
+    "foreground": "CONTROL_BORDER",
+    "background": "SURFACE_RAISED",
+    "whiteHoverAlpha": 0,
+    "contrast": 3.67,
+    "minimum": 3,
+    "passed": true
+  }
+]
