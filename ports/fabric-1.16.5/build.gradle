@@ -1,0 +1,29 @@
+plugins { id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" }
+base { archivesName = 'curryfarts' }
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+tasks.withType(JavaCompile).configureEach { options.release = 8; options.encoding = 'UTF-8' }
+java { withSourcesJar(); sourceCompatibility = JavaVersion.VERSION_1_8; targetCompatibility = JavaVersion.VERSION_1_8 }
+jar { from('LICENSE') }
+tasks.named('remapJar') { archiveClassifier = 'fabric' }
+
+sourceSets { qa { compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath; runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath } }
+tasks.register('qaJar', Jar) { archiveClassifier = 'qa-dev'; from sourceSets.qa.output }
+tasks.register('remapQaJar', net.fabricmc.loom.task.RemapJarTask) {
+    dependsOn tasks.named('qaJar')
+    inputFile = tasks.named('qaJar').flatMap { it.archiveFile }
+    archiveClassifier = 'qa'
+    sourceNamespace = 'named'
+    targetNamespace = 'intermediary'
+    classpath.from(sourceSets.qa.compileClasspath)
+}

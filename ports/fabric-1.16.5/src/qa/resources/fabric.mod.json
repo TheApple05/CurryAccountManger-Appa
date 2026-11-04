@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"curryfarts_qa","version":"1.0.0","name":"Curryfarts isolated QA","environment":"client","entrypoints":{"client":["curryfarts.qa.PackagedSmoke"]},"depends":{"curryfarts":"*","fabric-lifecycle-events-v1":"*"}}

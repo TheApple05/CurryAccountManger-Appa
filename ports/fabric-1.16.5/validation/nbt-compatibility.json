@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "java": "8",
+  "upstreamNbtRead": true,
+  "saveReloadPreservesAllFields": true,
+  "encryptedFieldsRetained": true,
+  "syntheticDataOnly": true
+}

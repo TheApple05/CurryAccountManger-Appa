@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'gg.essential.loom' version '0.10.0.5'
+    id 'dev.architectury.architectury-pack200' version '0.1.3'
+}
+group = 'curryfarts'
+version = '5.0-port.1+1.8.9'
+archivesBaseName = 'curryfarts'
+java { toolchain.languageVersion = JavaLanguageVersion.of(8) }
+loom { forge { pack200Provider.set(new dev.architectury.pack200.java.Pack200Adapter()) } }
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:1.8.9'
+    mappings 'de.oceanlabs.mcp:mcp_stable:22-1.8.9'
+    forge 'net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9'
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+jar { from('../../LICENSE') }
+remapJar { archiveClassifier.set('forge') }
+
+tasks.register('exportRuntime') { doLast { file('.tools').mkdirs(); file('.tools/runtime-classpath.txt').text = configurations.runtimeClasspath.files.collect { it.absolutePath }.join('\n') } }
+
+sourceSets { qa { compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath; runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath } }
+tasks.register('qaJar', Jar) { archiveClassifier.set('qa-dev'); from sourceSets.qa.output }
+tasks.register('remapQaJar', net.fabricmc.loom.task.RemapJarTask) { dependsOn tasks.named('qaJar'); input.set(tasks.named('qaJar').flatMap { it.archiveFile }); archiveClassifier.set('qa') }
+
+tasks.register('exportQaClasspath') { dependsOn tasks.named('qaClasses'); doLast { file('.tools').mkdirs(); file('.tools/qa-classpath.txt').text = sourceSets.qa.runtimeClasspath.asPath } }

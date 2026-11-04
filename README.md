@@ -1,3 +1,28 @@
+# Curryfarts Account Manager ports
+
+Download the matching installable JAR from the [GitHub releases](https://github.com/TheApple05/CurryAccountManger-Appa/releases).
+Each Minecraft version has its own release and SHA-256 checksum:
+
+- **1.8.9** — Forge 11.15.1.2318, Java 8. [Install/build/test details](ports/forge-1.8.9/README.md).
+- **1.12.2** — Forge 14.23.5.2847, Java 8. [Install/build/test details](ports/forge-1.12.2/README.md).
+- **1.16.5** — Fabric Loader 0.20.1, full Fabric API 0.42.0+1.16, Java 8. [Install/build/test details](ports/fabric-1.16.5/README.md).
+- **1.21.10** — Fabric Loader 0.20.1, Fabric API 0.138.4+1.21.10, Java 21. [Install/build/test details](ports/fabric-1.21.10/README.md).
+
+Put one matching account-manager JAR in the instance's `mods` folder, install the
+listed loader and dependencies, then open **Multiplayer → Accounts**. The root
+`Curryfarts.jar` is the older **1.21.11** build; use the versioned release assets
+for these four ports. These ports retain Melonik's account-manager authorship,
+GPL license, artwork, and the requested bowl palette.
+
+The separate port projects live under `ports/`. Their `validation/` directories
+contain screenshots and exact packaged-JAR test results. All four must pass
+before `python tools/package_ports.py` collects the JARs and checksums. Build
+JDKs differ from client Java versions; follow the instructions in each project.
+Live Microsoft/session/TheAltening accounts, multiplayer servers, other mod
+combinations, and non-Windows platforms have not been validated.
+
+---
+
 # AUTISM Account Manager for Minecraft 1.21.11
 
 Unofficial backport of Melonik's **AUTISM Account Manager 5.0 for 26.2**, supplied in

@@ -1,0 +1,38 @@
+{
+  "minecraft": "1.12.2",
+  "loader": "Forge 14.23.5.2847",
+  "java": "8u504",
+  "development": false,
+  "verdict": {
+    "passed": true,
+    "exitCode": 0,
+    "sourceSha256": "80e860c7217118e26479abf82b6c37ce7b9f0c6c1d423a7f437f6343f101db98",
+    "minecraft": "1.12.2",
+    "forge": "14.23.5.2847",
+    "java": "8u504",
+    "result": {
+      "jarSha256": "80e860c7217118e26479abf82b6c37ce7b9f0c6c1d423a7f437f6343f101db98",
+      "status": "PASSED",
+      "checks": [
+        "production Forge environment",
+        "exact reobfuscated JAR loaded",
+        "Accounts button injected into multiplayer",
+        "Accounts button opens native manager",
+        "Auto GUI scale retains readable account layout",
+        "UI adds and logs into offline account",
+        "offline rename preserves ID",
+        "NBT record reloads from disk",
+        "Windows DPAPI round trip on Java 8",
+        "launcher session restored",
+        "UI copies selected account token",
+        "generator opens",
+        "generator creates requested offline accounts",
+        "destructive action requires confirmation",
+        "cancel preserves saved accounts",
+        "UI deletes selected account",
+        "cleanup leaves isolated test store empty",
+        "original GUI scale restored after leaving manager"
+      ]
+    }
+  }
+}

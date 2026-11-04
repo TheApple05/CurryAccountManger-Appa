@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/TheApple05/Curryfarts",
+  "sourceCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
+  "upstreamMinecraft": "1.21.11",
+  "targetMinecraft": "1.21.10",
+  "loader": "Fabric",
+  "artifact": "curryfarts-5.0-port.1+1.21.10-fabric.jar",
+  "sha256": "5ca6173e86e7b843e253a9c6f3a063d77fbd769dd4074fe135285ca72bf0e34b",
+  "sourceAuthor": "Melonik",
+  "portScope": "Uploaded account manager and palette; inactive full-client modules not enabled"
+}

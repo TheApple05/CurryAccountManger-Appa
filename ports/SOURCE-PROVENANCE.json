@@ -1,0 +1,20 @@
+{
+  "inputJar": "Curryfarts.jar",
+  "inputJarSha256": "e8790dcdb6f829dc55b62b17121d7979836eb5986b9c476818397521f651345d",
+  "originalAuthor": "Melonik",
+  "scope": "Uploaded account manager only",
+  "license": "GPL as supplied in LICENSE",
+  "implementation": "Native Java 8 Forge ports for 1.8.9 and 1.12.2; native Java 8 Fabric port for 1.16.5; mapped API adaptation for Fabric 1.21.10. Original root 1.21.11 project retained.",
+  "validation": "Exact packaged artifacts launched in isolated instances with synthetic offline accounts; no real account file or credentials used. See per-project validation/runtime.json.",
+  "unverified": [
+    "Live Microsoft OAuth",
+    "Session-token and TheAltening authentication",
+    "Multiplayer joining",
+    "Other mod combinations",
+    "Non-Windows systems"
+  ],
+  "inputRepository": "https://github.com/TheApple05/Curryfarts",
+  "inputBaseCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
+  "repository": "https://github.com/TheApple05/CurryAccountManger-Appa",
+  "baseCommit": "38148946cc7769b004fe2aa57daad94a6f3e8a77"
+}

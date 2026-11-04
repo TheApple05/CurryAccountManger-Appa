@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "curryfarts.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": ["MinecraftAccessor", "MultiplayerMixin"],
+  "injectors": {"defaultRequire": 1}
+}

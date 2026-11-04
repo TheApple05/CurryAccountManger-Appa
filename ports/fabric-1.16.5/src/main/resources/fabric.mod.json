@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "curryfarts",
+  "version": "${version}",
+  "name": "Curryfarts Account Manager",
+  "description": "Minecraft 1.16.5 port of Melonik's account manager.",
+  "authors": ["Melonik"],
+  "license": "GPL-3.0-only",
+  "environment": "client",
+  "icon": "assets/autismclient/icon.png",
+  "entrypoints": {"client": ["curryfarts.fabric.CurryfartsClient"]},
+  "mixins": ["curryfarts.mixins.json"],
+  "depends": {"minecraft": "1.16.5", "java": ">=8", "fabricloader": ">=0.20.1", "fabric": ">=0.42.0"}
+}

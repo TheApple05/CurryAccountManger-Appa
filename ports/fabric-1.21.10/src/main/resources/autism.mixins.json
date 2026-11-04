@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "autismclient.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "AutismAccountsOnlyMixin",
+    "AutismAccountFeedbackMixin",
+    "accessor.AutismAccountMinecraftAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
