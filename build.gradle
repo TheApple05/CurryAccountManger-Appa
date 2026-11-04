@@ -51,3 +51,32 @@ tasks.register('remapQaJar', net.fabricmc.loom.task.RemapJarTask) {
     targetNamespace = 'intermediary'
     classpath.from(sourceSets.qa.compileClasspath)
 }
+
+// Credential tests use an injected transport and synthetic values only.
+tasks.register('tokenRefresherTest', JavaExec) {
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'autismclient.util.tokenimport.TokenRefresherTest'
+}
+
+tasks.register('tokenImportTest', JavaExec) {
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'autismclient.util.tokenimport.TokenImportServiceTest'
+}
+
+tasks.register('credentialEncryptionTest', JavaExec) {
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'autismclient.util.mm.crypto.AtRestSealTest'
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('tokenRefresherTest'), tasks.named('tokenImportTest'), tasks.named('credentialEncryptionTest')
+}
+
+tasks.named('test') {
+    // These suites have explicit main entrypoints and fail through their JavaExec tasks.
+    failOnNoDiscoveredTests = false
+    dependsOn tasks.named('tokenRefresherTest'), tasks.named('tokenImportTest'), tasks.named('credentialEncryptionTest')
+}
