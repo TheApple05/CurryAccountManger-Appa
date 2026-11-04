@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "autism",
+  "version": "${version}",
+  "name": "AUTISM Account Manager",
+  "description": "A client-side Minecraft account manager.",
+  "authors": [
+    "Melonik"
+  ],
+  "contributors": [
+    "Melonik"
+  ],
+  "contact": {
+    "homepage": "https://ko-fi.com/melonik",
+    "sources": "https://ko-fi.com/melonik"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "Discord": "https://discord.gg/2WQuvztM8m",
+        "Donate": "https://ko-fi.com/melonik"
+      }
+    }
+  },
+  "icon": "assets/autismclient/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "autismclient.AutismAccountManagerMod"
+    ]
+  },
+  "mixins": [
+    "autism.mixins.json"
+  ],
+  "depends": {
+    "java": ">=21",
+    "minecraft": "1.21.10",
+    "fabricloader": ">=0.20.1",
+    "fabric-api": ">=0.138.4+1.21.10"
+  },
+  "license": "GPL-3.0-only",
+  "jars": [
+    {
+      "file": "META-INF/jars/waybackauthlib-1.1.0.jar"
+    }
+  ]
+}

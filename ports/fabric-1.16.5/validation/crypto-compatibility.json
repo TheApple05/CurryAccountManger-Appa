@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "syntheticDataOnly": true,
+  "originalJava": "25.0.5+8",
+  "portJava": "1.8.0_504",
+  "originalEncryptPortDecrypt": true,
+  "portEncryptOriginalDecrypt": true,
+  "recordFormat": "original Windows DPAPI flag-1"
+}

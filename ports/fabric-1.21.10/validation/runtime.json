@@ -1,0 +1,36 @@
+{
+  "minecraft": "1.21.10",
+  "loader": "Fabric 0.20.1",
+  "fabricApi": "0.138.4+1.21.10",
+  "java": "21.0.13+9",
+  "development": false,
+  "verdict": {
+    "passed": true,
+    "exitCode": 0,
+    "sourceSha256": "5ca6173e86e7b843e253a9c6f3a063d77fbd769dd4074fe135285ca72bf0e34b",
+    "result": {
+      "sha256": "5ca6173e86e7b843e253a9c6f3a063d77fbd769dd4074fe135285ca72bf0e34b",
+      "generatorParse": "ParseResult[names=[AlphaQA, BetaQA], skipped=0, duplicates=0]",
+      "status": "PASSED",
+      "checks": [
+        "production loader environment",
+        "exact packaged JAR loaded",
+        "multiplayer Accounts button injected and positioned",
+        "Accounts button opens account screen",
+        "themed input retains mouse cursor positioning",
+        "UI adds offline account and switches session",
+        "session services replaced without errors",
+        "offline account rename",
+        "Windows DPAPI secret round trip on Java 21",
+        "saved secret is encrypted",
+        "NBT persistence and stable ID survive reload",
+        "restore launcher session",
+        "original username restored",
+        "generator popup opens",
+        "clear confirmation opens",
+        "account screen survives resize",
+        "account deletion"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "curryfarts",
+    "name": "Curryfarts Account Manager",
+    "description": "Minecraft 1.12.2 port of Melonik's account manager, retaining the supplied palette.",
+    "version": "5.0-port.1+1.12.2",
+    "mcversion": "1.12.2",
+    "clientSideOnly": true,
+    "authorList": [
+      "Melonik"
+    ],
+    "url": "https://github.com/TheApple05/Curryfarts",
+    "credits": "Original account manager by Melonik; unofficial compatibility port.",
+    "logoFile": "assets/autismclient/icon.png"
+  }
+]

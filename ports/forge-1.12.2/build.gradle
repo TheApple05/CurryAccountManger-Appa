@@ -1,0 +1,57 @@
+plugins {
+ id 'java-library'
+ id 'com.gtnewhorizons.retrofuturagradle' version '2.0.6'
+}
+group = 'curryfarts'
+version = '5.0-port.1+1.12.2'
+base { archivesName = 'curryfarts' }
+java {
+ toolchain { languageVersion = JavaLanguageVersion.of(8) }
+ withSourcesJar()
+}
+minecraft {
+ mcVersion = '1.12.2'
+ username = 'CurryQa'
+}
+repositories { mavenCentral() }
+dependencies {
+ implementation 'net.java.dev.jna:jna:5.17.0'
+ implementation 'net.java.dev.jna:jna-platform:5.17.0'
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+jar {
+ archiveClassifier = 'dev'
+ from('../../LICENSE')
+}
+tasks.named('reobfJar') { archiveClassifier = 'forge' }
+sourceSets {
+ qa {
+  compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+  runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+ }
+}
+tasks.register('qaJar', Jar) {
+ from sourceSets.qa.output
+ archiveClassifier = 'qa-dev'
+}
+tasks.named('reobfQaJar') { archiveClassifier = 'qa' }
+tasks.named('runObfClient') {
+ dependsOn tasks.named('reobfQaJar')
+ classpath += files(tasks.named('reobfQaJar').flatMap { it.archiveFile })
+ workingDir = file(providers.gradleProperty('qaRunDir').getOrElse('build/qa-run'))
+ username = 'CurryQa112'
+ accessToken = '0'
+ extraArgs.addAll(['--width', '1280', '--height', '720'])
+ systemProperty 'curryfarts.qa', 'true'
+ systemProperty 'curryfarts.qa.jar', tasks.named('reobfJar').get().archiveFile.get().asFile.absolutePath
+ doFirst {
+  workingDir.mkdirs()
+  def modsDir = new File(workingDir, 'mods')
+  modsDir.mkdirs()
+  copy { from tasks.named('reobfJar').get().archiveFile; into modsDir }
+ }
+}
+tasks.register('exportQaClasspath') {
+ dependsOn tasks.named('qaClasses'), tasks.named('packagePatchedMc')
+ doLast { file('.tools').mkdirs(); file('.tools/qa-classpath.txt').text = sourceSets.qa.runtimeClasspath.asPath }
+}

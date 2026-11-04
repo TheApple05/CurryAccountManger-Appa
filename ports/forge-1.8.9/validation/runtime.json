@@ -1,0 +1,39 @@
+{
+  "minecraft": "1.8.9",
+  "loader": "Forge 11.15.1.2318",
+  "java": "8u504",
+  "development": false,
+  "verdict": {
+    "passed": true,
+    "exitCode": 0,
+    "minecraft": "1.8.9",
+    "java": "8u504",
+    "forge": "11.15.1.2318",
+    "result": {
+      "sha256": "6542002b9ac56f21904ac0c0fc7bf63913e2eaae43a64499467202492b7e6daa",
+      "status": "PASSED",
+      "checks": [
+        "exact packaged JAR loaded",
+        "multiplayer Accounts button injected",
+        "injected Accounts button opens manager",
+        "Auto GUI scale retains readable account layout",
+        "offline account login and current-session marker",
+        "UI adds saved offline account",
+        "Windows DPAPI uses existing legacy JNA",
+        "DPAPI ciphertext round trip on Java 8",
+        "original Java25 ciphertext decrypts on Java8",
+        "offline account rename",
+        "generated account credentials persist",
+        "NBT reload preserves stable ID and rename",
+        "encrypted password survives NBT reload",
+        "launcher session restoration",
+        "generator screen opens",
+        "clear confirmation opens",
+        "search filters saved account rows",
+        "saved-account deletion",
+        "original GUI scale restored after leaving manager"
+      ]
+    },
+    "sourceSha256": "6542002b9ac56f21904ac0c0fc7bf63913e2eaae43a64499467202492b7e6daa"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceSha256": "42fa81ee42d9560bb20c106ce8bdf6d9f7211c910227e12d2d8a1ab6e3484542",
+  "result": {
+    "sha256": "42fa81ee42d9560bb20c106ce8bdf6d9f7211c910227e12d2d8a1ab6e3484542",
+    "status": "PASSED",
+    "checks": [
+      "production environment",
+      "exact installable JAR loaded",
+      "multiplayer Accounts button injected",
+      "Accounts button opens screen",
+      "themed field retains mouse caret position",
+      "offline login updates active identity",
+      "offline account added to store",
+      "resolved slim skin metadata selects slim model",
+      "resolved classic skin metadata selects wide model",
+      "offline rename preserves stable ID",
+      "Java 8 Windows DPAPI round trip",
+      "list generator adds valid accounts",
+      "NBT reload retains stable ID",
+      "renamed account survives disk reload",
+      "generated password survives encrypted persistence",
+      "launcher session restore succeeds",
+      "launcher username restored",
+      "launcher session/skin/social services restored",
+      "cancel clear preserves accounts",
+      "Microsoft category hides username field",
+      "clear/delete persists to disk"
+    ]
+  },
+  "minecraft": "1.16.5",
+  "fabricLoader": "0.20.1",
+  "fabricApi": "0.42.0+1.16",
+  "java": "1.8.0_504",
+  "artifact": "curryfarts-5.0-port.1+1.16.5-fabric.jar",
+  "gameDirectoryIsolation": true
+}
