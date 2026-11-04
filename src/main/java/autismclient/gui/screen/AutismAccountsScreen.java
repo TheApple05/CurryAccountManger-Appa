@@ -24,6 +24,7 @@ import autismclient.util.AutismMicrosoftLogin;
 import autismclient.util.AutismTheme;
 import autismclient.util.AutismUiIcons;
 import autismclient.util.AutismUiScale;
+import autismclient.util.tokenimport.TokenRefresher;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
@@ -129,6 +130,7 @@ public class AutismAccountsScreen extends AutismScreen {
    }
 
    protected void init() {
+      this.invalidateAccountSnapshot();
       int var1 = this.panelX();
       byte var2 = 88;
       this.labelField = new PaletteEditBox(this.font, var1 + 18, var2, 256, 18, Component.literal("Username"));
@@ -185,9 +187,10 @@ public class AutismAccountsScreen extends AutismScreen {
       int var2 = var1 + 10;
       this.buttons
          .add(
-            CompactOverlayButton.create(10, 10, 76, 18, Component.literal("Back"), var1x -> this.minecraft.setScreen(this.parent))
+            CompactOverlayButton.create(10, 0, 76, 18, Component.literal("Back"), var1x -> this.onClose())
                .setVariant(CompactOverlayButton.Variant.SECONDARY)
          );
+      this.addTokenTabs();
       if (!this.narrowLayout()) {
          byte var3 = 58;
          this.addProviderButton(var2 + 8, var3, AutismAccountType.Cracked, "Cracked");
@@ -336,6 +339,28 @@ public class AutismAccountsScreen extends AutismScreen {
       var5.active = !this.isBusy();
       var5.setVariant(this.type == var3 ? CompactOverlayButton.Variant.FILTER_ON : CompactOverlayButton.Variant.SECONDARY);
       this.buttons.add(var5);
+   }
+
+   private void addTokenTabs() {
+      int x = this.narrowLayout() ? this.listX() : Math.max(96, this.panelX() + 10);
+      int y = this.narrowLayout() ? 26 : 0;
+      int available = Math.max(8, Math.min(500, this.screenWidth() - x - 10));
+      int width = Math.max(2, (available - 4) / 2);
+      CompactOverlayButton switcher = CompactOverlayButton.create(x, y, width, 18,
+         Component.literal("Session Token Switcher"), button -> {});
+      switcher.setVariant(CompactOverlayButton.Variant.FILTER_ON);
+      this.buttons.add(switcher);
+      CompactOverlayButton importer = CompactOverlayButton.create(x + width + 4, y, width, 18,
+         Component.literal("Session Token Importer"), button -> this.openTokenImporter());
+      importer.setVariant(CompactOverlayButton.Variant.SECONDARY);
+      importer.active = !this.isBusy();
+      this.buttons.add(importer);
+   }
+
+   private void openTokenImporter() {
+      if (!this.isBusy()) {
+         this.minecraft.setScreen(new SessionTokenImporterScreen(this));
+      }
    }
 
    private void addFilterButton(int var1, int var2, AutismAccountType var3, String var4) {
@@ -495,6 +520,9 @@ public class AutismAccountsScreen extends AutismScreen {
    }
 
    private static boolean isExpiredMicrosoftToken(AutismAccount var0) {
+      if (var0 != null && var0.tokenRefresherAuth) {
+         return false;
+      }
       String var1 = var0 == null ? null : var0.lastError();
       if (var1 != null && !var1.isBlank()) {
          String var2 = var1.toLowerCase(Locale.ROOT);
@@ -511,6 +539,7 @@ public class AutismAccountsScreen extends AutismScreen {
                if (!this.isCancelled(var2)) {
                   if (var3 != null && !var3.isBlank()) {
                      var1.label = var3;
+                     var1.tokenRefresherAuth = false;
                      this.operationTask = AutismBackgroundTasks.runTracked("Autism-Microsoft-Relogin", () -> {
                         boolean var3x = var1.fetchInfo();
                         if (!this.isCancelled(var2)) {
@@ -606,6 +635,7 @@ public class AutismAccountsScreen extends AutismScreen {
                });
                AtomicInteger var4 = new AtomicInteger();
                AtomicInteger var5x = new AtomicInteger();
+               AtomicInteger retryLater = new AtomicInteger();
 
                try {
                   ArrayList<Future<?>> var6x = new ArrayList<>();
@@ -621,8 +651,12 @@ public class AutismAccountsScreen extends AutismScreen {
                            }
 
                            if (!this.isCancelled(var5)) {
-                              var8.checkStatus = var5xx ? AutismAccount.CheckStatus.VALID : AutismAccount.CheckStatus.EXPIRED;
-                              (var5xx ? var4 : var5x).incrementAndGet();
+                              boolean transientFailure = !var5xx &&
+                                 (var8.tokenImportFailureKind == TokenRefresher.FailureKind.NETWORK
+                                    || var8.tokenImportFailureKind == TokenRefresher.FailureKind.RATE_LIMITED);
+                              var8.checkStatus = var5xx ? AutismAccount.CheckStatus.VALID
+                                 : transientFailure ? AutismAccount.CheckStatus.UNKNOWN : AutismAccount.CheckStatus.EXPIRED;
+                              (var5xx ? var4 : transientFailure ? retryLater : var5x).incrementAndGet();
                            }
                         }
                      }));
@@ -640,7 +674,8 @@ public class AutismAccountsScreen extends AutismScreen {
 
                if (!this.isCancelled(var5)) {
                   AutismAccountManager.get().save();
-                  this.finishOperation(var5, true, var4.get() + " valid, " + var5x.get() + " expired.", false);
+                  this.finishOperation(var5, true, var4.get() + " valid, " + var5x.get() + " expired, "
+                     + retryLater.get() + " retry later.", false);
                }
             });
          }
@@ -1104,6 +1139,12 @@ public class AutismAccountsScreen extends AutismScreen {
          return true;
       }
 
+      for (CompactOverlayButton button : this.buttons) {
+         if (CompactOverlayButton.fireIfHit(button, var3.x(), var3.y(), var3.button())) {
+            return true;
+         }
+      }
+
       if (this.compactListLayout()) {
          return super.mouseClicked(var3, var2);
       }
@@ -1129,12 +1170,6 @@ public class AutismAccountsScreen extends AutismScreen {
          this.lastPreviewMouseY = var3.y();
          this.clearInputFocus();
          return true;
-      }
-
-      for (CompactOverlayButton var6 : this.buttons) {
-         if (CompactOverlayButton.fireIfHit(var6, var3.x(), var3.y(), var3.button())) {
-            return true;
-         }
       }
 
       for (AutismAccountsScreen.AccountRow var8 : this.accountRows) {
