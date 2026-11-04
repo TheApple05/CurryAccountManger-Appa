@@ -1,0 +1,114 @@
+{
+  "theme": "indigo",
+  "artifact": "autism-account-manager-5.0-backport.3+1.21.11.jar",
+  "sourceSha256": "a1e0334b0f5cd6a67d3e45500960ca0a33f4440f6c4a6a68ddc0d6a30283a18b",
+  "expectedColors": {
+    "background": "#06070B",
+    "panelAndIdle": "#101114",
+    "field": "#000000",
+    "primaryAndSelected": "#1A3BD1",
+    "outline": "#293C94",
+    "focusAndUsername": "#526FFF",
+    "hoverOutline": "#8181D9",
+    "text": "#FCFCFC",
+    "placeholder": "#C8C9D1"
+  },
+  "screenshotPixelCounts": {
+    "02-offline-account.png": {
+      "background": 271326,
+      "panelAndIdle": 539582,
+      "field": 30444,
+      "primaryAndSelected": 13152,
+      "outline": 27806,
+      "focusAndUsername": 3888,
+      "hoverOutline": 0,
+      "text": 8702,
+      "placeholder": 3588
+    },
+    "07-field-focus.png": {
+      "background": 278336,
+      "panelAndIdle": 531104,
+      "field": 31204,
+      "primaryAndSelected": 13152,
+      "outline": 26212,
+      "focusAndUsername": 3964,
+      "hoverOutline": 0,
+      "text": 8462,
+      "placeholder": 3160
+    },
+    "08-primary-hover.png": {
+      "background": 278336,
+      "panelAndIdle": 531237,
+      "field": 31224,
+      "primaryAndSelected": 13152,
+      "outline": 25156,
+      "focusAndUsername": 3964,
+      "hoverOutline": 1056,
+      "text": 8442,
+      "placeholder": 3160
+    }
+  },
+  "samples": {
+    "background": {
+      "screenshot": "02-offline-account.png",
+      "pixel": [
+        2,
+        2
+      ],
+      "expected": "#06070B",
+      "actual": "#06070B",
+      "matched": true
+    },
+    "panel": {
+      "screenshot": "02-offline-account.png",
+      "pixel": [
+        145,
+        45
+      ],
+      "expected": "#101114",
+      "actual": "#101114",
+      "matched": true
+    },
+    "primaryFill": {
+      "screenshot": "08-primary-hover.png",
+      "pixel": [
+        160,
+        232
+      ],
+      "expected": "#1A3BD1",
+      "actual": "#1A3BD1",
+      "matched": true
+    },
+    "selectedTab": {
+      "screenshot": "02-offline-account.png",
+      "pixel": [
+        160,
+        120
+      ],
+      "expected": "#1A3BD1",
+      "actual": "#1A3BD1",
+      "matched": true
+    },
+    "focusRing": {
+      "screenshot": "07-field-focus.png",
+      "pixel": [
+        156,
+        176
+      ],
+      "expected": "#526FFF",
+      "actual": "#526FFF",
+      "matched": true
+    },
+    "hoverOutline": {
+      "screenshot": "08-primary-hover.png",
+      "pixel": [
+        156,
+        228
+      ],
+      "expected": "#8181D9",
+      "actual": "#8181D9",
+      "matched": true
+    }
+  },
+  "allExactColorsPresent": true
+}

@@ -1,3 +1,26 @@
+# Indigo menu update — Minecraft 1.21.11
+
+The 5.0-backport.3 build uses the same nine-role indigo palette as the four other
+Minecraft ports. The supplied hex values define the visual target; Minecraft's
+existing type, layout, icons, and input behavior are retained.
+
+- [Account screen](releases/1.21.11/02-offline-account.png).
+- [Focused input](releases/1.21.11/07-field-focus.png).
+- [Hovered primary action](releases/1.21.11/08-primary-hover.png).
+- [Runtime verdict](releases/1.21.11/validation.json) and
+  [exact screenshot color evidence](releases/1.21.11/palette-colors.json).
+
+Background `#06070B`; panels and idle controls `#101114`; fields `#000000`;
+primary actions and selected tabs `#1A3BD1`; default outlines `#293C94`;
+focused outlines and the active username `#526FFF`; hover outlines `#8181D9`;
+headings/button text `#FCFCFC`; placeholders and empty-state text `#C8C9D1`.
+The primary button fill stays deep blue during hover. Existing destructive labels
+and confirmation dialogs identify account-removal actions.
+
+The following sections preserve the review history of the earlier bowl theme.
+
+---
+
 # Account manager palette review
 
 Workflow: Product Design plugin, using its context, design QA, and screenshot
