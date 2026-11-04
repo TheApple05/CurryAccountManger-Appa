@@ -1,13 +1,13 @@
-# Curryfarts Account Manager for Minecraft 1.8.9 â€” Forge
+# Curryfarts Account Manager for Minecraft 1.8.9 — Forge
 
 Native Java 8 port of Melonik's uploaded account manager, retaining the supplied
-GPL license, artwork, saved-account format, and bowl color palette.
+GPL license, artwork, saved-account format, and the requested indigo menu palette.
 
 ## Install
 
 Use **Minecraft 1.8.9**, **Forge 11.15.1.2318**, and **Java 8**. Download
-`curryfarts-5.0-port.1+1.8.9-forge.jar` from this version's GitHub release
-and place it in that instance's `mods` folder. Open **Multiplayer â†’ Accounts**.
+`curryfarts-5.0-port.2+1.8.9-forge.jar` from this version's GitHub release
+and place it in that instance's `mods` folder. Open **Multiplayer → Accounts**.
 Fabric API is not required. Keep one account-manager build in an instance.
 
 The screens include offline, Microsoft, session-token, and TheAltening categories;
@@ -15,8 +15,17 @@ login and launcher-session restoration; rename, delete, search, filters, bulk
 checking, clear confirmation, token copying, a 3D skin preview, and the random or
 clipboard-list generator with optional passwords. The controls temporarily use a
 readable GUI scale and restore your original setting when you leave. A window
-of at least 640 Ã— 360 pixels is recommended. Generator selections last for the
+of at least 640 × 360 pixels is recommended. Generator selections last for the
 current dialog. Full-client modules and macros are outside this account-manager port.
+
+## Menu palette
+
+The menu uses `#06070B` backgrounds, `#101114` panels and idle buttons, and
+black fields. Primary actions and selected tabs use `#1A3BD1`; outlines use
+`#293C94`, focus rings and the active username use `#526FFF`, and hovered
+outlines use `#8181D9`. Headings/button text are `#FCFCFC`; placeholders and
+empty states are `#C8C9D1`. Destructive actions keep their labels and confirmation
+with their existing labels and confirmation. Hovering changes the outline only.
 
 ## Saved data
 

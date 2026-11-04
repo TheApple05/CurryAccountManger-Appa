@@ -9,10 +9,16 @@ Each Minecraft version has its own release and SHA-256 checksum:
 - **1.21.10** — Fabric Loader 0.20.1, Fabric API 0.138.4+1.21.10, Java 21. [Install/build/test details](ports/fabric-1.21.10/README.md).
 
 Put one matching account-manager JAR in the instance's `mods` folder, install the
-listed loader and dependencies, then open **Multiplayer → Accounts**. The root
-`Curryfarts.jar` is the older **1.21.11** build; use the versioned release assets
-for these four ports. These ports retain Melonik's account-manager authorship,
-GPL license, artwork, and the requested bowl palette.
+listed loader and dependencies, then open **Multiplayer → Accounts**. The earlier **1.21.11** release is also available; use the versioned release
+assets for these four ports. These ports retain Melonik's account-manager authorship,
+GPL license, artwork, and account-manager functionality.
+
+The four ports use the requested indigo menu palette: `#06070B` background,
+`#101114` panels and idle buttons, black input fields, `#1A3BD1` primary actions
+and selected tabs, `#293C94` outlines, `#526FFF` focus/active usernames,
+`#8181D9` hover outlines, `#FCFCFC` text, and `#C8C9D1` placeholders.
+The updated releases are **5.0-port.2**. The original 1.21.11 build below retains
+its earlier theme.
 
 The separate port projects live under `ports/`. Their `validation/` directories
 contain screenshots and exact packaged-JAR test results. All four must pass

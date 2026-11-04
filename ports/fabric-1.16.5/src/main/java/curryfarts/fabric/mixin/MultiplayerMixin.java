@@ -16,7 +16,7 @@ public abstract class MultiplayerMixin extends Screen {
     protected MultiplayerMixin(Component text){super(text);}
     @Inject(method="init",at=@At("TAIL"))
     private void curryfarts$accounts(CallbackInfo ci) {
-        addButton(new PaletteButton(width-68,4,64,20,"Accounts",Palette.BLUE,Palette.BORDER,
+        addButton(new PaletteButton(width-68,4,64,20,"Accounts",Palette.PANEL,Palette.BORDER,
             b->minecraft.setScreen(new AccountsScreen(this))));
     }
 }

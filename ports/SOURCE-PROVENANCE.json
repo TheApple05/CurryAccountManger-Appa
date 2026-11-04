@@ -16,5 +16,6 @@
   "inputRepository": "https://github.com/TheApple05/Curryfarts",
   "inputBaseCommit": "013331591eb2f4f29980a3800cb00dc44b90ba70",
   "repository": "https://github.com/TheApple05/CurryAccountManger-Appa",
-  "baseCommit": "38148946cc7769b004fe2aa57daad94a6f3e8a77"
+  "baseCommit": "001f1abcc72613b84561e51e10e4ebe877827c27",
+  "themeUpdate": "5.0-port.2 applies the exact supplied nine-role indigo palette; account and authentication behavior unchanged."
 }

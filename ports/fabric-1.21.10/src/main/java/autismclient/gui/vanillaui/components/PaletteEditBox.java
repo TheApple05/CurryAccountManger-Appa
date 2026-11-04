@@ -26,7 +26,7 @@ public final class PaletteEditBox extends EditBox {
         boolean bordered = isBordered();
         UiRenderer.frame(graphics, UiBounds.of(x, y, width, getHeight()),
             isFocused() ? AccountPalette.FIELD_FOCUSED : AccountPalette.FIELD,
-            isFocused() ? AccountPalette.GOLDEN_YELLOW : AccountPalette.CONTROL_BORDER);
+            isFocused() ? AccountPalette.FOCUS : (mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + getHeight() ? AccountPalette.HOVER : AccountPalette.BORDER));
         // Vanilla uses four pixels of inner padding for a bordered EditBox.
         // Replace its background only; restore its geometry before handling input.
         setBordered(false);

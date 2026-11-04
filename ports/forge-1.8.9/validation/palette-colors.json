@@ -1,0 +1,44 @@
+{
+  "theme": "indigo",
+  "artifactVersion": "5.0-port.2",
+  "screenshot": "02-offline-account.png",
+  "colors": {
+    "menuBackground": {
+      "hex": "#06070B",
+      "pixelCount": 264568
+    },
+    "panelAndIdleButton": {
+      "hex": "#101114",
+      "pixelCount": 540806
+    },
+    "inputField": {
+      "hex": "#000000",
+      "pixelCount": 38032
+    },
+    "primaryAndSelected": {
+      "hex": "#1A3BD1",
+      "pixelCount": 17540
+    },
+    "defaultOutline": {
+      "hex": "#293C94",
+      "pixelCount": 32220
+    },
+    "focusAndActiveUsername": {
+      "hex": "#526FFF",
+      "pixelCount": 1272
+    },
+    "hoverOutline": {
+      "hex": "#8181D9",
+      "pixelCount": 0
+    },
+    "headingAndButtonText": {
+      "hex": "#FCFCFC",
+      "pixelCount": 10512
+    },
+    "placeholderAndEmptyText": {
+      "hex": "#C8C9D1",
+      "pixelCount": 1496
+    }
+  },
+  "hoverNote": "Hover uses #8181D9 borders without changing the fill; pointer is not guaranteed to be over a control in this capture."
+}

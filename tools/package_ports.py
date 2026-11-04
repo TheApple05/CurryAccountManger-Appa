@@ -11,6 +11,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+PORT_RELEASE = '5.0-port.2'
 TARGETS = (
     ('1.8.9', 'forge-1.8.9', 'forge', 52),
     ('1.12.2', 'forge-1.12.2', 'forge', 52),
@@ -43,13 +44,13 @@ def verify(path, version, loader, major):
 
 
 def main():
-    output = ROOT / 'dist/minecraft-ports'
+    output = ROOT / 'dist/minecraft-ports' / PORT_RELEASE
     output.mkdir(parents=True, exist_ok=True)
     manifest = []
     # Verify every input before copying any artifacts.
     for version, directory, loader, major in TARGETS:
         project = ROOT / 'ports' / directory
-        candidates = [path for path in (project / 'build/libs').glob(f'*+{version}-{loader}.jar')
+        candidates = [path for path in (project / 'build/libs').glob(f'curryfarts-{PORT_RELEASE}+{version}-{loader}.jar')
                       if not any(word in path.name for word in ('sources', '-dev', '-qa'))]
         assert len(candidates) == 1, f'Expected one installable {version} {loader} JAR, found {candidates}'
         artifact = verify(candidates[0], version, loader, major)
@@ -62,7 +63,7 @@ def main():
         result = verdict.get('result', {})
         assert result.get('sha256', result.get('jarSha256')) == artifact['sha256'], f'Loaded runtime JAR differs: {version}'
         assert result.get('status') == 'PASSED' and result.get('checks'), f'No runtime checks: {version}'
-        artifact.update(minecraft=version, loader=loader, java=major - 44,
+        artifact.update(minecraft=version, loader=loader, java=major - 44, release=PORT_RELEASE,
                         sourceProject=project.relative_to(ROOT).as_posix(), runtimeChecks=len(result['checks']))
         manifest.append((candidates[0], artifact))
     for source, artifact in manifest:

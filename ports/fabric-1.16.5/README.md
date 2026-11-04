@@ -1,7 +1,7 @@
 # Curryfarts Account Manager — Minecraft 1.16.5 Fabric
 
 Native Minecraft 1.16.5 port of the supplied Curryfarts account manager, retaining
-Melonik's attribution, original license, account data format, and bowl palette.
+Melonik's attribution, original license, account data format, and account-manager behavior.
 This is an independent port, not a metadata-only version override.
 
 ## Install
@@ -9,13 +9,25 @@ This is an independent port, not a metadata-only version override.
 - Minecraft **1.16.5** with **Java 8**.
 - Fabric Loader **0.20.1**.
 - The full official **Fabric API 0.42.0+1.16** release JAR.
-- Install `curryfarts-5.0-port.1+1.16.5-fabric.jar` in the instance's `mods` folder.
+- Install `curryfarts-5.0-port.2+1.16.5-fabric.jar` in the instance's `mods` folder.
 - Open **Multiplayer → Accounts**.
 
 Use the complete Fabric API download from
 [FabricMC's release](https://github.com/FabricMC/fabric-api/releases/tag/0.42.0%2B1.16).
 The old Maven API artifact is only a small dependency aggregator and cannot be
 installed alone.
+
+## Indigo menu theme
+
+Release **5.0-port.2+1.16.5** applies the requested theme throughout account
+management, generator, and confirmation screens: background `#06070B`, panels
+and idle buttons `#101114`, black input interiors, primary Add Cracked and
+selected tabs `#1A3BD1`, default outlines `#293C94`, focused field outlines
+and active usernames `#526FFF`, hover outlines `#8181D9`, white text `#FCFCFC`,
+and placeholder/empty-state text `#C8C9D1`. Hover changes only the outline,
+so the primary fill stays exact. Errors and destructive actions use explicit
+wording rather than the previous warm colors. Account storage and authentication
+behavior are unchanged.
 
 ## Preserved behavior
 
@@ -77,8 +89,14 @@ versions override matching vanilla dependencies to avoid duplicate ASM versions.
 Focused synthetic callback checks also verify that resolved classic/slim metadata
 overrides the default model. They do not establish live custom-skin service results.
 
-See `validation/` for the final runtime verdict and captured UI. The synthetic
-upstream NBT compatibility check separately verified all identity/credential/expiry
+See `validation/` for the final runtime verdict and captured UI. The
+port.2 packaged run passed all **21 checks** with exit code **0**. The account,
+generator, and confirmation screenshots show the new theme; `theme-pixels.json`
+records exact RGB samples for the hovered primary button, focused username field,
+selected tab, surfaces, outlines, and text. The primary fill remains `#1A3BD1`
+while its hover outline is `#8181D9`.
+
+The synthetic upstream NBT compatibility check separately verified all identity/credential/expiry
 fields through read → save → reload. Two-way DPAPI interoperability was verified
 between the supplied original 26.2 binary on Java 25 and this port on Java 8.
 

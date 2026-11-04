@@ -3,7 +3,7 @@ plugins {
  id 'com.gtnewhorizons.retrofuturagradle' version '2.0.6'
 }
 group = 'curryfarts'
-version = '5.0-port.1+1.12.2'
+version = '5.0-port.2+1.12.2'
 base { archivesName = 'curryfarts' }
 java {
  toolchain { languageVersion = JavaLanguageVersion.of(8) }

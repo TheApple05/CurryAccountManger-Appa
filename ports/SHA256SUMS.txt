@@ -1,4 +1,4 @@
-6542002b9ac56f21904ac0c0fc7bf63913e2eaae43a64499467202492b7e6daa  curryfarts-5.0-port.1+1.8.9-forge.jar
-80e860c7217118e26479abf82b6c37ce7b9f0c6c1d423a7f437f6343f101db98  curryfarts-5.0-port.1+1.12.2-forge.jar
-42fa81ee42d9560bb20c106ce8bdf6d9f7211c910227e12d2d8a1ab6e3484542  curryfarts-5.0-port.1+1.16.5-fabric.jar
-5ca6173e86e7b843e253a9c6f3a063d77fbd769dd4074fe135285ca72bf0e34b  curryfarts-5.0-port.1+1.21.10-fabric.jar
+4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c  curryfarts-5.0-port.2+1.8.9-forge.jar
+686bb5a8ef8d45268da1203e7529c46ff25fe8feca38c0983b7f5750dc746ea1  curryfarts-5.0-port.2+1.12.2-forge.jar
+415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85  curryfarts-5.0-port.2+1.16.5-fabric.jar
+da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500  curryfarts-5.0-port.2+1.21.10-fabric.jar
