@@ -1,0 +1,12 @@
+{
+  "artifact": "curryfarts-5.0-port.3+1.21.10-fabric.jar",
+  "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
+  "totalChecks": 161,
+  "suites": {
+    "TokenRefresherTest": 113,
+    "TokenImportServiceTest": 39,
+    "AtRestSealTest": 9
+  },
+  "credentials": "Synthetic fixtures only",
+  "network": "Injected transport; no real account authentication"
+}

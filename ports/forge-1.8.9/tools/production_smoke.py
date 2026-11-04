@@ -5,7 +5,7 @@ from pathlib import Path
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def main():
     root=Path(__file__).resolve().parents[1];cache=Path.home()/'.gradle/caches';loom=cache/'essential-loom/1.8.9'
-    jar=root/'build/libs/curryfarts-5.0-port.2+1.8.9-forge.jar';qa=root/'build/libs/curryfarts-5.0-port.2+1.8.9-qa.jar';java=next((root/'.tools/java8').glob('*/bin/java.exe'))
+    jar=root/'build/libs/curryfarts-5.0-port.3+1.8.9-forge.jar';qa=root/'build/libs/curryfarts-5.0-port.3+1.8.9-qa.jar';java=next((root/'.tools/java8').glob('*/bin/java.exe'))
     run=root/'build/qa'/time.strftime('%Y%m%d-%H%M%S');(run/'mods').mkdir(parents=True);(root/'.tools/latest-qa-run.txt').write_text(str(run))
     for file in [jar,qa]:shutil.copy2(file,run/'mods'/file.name)
     runtime=[Path(p) for p in (root/'.tools/runtime-classpath.txt').read_text().splitlines() if 'essential-loom' not in p and 'fabric-loom' not in p and not any(x in p for x in ['-natives-linux','-natives-osx','-natives-windows-32'])]

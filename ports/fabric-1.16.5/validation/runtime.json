@@ -1,13 +1,30 @@
 {
   "minecraft": "1.16.5",
   "loader": "Fabric 0.20.1",
+  "java": "8u504",
+  "development": false,
   "theme": "indigo-menu",
+  "release": "v5.0.3",
+  "artifact": "curryfarts-5.0-port.3+1.16.5-fabric.jar",
+  "syntheticDataOnly": true,
+  "screenshots": [
+    "00-multiplayer.png",
+    "01-empty.png",
+    "02-offline-login.png",
+    "03-generator.png",
+    "04-restored.png",
+    "05-clear-confirmation.png",
+    "06-microsoft-category.png",
+    "07-token-importer.png",
+    "08-token-import-results.png"
+  ],
   "verdict": {
     "passed": true,
     "exitCode": 0,
-    "sourceSha256": "415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85",
+    "sourceSha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
     "result": {
-      "sha256": "415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85",
+      "modOrigin": "C:\\Users\\Main\\Documents\\Codex\\Autism-Client-importer-all\\ports\\fabric-1.16.5\\build\\qa\\20261103-221013-73d408\\mods\\curryfarts-5.0-port.3+1.16.5-fabric.jar",
+      "sha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
       "status": "PASSED",
       "checks": [
         "production environment",
@@ -30,14 +47,22 @@
         "launcher session/skin/social services restored",
         "cancel clear preserves accounts",
         "Microsoft category hides username field",
+        "adjacent importer tab opens native screen",
+        "importer async valid/duplicate/invalid results",
+        "importer clears credential input after dispatch",
+        "verified identity immediately available in switcher store",
+        "verified duplicate updates credentials without adding row",
+        "duplicate refresh rotation retained with stable ID",
+        "imported refresh client and encrypted credentials survive disk reload",
+        "NBT contains no plaintext imported credentials",
+        "cancelled verified result cannot reach saved library",
+        "UTF8 TXT import parser works in packaged runtime",
         "clear/delete persists to disk"
       ]
-    },
-    "minecraft": "1.16.5",
-    "fabricLoader": "0.20.1",
-    "fabricApi": "0.42.0+1.16",
-    "java": "1.8.0_504",
-    "artifact": "curryfarts-5.0-port.2+1.16.5-fabric.jar",
-    "gameDirectoryIsolation": true
-  }
+    }
+  },
+  "limits": [
+    "Real Microsoft accounts, real session tokens and multiplayer joining were not tested.",
+    "Native file chooser selection was not automated; UTF-8 file parsing was tested."
+  ]
 }

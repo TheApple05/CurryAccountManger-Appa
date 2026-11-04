@@ -9,7 +9,7 @@ Melonik's authorship and the supplied GPL license.
 
 Use Minecraft **1.21.10**, **Java 21+**, **Fabric Loader 0.20.1+**, and
 **Fabric API 0.138.4+1.21.10**. Put
-`curryfarts-5.0-port.2+1.21.10-fabric.jar` in that instance's `mods` folder.
+`curryfarts-5.0-port.3+1.21.10-fabric.jar` in that instance's `mods` folder.
 Open **Multiplayer â†’ Accounts**. Install only one account-manager build in an
 instance; this port retains the original `autism` mod ID.
 
@@ -29,11 +29,14 @@ For the isolated packaged-client test, use a Java 21 runtime:
 python tools\qa\production_smoke.py --java-home C:\path\to\java21
 ```
 
-The exact remapped JAR passed **17 production-client checks** with development
+The exact remapped JAR passed **47 production-client checks** with development
 mode disabled on Java 21.0.13, including the actual multiplayer button, account
 screen, field cursor positioning, fake offline account login, rename, encrypted
 NBT disk reload, stable IDs, launcher-session restoration, generator/confirmation
-popups, deletion, and native-window resize. It exited with code 0. Actual game
+popups, deletion, native-window resize, importer tabs, TXT/clipboard loading,
+background validation, cancellation, rotated-token UUID deduplication, encrypted
+imported-credential reload, and retryable authentication failures. It exited with
+code 0. Actual game
 screenshots and sanitized results are under `validation/`.
 
 The tested artifact hash is recorded in `validation/runtime.json` and the release checksum file.
@@ -51,6 +54,29 @@ authentication/profile lookup warnings in the isolated log are expected.
 Saved accounts and encryption retain the upstream `autism-accounts.nbt` and
 `config/autism` formats. The test uses a fresh instance and never opens an
 existing user account store. The QA mod is separate from the installable JAR.
+
+## Session Token Importer
+
+Open **Multiplayer > Accounts > Session Token Importer**. Paste token lines,
+open a UTF-8 `.txt` file, or drop a file onto Minecraft, then click
+**Validate & Import**. Processing runs in the background and can be cancelled.
+Successful imports appear immediately in **Session Token Switcher**, without
+restarting Minecraft or launching the Token-refresher desktop app.
+
+Minecraft access tokens are validated directly. Microsoft refresh tokens use
+the embedded Token-refresher-compatible Microsoft, Xbox, and Minecraft flow;
+an expired access token alone cannot create a fresh session. Import accepts
+token-only lines, `username:token`, and `REFRESHTOKEN:` / `MCTOKEN:` fields.
+Imports are bounded to 1 MiB and 1,000 entries. A duplicate UUID updates rotated
+credentials while preserving the account's stable ID and existing refresh token.
+Only verified accounts are saved, using encrypted credentials with no plaintext
+fallback for new writes. Temporary network failures remain retryable.
+
+Source reference and protocol configuration are recorded in
+`TOKEN-REFRESHER-PROVENANCE.json`. Build checks include injected-transport tests
+for authentication, parser/import tests, and encryption policy tests. These use
+synthetic credentials; real Microsoft authentication and multiplayer remain
+unverified.
 
 API migration reference: [NeoForged's 1.21.10 â†’ 1.21.11 primer](https://docs.neoforged.net/primer/docs/1.21.11/)
 (used in reverse, with the target game's mapped classes verified locally).

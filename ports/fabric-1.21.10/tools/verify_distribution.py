@@ -31,6 +31,11 @@ def inspect(path):
         classes = [name for name in names if name.endswith('.class')]
         assert len(classes) > 50
         assert not any('/qa/' in name for name in names)
+        assert not any(name.endswith('Test.class') for name in names)
+        for component in ('gui/screen/SessionTokenImporterScreen', 'util/AutismTokenImporter',
+                          'util/tokenimport/TokenInputParser', 'util/tokenimport/TokenImportService',
+                          'util/tokenimport/TokenRefresher'):
+            assert f'autismclient/{component}.class' in names
         assert not any(name.startswith('net/minecraft/') for name in classes)
         assert all(struct.unpack_from('>H', jar.read(name), 6)[0] <= 65 for name in classes)
         for entry in meta.get('jars', []):

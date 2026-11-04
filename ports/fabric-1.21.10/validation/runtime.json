@@ -7,9 +7,9 @@
   "verdict": {
     "passed": true,
     "exitCode": 0,
-    "sourceSha256": "da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500",
+    "sourceSha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
     "result": {
-      "sha256": "da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500",
+      "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
       "generatorParse": "ParseResult[names=[AlphaQA, BetaQA], skipped=0, duplicates=0]",
       "status": "PASSED",
       "checks": [
@@ -29,7 +29,37 @@
         "generator popup opens",
         "clear confirmation opens",
         "account screen survives resize",
-        "account deletion"
+        "account deletion",
+        "session switcher tab is present",
+        "importer tab opens inside Minecraft",
+        "dropping a UTF-8 TXT file loads input inside Minecraft",
+        "file loading waits for explicit validation",
+        "importer Paste reads multiline clipboard input after a verified clipboard round trip",
+        "import input is cleared once processing begins",
+        "malformed tokens are rejected without creating accounts",
+        "asynchronous importer completes its batch",
+        "import results do not repeat credential input",
+        "invalid importer batch leaves account storage empty",
+        "importer preserves multiline input across resize",
+        "Cancel returns importer controls to idle",
+        "cancelled importer does not create accounts",
+        "switcher tab returns to saved accounts",
+        "leaving importer wipes input",
+        "cancelled verified result cannot save a late account",
+        "verified importer result enters the existing account manager",
+        "verified UUID prevents duplicate accounts across different tokens",
+        "duplicate UUID retains rotated credentials and its stable account ID",
+        "session-only reimport resolves to the existing Microsoft account",
+        "session-only reimport updates access while preserving refresh credentials and provider",
+        "imported refresh credentials retain the Token-refresher provider",
+        "importing does not switch the active session",
+        "imported access and refresh tokens are absent from plaintext NBT",
+        "imported credentials and refresh provider survive encrypted disk reload",
+        "synthetic importer fixture is removed",
+        "account check keeps temporary network failures retryable",
+        "account check keeps rate-limited credentials retryable",
+        "Clear Expired preserves accounts with temporary authentication failures",
+        "temporary authentication fixtures are removed"
       ]
     }
   }

@@ -1,0 +1,29 @@
+{
+  "sourceSha256": "54df1f29a59fb07375636f45b36977923a6e779756484f4b9576e412fc2e210f",
+  "allVisibleBaseColorsPresent": true,
+  "palette": {
+    "background": "#06070B",
+    "surface": "#101114",
+    "field": "#000000",
+    "primary": "#1A3BD1",
+    "outline": "#293C94",
+    "focus": "#526FFF",
+    "hover": "#8181D9",
+    "text": "#FCFCFC",
+    "placeholder": "#C8C9D1"
+  },
+  "pixelCounts": {
+    "background": 2601827,
+    "surface": 5575096,
+    "field": 788472,
+    "primary": 347237,
+    "outline": 321894,
+    "focus": 36232,
+    "hover": 0,
+    "text": 97518,
+    "placeholder": 47896
+  },
+  "notExercisedInScreenshots": [
+    "hover"
+  ]
+}

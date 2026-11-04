@@ -1,7 +1,7 @@
 {
   "status": "PASSED",
   "checks": [
-    "Original Minecraft 1.21.11 NBT and DPAPI credentials imported without network calls",
+    "Synthetic original-schema NBT and DPAPI credentials imported without network calls",
     "Legacy NBT save/reload retains stable ID, refresh token and access token",
     "Saved sensitive fields remain encrypted",
     "Java 8 native DPAPI encryption/decryption works",
@@ -9,5 +9,9 @@
     "Meteor accounts import when no Curryfarts account file exists",
     "Meteor import marker prevents reimport and preserves original source"
   ],
-  "syntheticDataOnly": true
+  "syntheticDataOnly": true,
+  "sourceSha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
+  "java": "8u504",
+  "fixture": "Synthetic original-schema fixture; no real saved accounts",
+  "currentBuild": true
 }

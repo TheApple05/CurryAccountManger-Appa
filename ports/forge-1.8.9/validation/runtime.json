@@ -3,14 +3,31 @@
   "loader": "Forge 11.15.1.2318",
   "java": "8u504",
   "development": false,
+  "theme": "indigo-menu",
+  "release": "v5.0.3",
+  "artifact": "curryfarts-5.0-port.3+1.8.9-forge.jar",
+  "syntheticDataOnly": true,
+  "screenshots": [
+    "00-multiplayer.png",
+    "01-empty-accounts.png",
+    "02-offline-account.png",
+    "03-renamed-and-restored.png",
+    "04-generator.png",
+    "05-clear-confirmation.png",
+    "06-search.png",
+    "07-token-importer.png",
+    "08-token-import-results.png"
+  ],
   "verdict": {
     "passed": true,
     "exitCode": 0,
     "minecraft": "1.8.9",
     "java": "8u504",
     "forge": "11.15.1.2318",
+    "jarSha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
     "result": {
-      "sha256": "4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c",
+      "modOrigin": "C:\\Users\\Main\\Documents\\Codex\\Autism-Client-importer-all\\ports\\forge-1.8.9\\build\\qa\\20261103-220915\\mods\\curryfarts-5.0-port.3+1.8.9-forge.jar",
+      "sha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
       "status": "PASSED",
       "checks": [
         "exact packaged JAR loaded",
@@ -30,10 +47,24 @@
         "generator screen opens",
         "clear confirmation opens",
         "search filters saved account rows",
+        "adjacent importer tab opens native screen",
+        "importer async valid/duplicate/invalid results",
+        "importer clears credential input after dispatch",
+        "verified identity immediately available in switcher store",
+        "verified duplicate updates credentials without adding row",
+        "duplicate refresh rotation retained with stable ID",
+        "imported refresh client and encrypted credentials survive disk reload",
+        "NBT contains no plaintext imported credentials",
+        "cancelled verified result cannot reach saved library",
+        "UTF8 TXT import parser works in packaged runtime",
         "saved-account deletion",
         "original GUI scale restored after leaving manager"
       ]
     },
-    "sourceSha256": "4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c"
-  }
+    "sourceSha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b"
+  },
+  "limits": [
+    "Real Microsoft accounts, real session tokens and multiplayer joining were not tested.",
+    "Native file chooser selection was not automated; UTF-8 file parsing was tested."
+  ]
 }

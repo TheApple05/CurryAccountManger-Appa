@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "artifact": "curryfarts-5.0-port.3+1.8.9-forge.jar",
+  "sha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
+  "bytes": 296632,
+  "classes": 47,
+  "classVersions": {
+    "52": 47
+  },
+  "minecraft": "1.8.9",
+  "javaMinimum": "8",
+  "loader": "forge",
+  "theme": "indigo-menu"
+}

@@ -11,7 +11,7 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PORT_RELEASE = '5.0-port.2'
+PORT_RELEASE = '5.0-port.3'
 TARGETS = (
     ('1.8.9', 'forge-1.8.9', 'forge', 52),
     ('1.12.2', 'forge-1.12.2', 'forge', 52),
@@ -28,6 +28,8 @@ def verify(path, version, loader, major):
         assert classes, f'No compiled classes: {path}'
         assert not any(name.startswith('net/minecraft/') for name in classes), 'Vanilla classes in mod JAR'
         assert not any('/qa/' in name or '/gametest/' in name for name in classes), 'QA classes in installable JAR'
+        assert not any(any(test in name for test in ('ImporterPackagedChecks', 'PackagedSmoke', 'CoreCompatibility', 'TokenImportCoreTest'))
+                       for name in classes), 'Test helper in installable JAR'
         for name in classes:
             assert struct.unpack_from('>H', archive.read(name), 6)[0] <= major, f'Wrong Java version: {name}'
         if loader == 'fabric':

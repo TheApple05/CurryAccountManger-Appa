@@ -1,50 +1,50 @@
 [
   {
-    "file": "curryfarts-5.0-port.2+1.8.9-forge.jar",
-    "bytes": 259660,
-    "classes": 27,
-    "sha256": "4fa459a010bd1be31c800bc11af5dbba1aec59576785f069652c2b2f9effef1c",
+    "file": "curryfarts-5.0-port.3+1.8.9-forge.jar",
+    "bytes": 296632,
+    "classes": 47,
+    "sha256": "58921e1058480290fd8f90f45fe5e034809eeb645cfad2b34bfb0d38ab8b8c9b",
     "minecraft": "1.8.9",
     "loader": "forge",
     "java": 8,
-    "release": "5.0-port.2",
+    "release": "5.0-port.3",
     "sourceProject": "ports/forge-1.8.9",
-    "runtimeChecks": 19
+    "runtimeChecks": 29
   },
   {
-    "file": "curryfarts-5.0-port.2+1.12.2-forge.jar",
-    "bytes": 256370,
-    "classes": 27,
-    "sha256": "686bb5a8ef8d45268da1203e7529c46ff25fe8feca38c0983b7f5750dc746ea1",
+    "file": "curryfarts-5.0-port.3+1.12.2-forge.jar",
+    "bytes": 291343,
+    "classes": 47,
+    "sha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
     "minecraft": "1.12.2",
     "loader": "forge",
     "java": 8,
-    "release": "5.0-port.2",
+    "release": "5.0-port.3",
     "sourceProject": "ports/forge-1.12.2",
-    "runtimeChecks": 18
+    "runtimeChecks": 28
   },
   {
-    "file": "curryfarts-5.0-port.2+1.16.5-fabric.jar",
-    "bytes": 262338,
-    "classes": 30,
-    "sha256": "415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85",
+    "file": "curryfarts-5.0-port.3+1.16.5-fabric.jar",
+    "bytes": 298525,
+    "classes": 50,
+    "sha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
     "minecraft": "1.16.5",
     "loader": "fabric",
     "java": 8,
-    "release": "5.0-port.2",
+    "release": "5.0-port.3",
     "sourceProject": "ports/fabric-1.16.5",
-    "runtimeChecks": 21
+    "runtimeChecks": 31
   },
   {
-    "file": "curryfarts-5.0-port.2+1.21.10-fabric.jar",
-    "bytes": 566563,
-    "classes": 110,
-    "sha256": "da950009ada53915eec3ad91c80047e174d290eb7b350bb3cc9f9654a8499500",
+    "file": "curryfarts-5.0-port.3+1.21.10-fabric.jar",
+    "bytes": 617049,
+    "classes": 135,
+    "sha256": "8e0b292bd70a7457f6782e69baeeb909490a383e95fc7977ff0976098a7cee58",
     "minecraft": "1.21.10",
     "loader": "fabric",
     "java": 21,
-    "release": "5.0-port.2",
+    "release": "5.0-port.3",
     "sourceProject": "ports/fabric-1.21.10",
-    "runtimeChecks": 17
+    "runtimeChecks": 47
   }
 ]

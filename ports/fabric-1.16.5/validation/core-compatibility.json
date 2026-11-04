@@ -1,0 +1,17 @@
+{
+  "status": "PASSED",
+  "checks": [
+    "Synthetic original-schema NBT and DPAPI credentials imported without network calls",
+    "Legacy NBT save/reload retains stable ID, refresh token and access token",
+    "Saved sensitive fields remain encrypted",
+    "Java 8 native DPAPI encryption/decryption works",
+    "Offline identities retain vanilla name-based UUIDs",
+    "Meteor accounts import when no Curryfarts account file exists",
+    "Meteor import marker prevents reimport and preserves original source"
+  ],
+  "syntheticDataOnly": true,
+  "sourceSha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+  "java": "8u504",
+  "fixture": "Synthetic original-schema fixture; no real saved accounts",
+  "currentBuild": true
+}

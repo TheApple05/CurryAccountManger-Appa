@@ -38,11 +38,22 @@ public final class AtRestSeal {
 
       byte[] var1 = WinDpapi.protect(var0);
       if (var1 != null) {
-         return prepend((byte)1, var1);
+         return selectEncryptedResult(var1, null);
       }
 
       byte[] var2 = aesSeal(var0);
-      return var2 != null ? prepend((byte)2, var2) : prepend((byte)0, var0);
+      return selectEncryptedResult(null, var2);
+   }
+
+   /** New records must be encrypted. Marker 0 remains readable only for legacy data. */
+   static byte[] selectEncryptedResult(byte[] dpapi, byte[] aes) {
+      if (dpapi != null) {
+         return prepend((byte)1, dpapi);
+      }
+      if (aes != null) {
+         return prepend((byte)2, aes);
+      }
+      throw new IllegalStateException("Could not encrypt account credentials. No plaintext record was created.");
    }
 
    public static byte[] unseal(byte[] var0) {

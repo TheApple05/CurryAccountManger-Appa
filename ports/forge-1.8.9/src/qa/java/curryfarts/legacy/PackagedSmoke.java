@@ -57,7 +57,11 @@ public final class PackagedSmoke {
         case 6:
             snap(mc,"05-clear-confirmation.png");mc.displayGuiScreen(screen);((GuiTextField)field(screen,"search")).setText("Renamed");screen.rebuild();require(((List<?>)field(screen,"rows")).size()==1,"search filters saved account rows");next();break;
         case 7:
-            snap(mc,"06-search.png");for(Account a:CurryfartsMod.store().all())CurryfartsMod.store().remove(a);require(CurryfartsMod.store().all().isEmpty(),"saved-account deletion");mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));require(mc.gameSettings.guiScale==originalGuiScale,"original GUI scale restored after leaving manager");finish(mc,null);break;
+            snap(mc,"06-search.png");action(screen,81);require(mc.currentScreen instanceof TokenImporterScreen,"adjacent importer tab opens native screen");next();break;
+        case 8:
+            snap(mc,"07-token-importer.png");ImporterPackagedChecks.prepare(mc.currentScreen);((TokenImporterScreen)mc.currentScreen).startImport();next();break;
+        case 9:
+            if((Boolean)field(mc.currentScreen,"busy"))return;ImporterPackagedChecks.verify(mc.currentScreen,CurryfartsMod.store(),mc.mcDataDir,checks::add);snap(mc,"08-token-import-results.png");mc.displayGuiScreen(screen);for(Account a:CurryfartsMod.store().all())CurryfartsMod.store().remove(a);require(CurryfartsMod.store().all().isEmpty(),"saved-account deletion");mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));require(mc.gameSettings.guiScale==originalGuiScale,"original GUI scale restored after leaving manager");finish(mc,null);break;
         }
     }
     private void next(){stage++;last=tick;}

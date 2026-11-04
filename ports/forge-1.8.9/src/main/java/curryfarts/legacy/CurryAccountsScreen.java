@@ -41,7 +41,7 @@ public final class CurryAccountsScreen extends LegacyScreen {
     }
     private void add(int id,int x,int y,int w,String text,int fill,int edge){buttonList.add(new PaletteButton(id,x,y,w,18,text,fill,edge));}
     public void rebuild() {
-        buttonList.clear();add(0,10,10,74,"Back",Palette.PANEL,Palette.BORDER);
+        buttonList.clear();add(0,10,6,52,"Back",Palette.PANEL,Palette.BORDER);int navX=Math.max(70,left),navWidth=(width-navX-12)/2;add(80,navX,6,navWidth-2,"Session Token Switcher",Palette.PRIMARY,Palette.BORDER);add(81,navX+navWidth+2,6,navWidth-2,"Session Token Importer",Palette.PANEL,Palette.BORDER);
         int editWidth=Math.max(100,panelWidth-216),tabWidth=Math.max(25,(editWidth-6)/4);
         for(int i=0;i<4;i++)add(10+i,left+10+i*(tabWidth+2),top+38,tabWidth,types[i].equals("TheAltening")?"Altening":types[i],types[i].equals(type)?Palette.PRIMARY:Palette.PANEL,Palette.BORDER);
         add(20,left+10,top+94,Math.max(90,editWidth-74),renameId.isEmpty()?("Microsoft".equals(type)?"Microsoft login":"Add "+("TheAltening".equals(type)?"Altening":type)):"Save rename",Palette.PRIMARY,Palette.BORDER);
@@ -116,6 +116,7 @@ public final class CurryAccountsScreen extends LegacyScreen {
         drawScaledCustomSizeModalRect(x,y,40,8,8,8,size,size,64,64);
     }
     @Override protected void actionPerformed(GuiButton button) {
+        if(button.id==81){mc.displayGuiScreen(new TokenImporterScreen(this));return;}
         if(button.id==0){cancelOperation();mc.displayGuiScreen(parent);return;}
         if(button.id>=10&&button.id<14){type=types[button.id-10];renameId="";rebuild();return;}
         if(button.id==21){label.setText("");token.setText("");renameId="";rebuild();return;}
@@ -142,7 +143,7 @@ public final class CurryAccountsScreen extends LegacyScreen {
         },"Curryfarts-Account-Login");worker.setDaemon(true);operationThread=worker;worker.start();
     }
     private void checkAccounts() {
-        busy=true;final int ticket=++operation;rebuild();Thread worker=new Thread(()->{int valid=0,expired=0;for(Account a:CurryfartsMod.store().all()){if(ticket!=operation)return;if("Cracked".equals(a.type)||"Generated".equals(a.type))continue;a.checkStatus="CHECKING";if(Auth.resolve(a)){a.checkStatus="VALID";valid++;}else{a.checkStatus="EXPIRED";expired++;}}final String text=valid+" valid, "+expired+" expired.";CurryfartsMod.store().save();mc.addScheduledTask(()->{if(ticket!=operation)return;busy=false;message=text;rebuild();});},"Curryfarts-Account-Check");worker.setDaemon(true);operationThread=worker;worker.start();
+        busy=true;final int ticket=++operation;rebuild();Thread worker=new Thread(()->{int valid=0,expired=0;for(Account a:CurryfartsMod.store().all()){if(ticket!=operation)return;if("Cracked".equals(a.type)||"Generated".equals(a.type))continue;a.checkStatus="CHECKING";if(Auth.resolve(a)){a.checkStatus="VALID";valid++;}else{a.checkStatus=a.lastFailure==TokenRefresher.FailureKind.NETWORK||a.lastFailure==TokenRefresher.FailureKind.RATE_LIMITED?"UNKNOWN":"EXPIRED";if("EXPIRED".equals(a.checkStatus))expired++;}}final String text=valid+" valid, "+expired+" expired.";CurryfartsMod.store().save();mc.addScheduledTask(()->{if(ticket!=operation)return;busy=false;message=text;rebuild();});},"Curryfarts-Account-Check");worker.setDaemon(true);operationThread=worker;worker.start();
     }
     @Override protected void mouseClicked(int x,int y,int button)throws IOException {
         super.mouseClicked(x,y,button);label.mouseClicked(x,y,button);token.mouseClicked(x,y,button);search.mouseClicked(x,y,button);

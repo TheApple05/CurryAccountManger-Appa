@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceSha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
+  "minecraft": "1.12.2",
+  "forge": "14.23.5.2847",
+  "java": "8u504",
+  "result": {
+    "jarSha256": "fc1c7ccd64b260abeb63ffad03f84874a233c25705acb02bfa3743248735c1c1",
+    "origin": "C:\\Users\\Main\\Documents\\Codex\\Autism-Client-importer-all\\ports\\forge-1.12.2\\build\\qa\\20261103-221118-733fba\\mods\\curryfarts-5.0-port.3+1.12.2-forge.jar",
+    "status": "PASSED",
+    "checks": [
+      "production Forge environment",
+      "exact reobfuscated JAR loaded",
+      "Accounts button injected into multiplayer",
+      "Accounts button opens native manager",
+      "Auto GUI scale retains readable account layout",
+      "UI adds and logs into offline account",
+      "offline rename preserves ID",
+      "NBT record reloads from disk",
+      "Windows DPAPI round trip on Java 8",
+      "launcher session restored",
+      "UI copies selected account token",
+      "generator opens",
+      "generator creates requested offline accounts",
+      "destructive action requires confirmation",
+      "cancel preserves saved accounts",
+      "UI deletes selected account",
+      "adjacent importer tab opens native screen",
+      "importer async valid/duplicate/invalid results",
+      "importer clears credential input after dispatch",
+      "verified identity immediately available in switcher store",
+      "verified duplicate updates credentials without adding row",
+      "duplicate refresh rotation retained with stable ID",
+      "imported refresh client and encrypted credentials survive disk reload",
+      "NBT contains no plaintext imported credentials",
+      "cancelled verified result cannot reach saved library",
+      "UTF8 TXT import parser works in packaged runtime",
+      "cleanup leaves isolated test store empty",
+      "original GUI scale restored after leaving manager"
+    ]
+  }
+}

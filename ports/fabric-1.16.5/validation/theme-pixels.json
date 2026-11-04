@@ -1,111 +1,44 @@
 {
-  "passed": true,
-  "artifact": "curryfarts-5.0-port.2+1.16.5-fabric.jar",
-  "sourceSha256": "415238ca57ae24940494a49d343ca18beedc9d07b7a4b7b6f6c00686e98d9f85",
-  "screenshot": "02-offline-login.png",
-  "samples": {
+  "theme": "indigo-menu",
+  "artifactVersion": "5.0-port.3+1.16.5",
+  "sourceSha256": "97333c1d63a5ff48fbc5df896799ce47594c631a92e635e2abb52548970bb969",
+  "screenshot": "08-token-import-results.png",
+  "colors": {
     "background": {
-      "pixel": [
-        5,
-        5
-      ],
-      "expected": "#06070B",
-      "actual": "#06070B",
-      "matched": true
+      "hex": "#06070B",
+      "pixelCount": 133760
     },
     "panel": {
-      "pixel": [
-        50,
-        65
-      ],
-      "expected": "#101114",
-      "actual": "#101114",
-      "matched": true
+      "hex": "#101114",
+      "pixelCount": 622040
     },
-    "field": {
-      "pixel": [
-        80,
-        170
-      ],
-      "expected": "#000000",
-      "actual": "#000000",
-      "matched": true
+    "inputField": {
+      "hex": "#000000",
+      "pixelCount": 71136
     },
-    "primaryAddFill": {
-      "pixel": [
-        80,
-        270
-      ],
-      "expected": "#1A3BD1",
-      "actual": "#1A3BD1",
-      "matched": true
+    "primaryAndSelected": {
+      "hex": "#1A3BD1",
+      "pixelCount": 45692
     },
-    "selectedTabFill": {
-      "pixel": [
-        80,
-        110
-      ],
-      "expected": "#1A3BD1",
-      "actual": "#1A3BD1",
-      "matched": true
+    "outline": {
+      "hex": "#293C94",
+      "pixelCount": 22464
     },
-    "defaultOutline": {
-      "pixel": [
-        40,
-        60
-      ],
-      "expected": "#293C94",
-      "actual": "#293C94",
-      "matched": true
+    "focusAndSuccess": {
+      "hex": "#526FFF",
+      "pixelCount": 1644
     },
-    "focusedFieldRing": {
-      "pixel": [
-        100,
-        154
-      ],
-      "expected": "#526FFF",
-      "actual": "#526FFF",
-      "matched": true
+    "hoverOutline": {
+      "hex": "#8181D9",
+      "pixelCount": 3840
     },
-    "hoverAddOutline": {
-      "pixel": [
-        100,
-        258
-      ],
-      "expected": "#8181D9",
-      "actual": "#8181D9",
-      "matched": true
+    "text": {
+      "hex": "#FCFCFC",
+      "pixelCount": 6688
     },
-    "buttonHeadingText": {
-      "expected": "#FCFCFC",
-      "exactPixelCount": 9484,
-      "matched": true
-    },
-    "placeholderEmptyText": {
-      "expected": "#C8C9D1",
-      "exactPixelCount": 1452,
-      "matched": true
-    },
-    "idleButtonFill": {
-      "pixel": [
-        390,
-        275
-      ],
-      "expected": "#101114",
-      "actual": "#101114",
-      "matched": true
-    },
-    "activeUsername": {
-      "crop": [
-        70,
-        510,
-        350,
-        540
-      ],
-      "expected": "#526FFF",
-      "exactPixelCount": 524,
-      "matched": true
+    "muted": {
+      "hex": "#C8C9D1",
+      "pixelCount": 14336
     }
-  },
-  "hoverFillTint": false
+  }
 }
