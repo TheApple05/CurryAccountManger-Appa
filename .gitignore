@@ -1,0 +1,8 @@
+.gradle/
+.tools/
+build/
+run/
+dist/
+*.log
+__pycache__/
+*.py[cod]

@@ -1,0 +1,41 @@
+{
+  "minecraft": "1.21.11",
+  "fabricLoader": "0.20.1",
+  "fabricApi": "0.141.6+1.21.11",
+  "java": "21.0.13+9",
+  "development": false,
+  "artifact": "autism-account-manager-5.0-backport.1+1.21.11.jar",
+  "runtime": {
+    "passed": true,
+    "exitCode": 0,
+    "sourceSha256": "85dc7406846db2b63bac8ecbb5e191b7ea1e2e82b50021e4b1c413a049631ed3",
+    "result": {
+      "sha256": "85dc7406846db2b63bac8ecbb5e191b7ea1e2e82b50021e4b1c413a049631ed3",
+      "generatorParse": "ParseResult[names=[AlphaQA, BetaQA], skipped=0, duplicates=0]",
+      "status": "PASSED",
+      "checks": [
+        "production loader environment",
+        "exact packaged JAR loaded",
+        "multiplayer Accounts button injected and positioned",
+        "Accounts button opens account screen",
+        "UI adds offline account and switches session",
+        "session services replaced without errors",
+        "offline account rename",
+        "Windows DPAPI secret round trip on Java 21",
+        "saved secret is encrypted",
+        "NBT persistence and stable ID survive reload",
+        "restore launcher session",
+        "original username restored",
+        "account screen survives resize",
+        "account deletion"
+      ]
+    }
+  },
+  "crypto": {
+    "syntheticDataOnly": true,
+    "originalJava": "25.0.5+8",
+    "backportJava": "21.0.13+9",
+    "originalEncryptBackportDecrypt": "PASSED",
+    "backportEncryptOriginalDecrypt": "PASSED"
+  }
+}
